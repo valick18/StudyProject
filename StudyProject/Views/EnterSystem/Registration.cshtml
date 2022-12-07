@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid d-flex h-100 justify-content-center align-items-center p-0">
+    <div class="row bg-white shadow-sm">
+        <div class="col border rounded p-5">
+            <h3 class="text-center mb-4">Регистрация</h3>
+            @using (Html.BeginForm("Registration", "EnterSystem", new { }, FormMethod.Post, new { @class = "", role = "form" }))
+            {
+                <div class="form-group">
+                    <label>Введите Имя</label>
+                    <input type="text" class="form-control" name="FirstName">
+                </div>
+                <div class="form-group">
+                    <label>Введите Фамилию</label>
+                    <input type="text" class="form-control" name="LastName">
+                </div>
+                <div class="form-group">
+                    <label>Введите Отчество</label>
+                    <input type="text" class="form-control" name="MiddleName">
+                </div>
+                <div class="form-group">
+                    <label>Введите Email</label>
+                    <input type="email" class="form-control" name="Login">
+                </div>
+                <div class="form-group">
+                    <label>Введите пароль</label>
+                    <input type="password" class="form-control" name="Password">
+                </div>
+                <div class="form-group">
+                    <label>Введите пароль повторно</label>
+                    <input type="password" class="form-control" name="PasswordRepeat">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-2">Зарегистрироваться</button>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+
+}

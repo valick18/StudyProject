@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid d-flex h-100 justify-content-center align-items-center p-0">
+
+    <div class="row bg-white shadow-sm">
+        <div class="col border rounded p-4">
+            <h3 class="text-center mb-4">Вход</h3>
+            @using (Html.BeginForm("Login", "EnterSystem", new { }, FormMethod.Post, new { @class = "", role = "form" }))
+            {
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="login">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <a href="@Url.Action("Registration","EnterSystem")" class="float-end" style="text-decoration:none;">Регистрация</a>
+                <button type="submit" class="btn btn-primary w-100 mt-2">Войти</button>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+
+}
