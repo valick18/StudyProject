@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudyProject.Controllers
+namespace ApplicationDbContext.Controllers
 {
     using System;
     using System.Collections.Generic;

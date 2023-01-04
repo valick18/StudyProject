@@ -4,20 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4638ec84b34948a3a5b299846b576a70" Name="Diagram1" ZoomLevel="71">
+      <Diagram DiagramId="1aefe01a6d7f45acaac09ab51a63ab97" Name="Diagram1">
         <EntityTypeShape EntityType="StudyPlatformModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbGroup" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbInstitution" Width="1.5" PointX="5.25" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbInvite" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbLesson" Width="1.5" PointX="9.75" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbMaterials" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbTask" Width="1.5" PointX="12.75" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbTaskResult" Width="1.5" PointX="10.5" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbTest" Width="1.5" PointX="7.5" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbTestResult" Width="1.5" PointX="9.75" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbUser" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbLesson_Group" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="StudyPlatformModel.tbMaterial_Institution" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbGroup" Width="1.5" PointX="0.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbInstitution" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbInvite" Width="1.5" PointX="3" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbLesson" Width="1.5" PointX="9.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbMaterials" Width="1.5" PointX="7.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbTask" Width="1.5" PointX="12.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbTaskResult" Width="1.5" PointX="10.5" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbTest" Width="1.5" PointX="7.5" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbTestResult" Width="1.5" PointX="9.75" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbUser" Width="1.5" PointX="3" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbLesson_Group" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StudyPlatformModel.tbMaterial_Institution" Width="1.5" PointX="7.5" PointY="11.25" IsExpanded="true" />
         <AssociationConnector Association="StudyPlatformModel.FK_tbInvite_tbGroup" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.FK_tbLesson_Group_tbGroup" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.FK_tbInstitution_tbUser" ManuallyRouted="false" />
@@ -30,7 +30,7 @@
         <AssociationConnector Association="StudyPlatformModel.FK_tbTask_tbTaskResult" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.FK_tbTask_tbTest" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.FK_tbTestResult_tbTest" ManuallyRouted="false" />
-        <AssociationConnector Association="StudyPlatformModel.FK_tbTestResult_tbUser1" ManuallyRouted="false" />
+        <AssociationConnector Association="StudyPlatformModel.FK_tbTestResult_tbUser" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.tbGroup_Institution" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.tbTask_Material" ManuallyRouted="false" />
         <AssociationConnector Association="StudyPlatformModel.tbTest_Task" ManuallyRouted="false" />

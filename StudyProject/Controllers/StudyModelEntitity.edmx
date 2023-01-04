@@ -20,7 +20,7 @@
             <PropertyRef Name="idGroup" />
           </Key>
           <Property Name="idGroup" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="DateCreate" Type="datetime" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
@@ -38,10 +38,11 @@
             <PropertyRef Name="idInstitution" />
           </Key>
           <Property Name="idInstitution" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="Logo" Type="varbinary(max)" />
           <Property Name="id_user" Type="uniqueidentifier" />
           <Property Name="DateCreate" Type="datetime" />
+          <Property Name="Adress" Type="nchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="tbInvite">
           <Key>
@@ -83,7 +84,7 @@
             <PropertyRef Name="idMaterial" />
           </Key>
           <Property Name="idMaterial" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="Text" Type="text" />
         </EntityType>
         <EntityType Name="tbTask">
@@ -91,7 +92,7 @@
             <PropertyRef Name="idTask" />
           </Key>
           <Property Name="idTask" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="Description" Type="text" />
           <Property Name="Answer" Type="text" />
           <Property Name="Picture" Type="varbinary(max)" />
@@ -124,7 +125,7 @@
             <PropertyRef Name="idTest" />
           </Key>
           <Property Name="idTest" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="id_institution" Type="uniqueidentifier" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
@@ -151,15 +152,13 @@
             <PropertyRef Name="idUser" />
           </Key>
           <Property Name="idUser" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="FirstName" Type="varchar" MaxLength="255" />
-          <Property Name="MiddleName" Type="varchar" MaxLength="255" />
-          <Property Name="LastName" Type="varchar" MaxLength="255" />
-          <Property Name="Picture" Type="varbinary(max)" />
+          <Property Name="FirstName" Type="nchar" MaxLength="50" />
+          <Property Name="LastName" Type="nchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nchar" MaxLength="50" />
+          <Property Name="Login" Type="varchar(max)" />
+          <Property Name="Password" Type="varbinary(max)" />
           <Property Name="Age" Type="int" />
-          <Property Name="Password" Type="text" />
-          <Property Name="Login" Type="text" />
           <Property Name="Role" Type="int" />
-          <Property Name="Phone" Type="varchar" MaxLength="30" />
           <Property Name="DateCreate" Type="datetime" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
@@ -390,7 +389,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbTestResult_tbUser1">
+        <Association Name="FK_tbTestResult_tbUser">
           <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
           <End Role="tbTestResult" Type="Self.tbTestResult" Multiplicity="*" />
           <ReferentialConstraint>
@@ -547,7 +546,7 @@
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTestResult" EntitySet="tbTestResult" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbTestResult_tbUser1" Association="Self.FK_tbTestResult_tbUser1">
+          <AssociationSet Name="FK_tbTestResult_tbUser" Association="Self.FK_tbTestResult_tbUser">
             <End Role="tbUser" EntitySet="tbUser" />
             <End Role="tbTestResult" EntitySet="tbTestResult" />
           </AssociationSet>
@@ -579,7 +578,7 @@
             <PropertyRef Name="idGroup" />
           </Key>
           <Property Name="idGroup" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbInvite" Relationship="Self.FK_tbInvite_tbGroup" FromRole="tbGroup" ToRole="tbInvite" />
           <NavigationProperty Name="tbLesson_Group" Relationship="Self.FK_tbLesson_Group_tbGroup" FromRole="tbGroup" ToRole="tbLesson_Group" />
@@ -591,14 +590,15 @@
             <PropertyRef Name="idInstitution" />
           </Key>
           <Property Name="idInstitution" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="id_user" Type="Guid" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Adress" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="tbUser" Relationship="Self.FK_tbInstitution_tbUser" FromRole="tbInstitution" ToRole="tbUser" />
           <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution" FromRole="tbInstitution" ToRole="tbMaterial_Institution" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTest_tbInstitution" FromRole="tbInstitution" ToRole="tbTest" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbGroup_Institution" FromRole="tbInstitution" ToRole="tbGroup" />
-          <Property Name="DateCreate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="tbInvite">
           <Key>
@@ -624,7 +624,7 @@
             <PropertyRef Name="idMaterial" />
           </Key>
           <Property Name="idMaterial" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbMaterials" FromRole="tbMaterials" ToRole="tbLesson" />
           <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterials" ToRole="tbMaterial_Institution" />
@@ -635,7 +635,7 @@
             <PropertyRef Name="idTask" />
           </Key>
           <Property Name="idTask" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -663,7 +663,7 @@
             <PropertyRef Name="idTest" />
           </Key>
           <Property Name="idTest" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="id_institution" Type="Guid" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbTest_tbInstitution" FromRole="tbTest" ToRole="tbInstitution" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbTest" FromRole="tbTest" ToRole="tbLesson" />
@@ -680,25 +680,23 @@
           <Property Name="id_user" Type="Guid" Nullable="false" />
           <Property Name="Rate" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTestResult" ToRole="tbTest" />
-          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser1" FromRole="tbTestResult" ToRole="tbUser" />
+          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbTestResult" ToRole="tbUser" />
         </EntityType>
         <EntityType Name="tbUser">
           <Key>
             <PropertyRef Name="idUser" />
           </Key>
           <Property Name="idUser" Type="Guid" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Age" Type="Int32" />
-          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Age" Type="Int32" />
           <Property Name="Role" Type="Int32" />
-          <Property Name="Phone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbInstitution_tbUser" FromRole="tbUser" ToRole="tbInstitution" />
-          <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser1" FromRole="tbUser" ToRole="tbTestResult" />
+          <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbUser" ToRole="tbTestResult" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbUser_Group" FromRole="tbUser" ToRole="tbGroup" />
         </EntityType>
         <EntityType Name="tbLesson_Group">
@@ -865,7 +863,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbTestResult_tbUser1">
+        <Association Name="FK_tbTestResult_tbUser">
           <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
           <End Role="tbTestResult" Type="Self.tbTestResult" Multiplicity="*" />
           <ReferentialConstraint>
@@ -893,7 +891,7 @@
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="*" />
           <End Role="tbUser" Type="Self.tbUser" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="ContextEntitity" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="StudyModelEntitity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="tbGroup" EntityType="Self.tbGroup" />
           <EntitySet Name="tbInstitution" EntityType="Self.tbInstitution" />
@@ -955,7 +953,7 @@
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTestResult" EntitySet="tbTestResult" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbTestResult_tbUser1" Association="Self.FK_tbTestResult_tbUser1">
+          <AssociationSet Name="FK_tbTestResult_tbUser" Association="Self.FK_tbTestResult_tbUser">
             <End Role="tbUser" EntitySet="tbUser" />
             <End Role="tbTestResult" EntitySet="tbTestResult" />
           </AssociationSet>
@@ -981,7 +979,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище StudyPlatformModelContainer" CdmEntityContainer="ContextEntitity">
+        <EntityContainerMapping StorageEntityContainer="Хранилище StudyPlatformModelContainer" CdmEntityContainer="StudyModelEntitity">
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="StudyPlatformModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -1005,11 +1003,12 @@
           <EntitySetMapping Name="tbInstitution">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbInstitution">
               <MappingFragment StoreEntitySet="tbInstitution">
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="idInstitution" ColumnName="idInstitution" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Logo" ColumnName="Logo" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1088,14 +1087,12 @@
               <MappingFragment StoreEntitySet="tbUser">
                 <ScalarProperty Name="idUser" ColumnName="idUser" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-                <ScalarProperty Name="Age" ColumnName="Age" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
               </MappingFragment>
             </EntityTypeMapping>

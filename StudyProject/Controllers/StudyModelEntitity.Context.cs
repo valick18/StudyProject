@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudyProject.Controllers
+namespace ApplicationDbContext.Controllers
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ContextEntitity : DbContext
+    public partial class StudyModelEntitity : DbContext
     {
-        public ContextEntitity()
-            : base("name=ContextEntitity")
+        public StudyModelEntitity()
+            : base("name=StudyModelEntitity")
         {
         }
     

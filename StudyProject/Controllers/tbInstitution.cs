@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StudyProject.Controllers
+namespace ApplicationDbContext.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -27,6 +27,7 @@ namespace StudyProject.Controllers
         public byte[] Logo { get; set; }
         public Nullable<System.Guid> id_user { get; set; }
         public Nullable<System.DateTime> DateCreate { get; set; }
+        public string Adress { get; set; }
     
         public virtual tbUser tbUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

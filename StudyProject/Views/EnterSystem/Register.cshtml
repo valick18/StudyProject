@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -7,15 +6,16 @@
     <div class="row bg-white shadow-sm">
         <div class="col border rounded p-5">
             <h3 class="text-center mb-4">Регистрация</h3>
-            @using (Html.BeginForm("Registration", "EnterSystem", new { }, FormMethod.Post, new { @class = "", role = "form" }))
+
+            @using (Html.BeginForm("Register", "EnterSystem", FormMethod.Post, new { @class = "form-horizontal separator", role = "form", enctype = "multipart/form-data" }))
             {
-                <div class="form-group">
-                    <label>Введите Имя</label>
-                    <input type="text" class="form-control" name="FirstName">
-                </div>
                 <div class="form-group">
                     <label>Введите Фамилию</label>
                     <input type="text" class="form-control" name="LastName">
+                </div>
+                <div class="form-group">
+                    <label>Введите Имя</label>
+                    <input type="text" class="form-control" name="FirstName">
                 </div>
                 <div class="form-group">
                     <label>Введите Отчество</label>
@@ -26,12 +26,16 @@
                     <input type="email" class="form-control" name="Login">
                 </div>
                 <div class="form-group">
+                    <label>Введите ваш возраст</label>
+                    <input type="number" class="form-control" name="Age">
+                </div>
+                <div class="form-group">
                     <label>Введите пароль</label>
                     <input type="password" class="form-control" name="Password">
                 </div>
                 <div class="form-group">
                     <label>Введите пароль повторно</label>
-                    <input type="password" class="form-control" name="PasswordRepeat">
+                    <input type="password" class="form-control" name="RepeatPassword">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mt-2">Зарегистрироваться</button>
             }

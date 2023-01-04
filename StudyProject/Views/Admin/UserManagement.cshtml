@@ -1,0 +1,92 @@
+﻿@model List<ApplicationDbContext.Controllers.tbUser>
+
+@using StudyProject.Models
+@using ApplicationDbContext.Controllers
+
+@{
+    ViewBag.Title = "AddNewAdmin";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    UserInfo uInfo = new UserInfo(new StudyModelEntitity());
+}
+
+<h4 class="text-center">Додавання адміна</h4>
+
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Ім'я
+                        </th>
+                        <th>
+                            Фамілія
+                        </th>
+                        <th>
+                            По батькові
+                        </th>
+                        <th>
+                            Логін
+                        </th>
+                        <th>
+                            Вік
+                        </th>
+                        <th>
+                            Роль
+                        </th>
+                        <th>
+                            Дата створення
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MiddleName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Login)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Age)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreate)
+                            </td>
+                            <td>
+                                @using (Html.BeginForm("AddNewAdmin", "Admin", new { idUser = item.idUser }, FormMethod.Post))
+                                {
+                                    <button class="btn btn-success btn-xs" type="submit">Додати адміна</button>
+                                }
+                            </td>
+                            <td>
+                                @if (!item.idUser.Equals(uInfo.fuser.idUser))
+                                {
+                                    using (Html.BeginForm("RemoveUser", "Admin", new { idUser = item.idUser }, FormMethod.Post))
+                                    {
+                                        <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-trash"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
