@@ -1,5 +1,4 @@
-﻿using ApplicationDbContext.Controllers;
-using IdentityModel;
+﻿using IdentityModel;
 using Regexs;
 using StudyProject.Controllers;
 using StudyProject.Models;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
+using StudyProject;
 
 namespace StudingPlatform.Controllers
 {
@@ -18,30 +18,32 @@ namespace StudingPlatform.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Login(string login, string password)
         {
-            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password)) {
-                return View(); 
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                return View();
             }
 
             tbUser user = db.tbUser.Where(w => w.Login.Equals(login)).FirstOrDefault();
             PassCoder coder = new PassCoder(user);
-            if (coder.VerifyPassword(password)) {
+            if (coder.VerifyPassword(password))
+            {
                 UserInfo uInfo = new UserInfo(db, login);
                 HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null); //
                 //UserIdentity uIdentity = new UserIdentity(uInfo);
                 //uIdentity.setHttpContextIdentity();
                 return RedirectToAction("Index", "Home");
             }
-            return View(); 
+            return View();
         }
 
-        
+
         public ActionResult Register()
         {
             return View();
@@ -64,7 +66,7 @@ namespace StudingPlatform.Controllers
                 UserInfo uInfo = new UserInfo(db, newUser.Login);
                 HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null);
 
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }

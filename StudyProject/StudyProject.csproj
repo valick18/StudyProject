@@ -235,66 +235,66 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="eStudy.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eStudy.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="eStudy.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="eStudy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>eStudy.edmx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbGroup.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbInstitution.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbInvite.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbLesson.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbLesson_Group.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbMaterials.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbMaterial_Institution.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbTask.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbTaskResult.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbTest.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbTestResult.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tbUser.cs">
+      <DependentUpon>eStudy.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\EnterSystemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
-    <Compile Include="Controllers\StudyModelEntitity.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StudyModelEntitity.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\StudyModelEntitity.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\StudyModelEntitity.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StudyModelEntitity.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\sysdiagrams.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbGroup.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbInstitution.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbInvite.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbLesson.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbLesson_Group.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbMaterials.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbMaterial_Institution.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbTask.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbTaskResult.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbTest.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbTestResult.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\tbUser.cs">
-      <DependentUpon>StudyModelEntitity.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -310,6 +310,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="eStudy.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>eStudy.edmx</DependentUpon>
+      <LastGenOutput>eStudy.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="eStudy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>eStudy.edmx</DependentUpon>
+      <LastGenOutput>eStudy.cs</LastGenOutput>
+    </Content>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -326,16 +336,6 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
-    <Content Include="Controllers\StudyModelEntitity.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StudyModelEntitity.edmx</DependentUpon>
-      <LastGenOutput>StudyModelEntitity.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Controllers\StudyModelEntitity.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StudyModelEntitity.edmx</DependentUpon>
-      <LastGenOutput>StudyModelEntitity.cs</LastGenOutput>
-    </Content>
     <Content Include="dist\css\adminlte.css" />
     <Content Include="dist\css\adminlte.min.css" />
     <Content Include="dist\css\alt\adminlte.components.css" />
@@ -2509,12 +2509,12 @@
     <Content Include="plugins\summernote\summernote.js.map" />
     <Content Include="plugins\summernote\summernote.min.js.map" />
     <Content Include="plugins\toastr\toastr.js.map" />
-    <EntityDeploy Include="Controllers\StudyModelEntitity.edmx">
+    <EntityDeploy Include="eStudy.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>StudyModelEntitity.Designer.cs</LastGenOutput>
+      <LastGenOutput>eStudy.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Controllers\StudyModelEntitity.edmx.diagram">
-      <DependentUpon>StudyModelEntitity.edmx</DependentUpon>
+    <Content Include="eStudy.edmx.diagram">
+      <DependentUpon>eStudy.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

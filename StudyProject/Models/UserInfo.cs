@@ -1,25 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Security;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
-using System.Data.Entity;
-using System.Data;
-using System.Security.Policy;
-using System.Net.Mail;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using System.Threading;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using ApplicationDbContext.Controllers;
+using StudyProject.Models.Core;
 
 namespace StudyProject.Models
 {
@@ -27,9 +10,9 @@ namespace StudyProject.Models
     public class UserInfo
     {
         public tbUser fuser;
-        private StudyModelEntitity db;
+        private StudyPlatformEntities db;
 
-        public UserInfo(StudyModelEntitity db)
+        public UserInfo(StudyPlatformEntities db)
         {
             this.db = db;
             //умова не виконується, оскільки Identity не встановлене
@@ -45,7 +28,7 @@ namespace StudyProject.Models
             }
         }
 
-        public UserInfo(StudyModelEntitity db, string login)
+        public UserInfo(StudyPlatformEntities db, string login)
         {
             this.db = db;
             if (!string.IsNullOrEmpty(login))
@@ -56,6 +39,22 @@ namespace StudyProject.Models
             {
                 fuser = null;
             }
+        }
+
+        public static string getTextByRole(UserRole role)
+        {
+            switch (role)
+            {
+                case UserRole.Admin:
+                    return "Адмін";
+                case UserRole.Applicant:
+                    return "Учень";
+                case UserRole.Tutor:
+                    return "Викладач";
+                case UserRole.Anonim:
+                default:
+                    return "Невідомий";
+            };
         }
 
     }

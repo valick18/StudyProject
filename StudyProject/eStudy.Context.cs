@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationDbContext.Controllers
+namespace StudyProject
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class StudyModelEntitity : DbContext
+    public partial class StudyPlatformEntities : DbContext
     {
-        public StudyModelEntitity()
-            : base("name=StudyModelEntitity")
+        public StudyPlatformEntities()
+            : base("name=StudyPlatformEntities")
         {
         }
     
@@ -34,9 +34,9 @@ namespace ApplicationDbContext.Controllers
         public virtual DbSet<tbTask> tbTask { get; set; }
         public virtual DbSet<tbTaskResult> tbTaskResult { get; set; }
         public virtual DbSet<tbTest> tbTest { get; set; }
-        public virtual DbSet<tbTestResult> tbTestResult { get; set; }
         public virtual DbSet<tbUser> tbUser { get; set; }
         public virtual DbSet<tbLesson_Group> tbLesson_Group { get; set; }
         public virtual DbSet<tbMaterial_Institution> tbMaterial_Institution { get; set; }
+        public virtual DbSet<tbTestResult> tbTestResult { get; set; }
     }
 }

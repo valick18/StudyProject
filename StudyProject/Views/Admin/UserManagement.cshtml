@@ -1,15 +1,18 @@
-﻿@model List<ApplicationDbContext.Controllers.tbUser>
+﻿@using StudyProject.Models
+@using StudyProject.Models.Core
+@using System
 
-@using StudyProject.Models
-@using ApplicationDbContext.Controllers
+@model List<tbUser>
+
 
 @{
     ViewBag.Title = "AddNewAdmin";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    UserInfo uInfo = new UserInfo(new StudyModelEntitity());
+    UserInfo uInfo = new UserInfo(new StudyPlatformEntities());
+    UserRole[] roles = { UserRole.Admin, UserRole.Tutor, UserRole.Applicant };
 }
 
-<h4 class="text-center">Додавання адміна</h4>
+<h4 class="text-center">Управління користувачами</h4>
 
 <div class="content">
     <div class="row">
@@ -38,7 +41,7 @@
                         <th>
                             Дата створення
                         </th>
-                        <th></th>
+                        <th>Змінити роль</th>
                         <th></th>
                     </tr>
 
@@ -67,9 +70,15 @@
                                 @Html.DisplayFor(modelItem => item.DateCreate)
                             </td>
                             <td>
-                                @using (Html.BeginForm("AddNewAdmin", "Admin", new { idUser = item.idUser }, FormMethod.Post))
+                                @foreach (UserRole uRole in roles)
                                 {
-                                    <button class="btn btn-success btn-xs" type="submit">Додати адміна</button>
+                                    if (item.Role != (int)uRole)
+                                    {
+                                        using (Html.BeginForm("ChangeUserRole", "Admin", new { idUser = item.idUser, Role = (int)uRole }, FormMethod.Post))
+                                        {
+                                            <button class="btn btn-success btn-xs" type="submit">@UserInfo.getTextByRole(uRole)</button>
+                                        }
+                                    }
                                 }
                             </td>
                             <td>

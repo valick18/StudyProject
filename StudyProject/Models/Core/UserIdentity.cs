@@ -3,91 +3,90 @@ using System.Web;
 using System.Web.Security;
 using System.Security.Principal;
 using System.Runtime.Serialization;
-using ApplicationDbContext.Controllers;
 
 namespace StudyProject.Models.Core
 {
 
-        [Serializable]
-        public class UserIdentity : IIdentity, ISerializable
+    [Serializable]
+    public class UserIdentity : IIdentity, ISerializable
+    {
+        private System.Web.Security.FormsAuthenticationTicket ticket;
+        private UserInfo user;
+
+        public System.Web.Security.FormsAuthenticationTicket Ticket { get { return ticket; } }
+        public UserIdentity(UserInfo uInfo)
         {
-            private System.Web.Security.FormsAuthenticationTicket ticket;
-            private UserInfo user;
+            if (uInfo == null)
+                throw new ArgumentException("account is null");
+            user = uInfo;
+            string dataTicket = user.fuser.idUser.ToString();
 
-            public System.Web.Security.FormsAuthenticationTicket Ticket { get { return ticket; } }
-            public UserIdentity(UserInfo uInfo)
-            {
-                if (uInfo == null)
-                    throw new ArgumentException("account is null");
-                user = uInfo;
-                string dataTicket = user.fuser.idUser.ToString();
+            ticket = new FormsAuthenticationTicket
+            (
+              1,
+              dataTicket,
+              DateTime.Now,
+              DateTime.Now.AddMinutes(12 * 60),
+              true,
+              (user.fuser.LastName + " " + user.fuser.FirstName + " " + user.fuser.MiddleName + " (" + user.fuser.Login.Trim() + ")").Trim(),
+              FormsAuthentication.FormsCookiePath
+            );
 
-                ticket = new FormsAuthenticationTicket
-                (
-                  1,
-                  dataTicket,
-                  DateTime.Now,
-                  DateTime.Now.AddMinutes(12 * 60),
-                  true,
-                  (user.fuser.LastName+ " "+ user.fuser.FirstName + " "+ user.fuser.MiddleName + " (" + user.fuser.Login.Trim() + ")").Trim(),
-                  FormsAuthentication.FormsCookiePath
-                );
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
+            HttpContext.Current.Response.Cookies.Add(cookie);
 
-                HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket));
-                HttpContext.Current.Response.Cookies.Add(cookie);
-
-            }
+        }
 
 
         public string AuthenticationType
-            {
-                get { return "Forms"; }
-            }
+        {
+            get { return "Forms"; }
+        }
 
-            public bool IsAuthenticated
-            {
+        public bool IsAuthenticated
+        {
 
-                get
+            get
+            {
+                bool AutorizationState = false;
+                Guid idUser;
+                try
                 {
-                    bool AutorizationState = false;
-                    Guid idUser;
-                    try
+                    using (StudyPlatformEntities db = new StudyPlatformEntities())
                     {
-                        using (StudyModelEntitity db = new StudyModelEntitity())
-                        {
 
-                            if (Guid.TryParse(ticket.Name, out idUser))
+                        if (Guid.TryParse(ticket.Name, out idUser))
+                        {
+                            tbUser CurrentUserState = db.tbUser.Find(idUser);
+                            if (CurrentUserState != null)
                             {
-                                tbUser CurrentUserState = db.tbUser.Find(idUser);
-                                if (CurrentUserState != null)
-                                {
-                                    AutorizationState = true;
-                                }
+                                AutorizationState = true;
                             }
                         }
                     }
-                    finally
-                    {
-                        AutorizationState = false;
-                    }
-                    return AutorizationState;
                 }
+                finally
+                {
+                    AutorizationState = false;
+                }
+                return AutorizationState;
             }
+        }
 
-            public string Name
-            {
-                get { return ticket.UserData; }
-            }
+        public string Name
+        {
+            get { return ticket.UserData; }
+        }
 
-            public Guid idUser
-            {
-                get { return user.fuser.idUser; }
-            }
+        public Guid idUser
+        {
+            get { return user.fuser.idUser; }
+        }
 
-            public String DisplayName
-            {
-                get { if (user == null) return ""; else return ticket.UserData; }
-            }
+        public String DisplayName
+        {
+            get { if (user == null) return ""; else return ticket.UserData; }
+        }
         public UserRole Role
         {
             get
@@ -107,4 +106,4 @@ namespace StudyProject.Models.Core
         }
 
     }
- }
+}

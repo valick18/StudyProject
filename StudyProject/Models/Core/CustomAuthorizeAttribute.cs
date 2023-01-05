@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.Routing;
 using System.Linq;
-using ApplicationDbContext.Controllers;
 
 namespace StudyProject.Models.Core
 {
@@ -22,7 +21,7 @@ namespace StudyProject.Models.Core
             if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 FormsIdentity fi = ((FormsIdentity)HttpContext.Current.User.Identity);
-                using (StudyModelEntitity db = new StudyModelEntitity())
+                using (StudyPlatformEntities db = new StudyPlatformEntities())
                 {
                     tbUser usr = db.tbUser.Find(new Guid(fi.Ticket.Name));
                     if (usr != null)

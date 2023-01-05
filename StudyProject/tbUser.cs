@@ -7,33 +7,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationDbContext.Controllers
+namespace StudyProject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class tbInstitution
+    public partial class tbUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbInstitution()
+        public tbUser()
         {
-            this.tbMaterial_Institution = new HashSet<tbMaterial_Institution>();
-            this.tbTest = new HashSet<tbTest>();
+            this.tbInstitution = new HashSet<tbInstitution>();
+            this.tbTaskResult = new HashSet<tbTaskResult>();
+            this.tbTestResult = new HashSet<tbTestResult>();
             this.tbGroup = new HashSet<tbGroup>();
         }
     
-        public System.Guid idInstitution { get; set; }
-        public string Name { get; set; }
-        public byte[] Logo { get; set; }
-        public Nullable<System.Guid> id_user { get; set; }
+        public System.Guid idUser { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
+        public string Login { get; set; }
+        public byte[] Password { get; set; }
+        public Nullable<int> Age { get; set; }
+        public Nullable<int> Role { get; set; }
         public Nullable<System.DateTime> DateCreate { get; set; }
-        public string Adress { get; set; }
     
-        public virtual tbUser tbUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbMaterial_Institution> tbMaterial_Institution { get; set; }
+        public virtual ICollection<tbInstitution> tbInstitution { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbTest> tbTest { get; set; }
+        public virtual ICollection<tbTaskResult> tbTaskResult { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbTestResult> tbTestResult { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbGroup> tbGroup { get; set; }
     }

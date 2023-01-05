@@ -1,5 +1,4 @@
-﻿using ApplicationDbContext.Controllers;
-using StudyProject.Models;
+﻿using StudyProject.Models;
 using StudyProject.Models.Core;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Web.Mvc;
 
 namespace StudyProject.Controllers
 {
-    [CustomAuthorize(UserRoles = new UserRole[] { UserRole.Admin, UserRole.Applicant, UserRole.Tutor})]
+    [CustomAuthorize(UserRoles = new UserRole[] { UserRole.Admin, UserRole.Applicant, UserRole.Tutor })]
     public class HomeController : MainController
     {
         public ActionResult Index()

@@ -7,28 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationDbContext.Controllers
+namespace StudyProject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class tbMaterials
+    public partial class tbLesson
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbMaterials()
+        public tbLesson()
         {
-            this.tbLesson = new HashSet<tbLesson>();
-            this.tbTask = new HashSet<tbTask>();
+            this.tbLesson_Group = new HashSet<tbLesson_Group>();
         }
     
-        public System.Guid idMaterial { get; set; }
-        public string Name { get; set; }
-        public string Text { get; set; }
+        public System.Guid idLesson { get; set; }
+        public Nullable<System.Guid> id_material { get; set; }
+        public Nullable<System.Guid> id_test { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbLesson> tbLesson { get; set; }
-        public virtual tbMaterial_Institution tbMaterial_Institution { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbTask> tbTask { get; set; }
+        public virtual ICollection<tbLesson_Group> tbLesson_Group { get; set; }
+        public virtual tbMaterials tbMaterials { get; set; }
+        public virtual tbTest tbTest { get; set; }
     }
 }

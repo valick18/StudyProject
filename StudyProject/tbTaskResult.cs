@@ -7,24 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationDbContext.Controllers
+namespace StudyProject
 {
     using System;
     using System.Collections.Generic;
     
     public partial class tbTaskResult
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbTaskResult()
-        {
-            this.tbTask = new HashSet<tbTask>();
-        }
-    
-        public System.Guid idTaskResult { get; set; }
         public string UserAnswer { get; set; }
         public Nullable<int> Rate { get; set; }
+        public System.Guid id_task { get; set; }
+        public System.Guid id_user { get; set; }
+        public System.Guid id_test { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbTask> tbTask { get; set; }
+        public virtual tbTask tbTask { get; set; }
+        public virtual tbTest tbTest { get; set; }
+        public virtual tbUser tbUser { get; set; }
     }
 }

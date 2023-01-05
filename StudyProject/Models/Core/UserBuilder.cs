@@ -1,5 +1,4 @@
-﻿using ApplicationDbContext.Controllers;
-using StudyProject.Controllers;
+﻿using StudyProject.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +9,14 @@ namespace StudyProject.Models.Core
     public class UserBuilder
     {
         RegistrationModel newUser;
-        public UserBuilder(RegistrationModel newUser) {
+        public UserBuilder(RegistrationModel newUser)
+        {
             this.newUser = newUser;
 
         }
 
-        public tbUser Build() {
+        public tbUser Build()
+        {
             tbUser user = new tbUser()
             {
                 idUser = Guid.NewGuid(),

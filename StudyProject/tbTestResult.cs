@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ApplicationDbContext.Controllers
+namespace StudyProject
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagrams
+    public partial class tbTestResult
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public System.Guid id_test { get; set; }
+        public System.Guid id_user { get; set; }
+        public int Rate { get; set; }
+    
+        public virtual tbTest tbTest { get; set; }
+        public virtual tbUser tbUser { get; set; }
     }
 }

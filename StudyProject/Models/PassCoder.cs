@@ -1,5 +1,4 @@
-﻿using ApplicationDbContext.Controllers;
-using StudyProject.Controllers;
+﻿using StudyProject.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

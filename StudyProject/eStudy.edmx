@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -100,7 +100,6 @@
           <Property Name="Video" Type="varbinary(max)" />
           <Property Name="Rate" Type="int" />
           <Property Name="id_test" Type="uniqueidentifier" />
-          <Property Name="id_taskResult" Type="uniqueidentifier" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
 предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbTask_Material" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
@@ -114,11 +113,15 @@
         </EntityType>
         <EntityType Name="tbTaskResult">
           <Key>
-            <PropertyRef Name="idTaskResult" />
+            <PropertyRef Name="id_task" />
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="id_test" />
           </Key>
-          <Property Name="idTaskResult" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserAnswer" Type="text" />
           <Property Name="Rate" Type="int" />
+          <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -138,11 +141,14 @@
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbTestResult" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbTestResult">
           <Key>
-            <PropertyRef Name="idTestResult" />
+            <PropertyRef Name="id_test" />
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="Rate" />
           </Key>
-          <Property Name="idTestResult" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Rate" Type="int" Nullable="false" />
@@ -317,18 +323,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbTask_tbTaskResult">
-          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="0..1" />
-          <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbTaskResult">
-              <PropertyRef Name="idTaskResult" />
-            </Principal>
-            <Dependent Role="tbTask">
-              <PropertyRef Name="id_taskResult" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbTask_tbTest">
           <End Role="tbTest" Type="Self.tbTest" Multiplicity="0..1" />
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
@@ -338,6 +332,42 @@
             </Principal>
             <Dependent Role="tbTask">
               <PropertyRef Name="id_test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbTask">
+          <End Role="tbTask" Type="Self.tbTask" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTask">
+              <PropertyRef Name="idTask" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbTest">
+          <End Role="tbTest" Type="Self.tbTest" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTest">
+              <PropertyRef Name="idTest" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbUser">
+          <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUser">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_user" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -435,7 +465,6 @@
           <EntitySet Name="tbTask" EntityType="Self.tbTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTaskResult" EntityType="Self.tbTaskResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTest" EntityType="Self.tbTest" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUser" EntityType="Self.tbUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbGroup_Institution" EntityType="Self.tbGroup_Institution" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -467,6 +496,13 @@
     [tbTest_Task].[id_test] AS [id_test], 
     [tbTest_Task].[id_task] AS [id_task]
     FROM [dbo].[tbTest_Task] AS [tbTest_Task]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tbTestResult].[id_test] AS [id_test], 
+    [tbTestResult].[id_user] AS [id_user], 
+    [tbTestResult].[Rate] AS [Rate]
+    FROM [dbo].[tbTestResult] AS [tbTestResult]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="tbUser_Group" EntityType="Self.tbUser_Group" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -522,13 +558,21 @@
             <End Role="tbTask" EntitySet="tbTask" />
             <End Role="tbTask_Material" EntitySet="tbTask_Material" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbTask_tbTaskResult" Association="Self.FK_tbTask_tbTaskResult">
-            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
-            <End Role="tbTask" EntitySet="tbTask" />
-          </AssociationSet>
           <AssociationSet Name="FK_tbTask_tbTest" Association="Self.FK_tbTask_tbTest">
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTask" EntitySet="tbTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbTask" Association="Self.FK_tbTaskResult_tbTask">
+            <End Role="tbTask" EntitySet="tbTask" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbTest" Association="Self.FK_tbTaskResult_tbTest">
+            <End Role="tbTest" EntitySet="tbTest" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbUser" Association="Self.FK_tbTaskResult_tbUser">
+            <End Role="tbUser" EntitySet="tbUser" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
           </AssociationSet>
           <AssociationSet Name="FK_tbTest_Task_tbTask" Association="Self.FK_tbTest_Task_tbTask">
             <End Role="tbTask" EntitySet="tbTask" />
@@ -559,7 +603,8 @@
             <End Role="tbUser_Group" EntitySet="tbUser_Group" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudyPlatformModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -643,20 +688,25 @@
           <Property Name="Video" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Rate" Type="Int32" />
           <Property Name="id_test" Type="Guid" />
-          <Property Name="id_taskResult" Type="Guid" />
-          <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTask_tbTaskResult" FromRole="tbTask" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTask_tbTest" FromRole="tbTask" ToRole="tbTest" />
+          <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbTask" FromRole="tbTask" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.tbTask_Material" FromRole="tbTask" ToRole="tbMaterials" />
           <NavigationProperty Name="tbTest1" Relationship="Self.tbTest_Task" FromRole="tbTask" ToRole="tbTest" />
         </EntityType>
         <EntityType Name="tbTaskResult">
           <Key>
-            <PropertyRef Name="idTaskResult" />
+            <PropertyRef Name="id_task" />
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="id_test" />
           </Key>
-          <Property Name="idTaskResult" Type="Guid" Nullable="false" />
           <Property Name="UserAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Rate" Type="Int32" />
-          <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTask_tbTaskResult" FromRole="tbTaskResult" ToRole="tbTask" />
+          <Property Name="id_task" Type="Guid" Nullable="false" />
+          <Property Name="id_user" Type="Guid" Nullable="false" />
+          <Property Name="id_test" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTaskResult_tbTask" FromRole="tbTaskResult" ToRole="tbTask" />
+          <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTaskResult_tbTest" FromRole="tbTaskResult" ToRole="tbTest" />
+          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTaskResult_tbUser" FromRole="tbTaskResult" ToRole="tbUser" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -668,19 +718,9 @@
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbTest_tbInstitution" FromRole="tbTest" ToRole="tbInstitution" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbTest" FromRole="tbTest" ToRole="tbLesson" />
           <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTask_tbTest" FromRole="tbTest" ToRole="tbTask" />
+          <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbTest" FromRole="tbTest" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTest" ToRole="tbTestResult" />
           <NavigationProperty Name="tbTask1" Relationship="Self.tbTest_Task" FromRole="tbTest" ToRole="tbTask" />
-        </EntityType>
-        <EntityType Name="tbTestResult">
-          <Key>
-            <PropertyRef Name="idTestResult" />
-          </Key>
-          <Property Name="idTestResult" Type="Guid" Nullable="false" />
-          <Property Name="id_test" Type="Guid" Nullable="false" />
-          <Property Name="id_user" Type="Guid" Nullable="false" />
-          <Property Name="Rate" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTestResult" ToRole="tbTest" />
-          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbTestResult" ToRole="tbUser" />
         </EntityType>
         <EntityType Name="tbUser">
           <Key>
@@ -696,6 +736,7 @@
           <Property Name="Role" Type="Int32" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbInstitution_tbUser" FromRole="tbUser" ToRole="tbInstitution" />
+          <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbUser" FromRole="tbUser" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbUser" ToRole="tbTestResult" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbUser_Group" FromRole="tbUser" ToRole="tbGroup" />
         </EntityType>
@@ -718,6 +759,18 @@
           <Property Name="id_institution" Type="Guid" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution" FromRole="tbMaterial_Institution" ToRole="tbInstitution" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterial_Institution" ToRole="tbMaterials" />
+        </EntityType>
+        <EntityType Name="tbTestResult">
+          <Key>
+            <PropertyRef Name="id_test" />
+            <PropertyRef Name="id_user" />
+            <PropertyRef Name="Rate" />
+          </Key>
+          <Property Name="id_test" Type="Guid" Nullable="false" />
+          <Property Name="id_user" Type="Guid" Nullable="false" />
+          <Property Name="Rate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTestResult" ToRole="tbTest" />
+          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbTestResult" ToRole="tbUser" />
         </EntityType>
         <Association Name="FK_tbInvite_tbGroup">
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="1" />
@@ -827,18 +880,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbTask_tbTaskResult">
-          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="0..1" />
-          <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbTaskResult">
-              <PropertyRef Name="idTaskResult" />
-            </Principal>
-            <Dependent Role="tbTask">
-              <PropertyRef Name="id_taskResult" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbTask_tbTest">
           <End Role="tbTest" Type="Self.tbTest" Multiplicity="0..1" />
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
@@ -848,6 +889,42 @@
             </Principal>
             <Dependent Role="tbTask">
               <PropertyRef Name="id_test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbTask">
+          <End Role="tbTask" Type="Self.tbTask" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTask">
+              <PropertyRef Name="idTask" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbTest">
+          <End Role="tbTest" Type="Self.tbTest" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTest">
+              <PropertyRef Name="idTest" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_test" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskResult_tbUser">
+          <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
+          <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbUser">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="tbTaskResult">
+              <PropertyRef Name="id_user" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -891,7 +968,7 @@
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="*" />
           <End Role="tbUser" Type="Self.tbUser" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="StudyModelEntitity" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="StudyPlatformEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="tbGroup" EntityType="Self.tbGroup" />
           <EntitySet Name="tbInstitution" EntityType="Self.tbInstitution" />
@@ -901,10 +978,10 @@
           <EntitySet Name="tbTask" EntityType="Self.tbTask" />
           <EntitySet Name="tbTaskResult" EntityType="Self.tbTaskResult" />
           <EntitySet Name="tbTest" EntityType="Self.tbTest" />
-          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" />
           <EntitySet Name="tbUser" EntityType="Self.tbUser" />
           <EntitySet Name="tbLesson_Group" EntityType="Self.tbLesson_Group" />
           <EntitySet Name="tbMaterial_Institution" EntityType="Self.tbMaterial_Institution" />
+          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" />
           <AssociationSet Name="FK_tbInvite_tbGroup" Association="Self.FK_tbInvite_tbGroup">
             <End Role="tbGroup" EntitySet="tbGroup" />
             <End Role="tbInvite" EntitySet="tbInvite" />
@@ -941,13 +1018,21 @@
             <End Role="tbMaterials" EntitySet="tbMaterials" />
             <End Role="tbMaterial_Institution" EntitySet="tbMaterial_Institution" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbTask_tbTaskResult" Association="Self.FK_tbTask_tbTaskResult">
-            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
-            <End Role="tbTask" EntitySet="tbTask" />
-          </AssociationSet>
           <AssociationSet Name="FK_tbTask_tbTest" Association="Self.FK_tbTask_tbTest">
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTask" EntitySet="tbTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbTask" Association="Self.FK_tbTaskResult_tbTask">
+            <End Role="tbTask" EntitySet="tbTask" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbTest" Association="Self.FK_tbTaskResult_tbTest">
+            <End Role="tbTest" EntitySet="tbTest" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskResult_tbUser" Association="Self.FK_tbTaskResult_tbUser">
+            <End Role="tbUser" EntitySet="tbUser" />
+            <End Role="tbTaskResult" EntitySet="tbTaskResult" />
           </AssociationSet>
           <AssociationSet Name="FK_tbTestResult_tbTest" Association="Self.FK_tbTestResult_tbTest">
             <End Role="tbTest" EntitySet="tbTest" />
@@ -979,7 +1064,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище StudyPlatformModelContainer" CdmEntityContainer="StudyModelEntitity">
+        <EntityContainerMapping StorageEntityContainer="Хранилище StudyPlatformModelContainer" CdmEntityContainer="StudyPlatformEntities">
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="StudyPlatformModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
@@ -1050,16 +1135,17 @@
                 <ScalarProperty Name="Video" ColumnName="Video" />
                 <ScalarProperty Name="Rate" ColumnName="Rate" />
                 <ScalarProperty Name="id_test" ColumnName="id_test" />
-                <ScalarProperty Name="id_taskResult" ColumnName="id_taskResult" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbTaskResult">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbTaskResult">
               <MappingFragment StoreEntitySet="tbTaskResult">
-                <ScalarProperty Name="idTaskResult" ColumnName="idTaskResult" />
                 <ScalarProperty Name="UserAnswer" ColumnName="UserAnswer" />
                 <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="id_task" ColumnName="id_task" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="id_test" ColumnName="id_test" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1069,16 +1155,6 @@
                 <ScalarProperty Name="idTest" ColumnName="idTest" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id_institution" ColumnName="id_institution" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbTestResult">
-            <EntityTypeMapping TypeName="StudyPlatformModel.tbTestResult">
-              <MappingFragment StoreEntitySet="tbTestResult">
-                <ScalarProperty Name="idTestResult" ColumnName="idTestResult" />
-                <ScalarProperty Name="id_test" ColumnName="id_test" />
-                <ScalarProperty Name="id_user" ColumnName="id_user" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1111,6 +1187,15 @@
               <MappingFragment StoreEntitySet="tbMaterial_Institution">
                 <ScalarProperty Name="id_material" ColumnName="id_material" />
                 <ScalarProperty Name="id_institution" ColumnName="id_institution" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbTestResult">
+            <EntityTypeMapping TypeName="StudyPlatformModel.tbTestResult">
+              <MappingFragment StoreEntitySet="tbTestResult">
+                <ScalarProperty Name="id_test" ColumnName="id_test" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
