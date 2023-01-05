@@ -252,6 +252,7 @@
     </Compile>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Models\Core\InstitutionBuilder.cs" />
     <Compile Include="sysdiagrams.cs">
       <DependentUpon>eStudy.tt</DependentUpon>
     </Compile>
@@ -2543,6 +2544,9 @@
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\EnterSystem\Register.cshtml" />
     <Content Include="Views\Admin\UserManagement.cshtml" />
+    <Content Include="Views\Admin\InstitutionManagement.cshtml" />
+    <Content Include="Views\Admin\AddNewInstitution.cshtml" />
+    <Content Include="Views\Admin\EditInstitution.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

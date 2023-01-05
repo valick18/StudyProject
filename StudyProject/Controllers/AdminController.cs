@@ -1,4 +1,5 @@
-﻿using StudyProject.Models.Core;
+﻿using StudyProject.Models;
+using StudyProject.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,37 @@ namespace StudyProject.Controllers
         {
             List<tbUser> users = db.tbUser.ToList();
             return View(users);
-
         }
+
+
+        public ActionResult InstitutionManagement() {
+            List<tbInstitution> institutions = db.tbInstitution.ToList();
+            return View(institutions);
+        }
+
+        public ActionResult AddNewInstitution() {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewInstitution(tbInstitution newInstitution)
+        {
+            InstitutionBuilder.Build(db, newInstitution);
+            return RedirectToAction("InstitutionManagement");
+        }
+
+        public ActionResult EditInstitution(Guid idInstitution) {
+            tbInstitution inst = db.tbInstitution.Find(idInstitution);
+            return View(inst);
+        }
+
+        [HttpPost]
+        public ActionResult EditInstitution(tbInstitution institution)
+        {
+            InstitutionBuilder.ReBuild(db, institution);
+            return RedirectToAction("InstitutionManagement");
+        }
+
         [HttpPost]
         public ActionResult ChangeUserRole(Guid idUser, int Role)
         {

@@ -1,0 +1,61 @@
+﻿@using StudyProject
+
+@model List<tbInstitution>
+
+@{
+    ViewBag.Title = "InstitutionManagement";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h4 class="text-center">Управління Навчальними Закладами</h4>
+
+
+   <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <a href="@Url.Action("AddNewInstitution","Admin")" class="btn btn-default"><i class="fas fa-plus"></i> Додати навчальний заклад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <table class="table">
+                    <tr>
+                        <th>
+                            Назва
+                        </th>
+                        <th>
+                            Дата створення
+                        </th>
+                        <th>
+                            Адреса
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("EditInstitution", "Admin", new { idInstitution = item.idInstitution})">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Adress)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

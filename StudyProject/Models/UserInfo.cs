@@ -57,5 +57,10 @@ namespace StudyProject.Models
             };
         }
 
+        public Guid idUser { get {
+                return fuser.idUser; 
+            }
+        }
+
     }
 }
