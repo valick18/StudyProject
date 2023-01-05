@@ -11,12 +11,6 @@ namespace StudyProject.Controllers
     [CustomAuthorize(UserRoles = new UserRole[] { UserRole.Admin })]
     public class AdminController : MainController
     {
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult UserManagement()
         {
             List<tbUser> users = db.tbUser.ToList();

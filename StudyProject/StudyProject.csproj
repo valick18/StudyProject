@@ -235,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\Tutor\TutorController.cs" />
     <Compile Include="eStudy.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2547,6 +2548,8 @@
     <Content Include="Views\Admin\InstitutionManagement.cshtml" />
     <Content Include="Views\Admin\AddNewInstitution.cshtml" />
     <Content Include="Views\Admin\EditInstitution.cshtml" />
+    <Content Include="Views\Tutor\Groups.cshtml" />
+    <Content Include="Views\Tutor\UsersGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
