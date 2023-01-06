@@ -23,8 +23,6 @@
           <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="DateCreate" Type="datetime" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbGroup_Institution" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbGroup_Institution">
           <Key>
             <PropertyRef Name="id_group" />
@@ -44,6 +42,14 @@
           <Property Name="DateCreate" Type="datetime" />
           <Property Name="Adress" Type="nchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="tbInstitution_User">
+          <Key>
+            <PropertyRef Name="id_institution" />
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_institution" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbInvite">
           <Key>
             <PropertyRef Name="idInvite" />
@@ -59,8 +65,6 @@
           <Property Name="id_material" Type="uniqueidentifier" />
           <Property Name="id_test" Type="uniqueidentifier" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbLesson_Group" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbLesson_Group">
           <Key>
             <PropertyRef Name="id_lesson" />
@@ -70,8 +74,6 @@
           <Property Name="id_group" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DateCreated" Type="datetime" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbMaterial_Institution" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbMaterial_Institution">
           <Key>
             <PropertyRef Name="id_material" />
@@ -101,8 +103,6 @@
           <Property Name="Rate" Type="int" />
           <Property Name="id_test" Type="uniqueidentifier" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbTask_Material" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbTask_Material">
           <Key>
             <PropertyRef Name="id_task" />
@@ -131,8 +131,6 @@
           <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="id_institution" Type="uniqueidentifier" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbTest_Task" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbTest_Task">
           <Key>
             <PropertyRef Name="id_test" />
@@ -141,13 +139,10 @@
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbTestResult" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbTestResult">
           <Key>
             <PropertyRef Name="id_test" />
             <PropertyRef Name="id_user" />
-            <PropertyRef Name="Rate" />
           </Key>
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
@@ -167,8 +162,6 @@
           <Property Name="Role" Type="int" />
           <Property Name="DateCreate" Type="datetime" />
         </EntityType>
-        <!--Ошибки, обнаруженные при создании:
-предупреждение 6002: В таблице или представлении "C:\USERS\VALIK\STUDYPLATFORM.MDF.dbo.tbUser_Group" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="tbUser_Group">
           <Key>
             <PropertyRef Name="id_user" />
@@ -203,14 +196,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbInstitution_tbUser">
-          <End Role="tbUser" Type="Self.tbUser" Multiplicity="0..1" />
-          <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="*" />
+        <Association Name="FK_tbInstitution_User_tbInstitution1">
+          <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="1" />
+          <End Role="tbInstitution_User" Type="Self.tbInstitution_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbInstitution">
+              <PropertyRef Name="idInstitution" />
+            </Principal>
+            <Dependent Role="tbInstitution_User">
+              <PropertyRef Name="id_institution" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbInstitution_User_tbUser1">
+          <End Role="tbUser" Type="Self.tbUser" Multiplicity="1" />
+          <End Role="tbInstitution_User" Type="Self.tbInstitution_User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbUser">
               <PropertyRef Name="idUser" />
             </Principal>
-            <Dependent Role="tbInstitution">
+            <Dependent Role="tbInstitution_User">
               <PropertyRef Name="id_user" />
             </Dependent>
           </ReferentialConstraint>
@@ -275,7 +280,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbMaterial_Institution_tbInstitution">
+        <Association Name="FK_tbMaterial_Institution_tbInstitution1">
           <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="0..1" />
           <End Role="tbMaterial_Institution" Type="Self.tbMaterial_Institution" Multiplicity="*" />
           <ReferentialConstraint>
@@ -458,58 +463,22 @@
         <EntityContainer Name="Хранилище StudyPlatformModelContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbGroup" EntityType="Self.tbGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbGroup_Institution" EntityType="Self.tbGroup_Institution" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbInstitution" EntityType="Self.tbInstitution" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbInstitution_User" EntityType="Self.tbInstitution_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbInvite" EntityType="Self.tbInvite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbLesson" EntityType="Self.tbLesson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbLesson_Group" EntityType="Self.tbLesson_Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbMaterial_Institution" EntityType="Self.tbMaterial_Institution" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbMaterials" EntityType="Self.tbMaterials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTask" EntityType="Self.tbTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbTask_Material" EntityType="Self.tbTask_Material" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTaskResult" EntityType="Self.tbTaskResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTest" EntityType="Self.tbTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbTest_Task" EntityType="Self.tbTest_Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbUser" EntityType="Self.tbUser" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbGroup_Institution" EntityType="Self.tbGroup_Institution" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbGroup_Institution].[id_group] AS [id_group], 
-    [tbGroup_Institution].[id_institution] AS [id_institution]
-    FROM [dbo].[tbGroup_Institution] AS [tbGroup_Institution]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbLesson_Group" EntityType="Self.tbLesson_Group" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbLesson_Group].[id_lesson] AS [id_lesson], 
-    [tbLesson_Group].[id_group] AS [id_group], 
-    [tbLesson_Group].[DateCreated] AS [DateCreated]
-    FROM [dbo].[tbLesson_Group] AS [tbLesson_Group]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbMaterial_Institution" EntityType="Self.tbMaterial_Institution" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbMaterial_Institution].[id_material] AS [id_material], 
-    [tbMaterial_Institution].[id_institution] AS [id_institution]
-    FROM [dbo].[tbMaterial_Institution] AS [tbMaterial_Institution]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbTask_Material" EntityType="Self.tbTask_Material" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbTask_Material].[id_task] AS [id_task], 
-    [tbTask_Material].[id_material] AS [id_material]
-    FROM [dbo].[tbTask_Material] AS [tbTask_Material]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbTest_Task" EntityType="Self.tbTest_Task" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbTest_Task].[id_test] AS [id_test], 
-    [tbTest_Task].[id_task] AS [id_task]
-    FROM [dbo].[tbTest_Task] AS [tbTest_Task]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbTestResult].[id_test] AS [id_test], 
-    [tbTestResult].[id_user] AS [id_user], 
-    [tbTestResult].[Rate] AS [Rate]
-    FROM [dbo].[tbTestResult] AS [tbTestResult]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="tbUser_Group" EntityType="Self.tbUser_Group" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbUser_Group].[id_user] AS [id_user], 
-    [tbUser_Group].[id_group] AS [id_group]
-    FROM [dbo].[tbUser_Group] AS [tbUser_Group]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="tbUser_Group" EntityType="Self.tbUser_Group" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tbGroup_Institution_tbGroup" Association="Self.FK_tbGroup_Institution_tbGroup">
             <End Role="tbGroup" EntitySet="tbGroup" />
             <End Role="tbGroup_Institution" EntitySet="tbGroup_Institution" />
@@ -518,9 +487,13 @@
             <End Role="tbInstitution" EntitySet="tbInstitution" />
             <End Role="tbGroup_Institution" EntitySet="tbGroup_Institution" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbInstitution_tbUser" Association="Self.FK_tbInstitution_tbUser">
-            <End Role="tbUser" EntitySet="tbUser" />
+          <AssociationSet Name="FK_tbInstitution_User_tbInstitution1" Association="Self.FK_tbInstitution_User_tbInstitution1">
             <End Role="tbInstitution" EntitySet="tbInstitution" />
+            <End Role="tbInstitution_User" EntitySet="tbInstitution_User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbInstitution_User_tbUser1" Association="Self.FK_tbInstitution_User_tbUser1">
+            <End Role="tbUser" EntitySet="tbUser" />
+            <End Role="tbInstitution_User" EntitySet="tbInstitution_User" />
           </AssociationSet>
           <AssociationSet Name="FK_tbInvite_tbGroup" Association="Self.FK_tbInvite_tbGroup">
             <End Role="tbGroup" EntitySet="tbGroup" />
@@ -542,7 +515,7 @@
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbLesson" EntitySet="tbLesson" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbMaterial_Institution_tbInstitution" Association="Self.FK_tbMaterial_Institution_tbInstitution">
+          <AssociationSet Name="FK_tbMaterial_Institution_tbInstitution1" Association="Self.FK_tbMaterial_Institution_tbInstitution1">
             <End Role="tbInstitution" EntitySet="tbInstitution" />
             <End Role="tbMaterial_Institution" EntitySet="tbMaterial_Institution" />
           </AssociationSet>
@@ -640,10 +613,10 @@
           <Property Name="id_user" Type="Guid" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <Property Name="Adress" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbInstitution_tbUser" FromRole="tbInstitution" ToRole="tbUser" />
-          <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution" FromRole="tbInstitution" ToRole="tbMaterial_Institution" />
+          <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution1" FromRole="tbInstitution" ToRole="tbMaterial_Institution" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTest_tbInstitution" FromRole="tbInstitution" ToRole="tbTest" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbGroup_Institution" FromRole="tbInstitution" ToRole="tbGroup" />
+          <NavigationProperty Name="tbUser" Relationship="Self.tbInstitution_User" FromRole="tbInstitution" ToRole="tbUser" />
         </EntityType>
         <EntityType Name="tbInvite">
           <Key>
@@ -663,6 +636,26 @@
           <NavigationProperty Name="tbLesson_Group" Relationship="Self.FK_tbLesson_Group_tbLesson" FromRole="tbLesson" ToRole="tbLesson_Group" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.FK_tbLesson_tbMaterials" FromRole="tbLesson" ToRole="tbMaterials" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbLesson_tbTest" FromRole="tbLesson" ToRole="tbTest" />
+        </EntityType>
+        <EntityType Name="tbLesson_Group">
+          <Key>
+            <PropertyRef Name="id_lesson" />
+            <PropertyRef Name="id_group" />
+          </Key>
+          <Property Name="id_lesson" Type="Guid" Nullable="false" />
+          <Property Name="id_group" Type="Guid" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tbGroup" Relationship="Self.FK_tbLesson_Group_tbGroup" FromRole="tbLesson_Group" ToRole="tbGroup" />
+          <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_Group_tbLesson" FromRole="tbLesson_Group" ToRole="tbLesson" />
+        </EntityType>
+        <EntityType Name="tbMaterial_Institution">
+          <Key>
+            <PropertyRef Name="id_material" />
+          </Key>
+          <Property Name="id_material" Type="Guid" Nullable="false" />
+          <Property Name="id_institution" Type="Guid" />
+          <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution1" FromRole="tbMaterial_Institution" ToRole="tbInstitution" />
+          <NavigationProperty Name="tbMaterials" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterial_Institution" ToRole="tbMaterials" />
         </EntityType>
         <EntityType Name="tbMaterials">
           <Key>
@@ -722,6 +715,17 @@
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTest" ToRole="tbTestResult" />
           <NavigationProperty Name="tbTask1" Relationship="Self.tbTest_Task" FromRole="tbTest" ToRole="tbTask" />
         </EntityType>
+        <EntityType Name="tbTestResult">
+          <Key>
+            <PropertyRef Name="id_test" />
+            <PropertyRef Name="id_user" />
+          </Key>
+          <Property Name="id_test" Type="Guid" Nullable="false" />
+          <Property Name="id_user" Type="Guid" Nullable="false" />
+          <Property Name="Rate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTestResult" ToRole="tbTest" />
+          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbTestResult" ToRole="tbUser" />
+        </EntityType>
         <EntityType Name="tbUser">
           <Key>
             <PropertyRef Name="idUser" />
@@ -735,42 +739,10 @@
           <Property Name="Age" Type="Int32" />
           <Property Name="Role" Type="Int32" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbInstitution_tbUser" FromRole="tbUser" ToRole="tbInstitution" />
           <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbUser" FromRole="tbUser" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbUser" ToRole="tbTestResult" />
+          <NavigationProperty Name="tbInstitution" Relationship="Self.tbInstitution_User" FromRole="tbUser" ToRole="tbInstitution" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbUser_Group" FromRole="tbUser" ToRole="tbGroup" />
-        </EntityType>
-        <EntityType Name="tbLesson_Group">
-          <Key>
-            <PropertyRef Name="id_lesson" />
-            <PropertyRef Name="id_group" />
-          </Key>
-          <Property Name="id_lesson" Type="Guid" Nullable="false" />
-          <Property Name="id_group" Type="Guid" Nullable="false" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="tbGroup" Relationship="Self.FK_tbLesson_Group_tbGroup" FromRole="tbLesson_Group" ToRole="tbGroup" />
-          <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_Group_tbLesson" FromRole="tbLesson_Group" ToRole="tbLesson" />
-        </EntityType>
-        <EntityType Name="tbMaterial_Institution">
-          <Key>
-            <PropertyRef Name="id_material" />
-          </Key>
-          <Property Name="id_material" Type="Guid" Nullable="false" />
-          <Property Name="id_institution" Type="Guid" />
-          <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbMaterial_Institution_tbInstitution" FromRole="tbMaterial_Institution" ToRole="tbInstitution" />
-          <NavigationProperty Name="tbMaterials" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterial_Institution" ToRole="tbMaterials" />
-        </EntityType>
-        <EntityType Name="tbTestResult">
-          <Key>
-            <PropertyRef Name="id_test" />
-            <PropertyRef Name="id_user" />
-            <PropertyRef Name="Rate" />
-          </Key>
-          <Property Name="id_test" Type="Guid" Nullable="false" />
-          <Property Name="id_user" Type="Guid" Nullable="false" />
-          <Property Name="Rate" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTestResult_tbTest" FromRole="tbTestResult" ToRole="tbTest" />
-          <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbTestResult" ToRole="tbUser" />
         </EntityType>
         <Association Name="FK_tbInvite_tbGroup">
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="1" />
@@ -796,19 +768,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbInstitution_tbUser">
-          <End Role="tbUser" Type="Self.tbUser" Multiplicity="0..1" />
-          <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbUser">
-              <PropertyRef Name="idUser" />
-            </Principal>
-            <Dependent Role="tbInstitution">
-              <PropertyRef Name="id_user" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbMaterial_Institution_tbInstitution">
+        <Association Name="FK_tbMaterial_Institution_tbInstitution1">
           <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="0..1" />
           <End Role="tbMaterial_Institution" Type="Self.tbMaterial_Institution" Multiplicity="*" />
           <ReferentialConstraint>
@@ -956,6 +916,10 @@
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="*" />
           <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="*" />
         </Association>
+        <Association Name="tbInstitution_User">
+          <End Role="tbInstitution" Type="Self.tbInstitution" Multiplicity="*" />
+          <End Role="tbUser" Type="Self.tbUser" Multiplicity="*" />
+        </Association>
         <Association Name="tbTask_Material">
           <End Role="tbMaterials" Type="Self.tbMaterials" Multiplicity="*" />
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
@@ -974,14 +938,14 @@
           <EntitySet Name="tbInstitution" EntityType="Self.tbInstitution" />
           <EntitySet Name="tbInvite" EntityType="Self.tbInvite" />
           <EntitySet Name="tbLesson" EntityType="Self.tbLesson" />
+          <EntitySet Name="tbLesson_Group" EntityType="Self.tbLesson_Group" />
+          <EntitySet Name="tbMaterial_Institution" EntityType="Self.tbMaterial_Institution" />
           <EntitySet Name="tbMaterials" EntityType="Self.tbMaterials" />
           <EntitySet Name="tbTask" EntityType="Self.tbTask" />
           <EntitySet Name="tbTaskResult" EntityType="Self.tbTaskResult" />
           <EntitySet Name="tbTest" EntityType="Self.tbTest" />
-          <EntitySet Name="tbUser" EntityType="Self.tbUser" />
-          <EntitySet Name="tbLesson_Group" EntityType="Self.tbLesson_Group" />
-          <EntitySet Name="tbMaterial_Institution" EntityType="Self.tbMaterial_Institution" />
           <EntitySet Name="tbTestResult" EntityType="Self.tbTestResult" />
+          <EntitySet Name="tbUser" EntityType="Self.tbUser" />
           <AssociationSet Name="FK_tbInvite_tbGroup" Association="Self.FK_tbInvite_tbGroup">
             <End Role="tbGroup" EntitySet="tbGroup" />
             <End Role="tbInvite" EntitySet="tbInvite" />
@@ -990,11 +954,7 @@
             <End Role="tbGroup" EntitySet="tbGroup" />
             <End Role="tbLesson_Group" EntitySet="tbLesson_Group" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbInstitution_tbUser" Association="Self.FK_tbInstitution_tbUser">
-            <End Role="tbUser" EntitySet="tbUser" />
-            <End Role="tbInstitution" EntitySet="tbInstitution" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbMaterial_Institution_tbInstitution" Association="Self.FK_tbMaterial_Institution_tbInstitution">
+          <AssociationSet Name="FK_tbMaterial_Institution_tbInstitution1" Association="Self.FK_tbMaterial_Institution_tbInstitution1">
             <End Role="tbInstitution" EntitySet="tbInstitution" />
             <End Role="tbMaterial_Institution" EntitySet="tbMaterial_Institution" />
           </AssociationSet>
@@ -1045,6 +1005,10 @@
           <AssociationSet Name="tbGroup_Institution" Association="Self.tbGroup_Institution">
             <End Role="tbGroup" EntitySet="tbGroup" />
             <End Role="tbInstitution" EntitySet="tbInstitution" />
+          </AssociationSet>
+          <AssociationSet Name="tbInstitution_User" Association="Self.tbInstitution_User">
+            <End Role="tbInstitution" EntitySet="tbInstitution" />
+            <End Role="tbUser" EntitySet="tbUser" />
           </AssociationSet>
           <AssociationSet Name="tbTask_Material" Association="Self.tbTask_Material">
             <End Role="tbMaterials" EntitySet="tbMaterials" />
@@ -1114,6 +1078,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbLesson_Group">
+            <EntityTypeMapping TypeName="StudyPlatformModel.tbLesson_Group">
+              <MappingFragment StoreEntitySet="tbLesson_Group">
+                <ScalarProperty Name="id_lesson" ColumnName="id_lesson" />
+                <ScalarProperty Name="id_group" ColumnName="id_group" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbMaterial_Institution">
+            <EntityTypeMapping TypeName="StudyPlatformModel.tbMaterial_Institution">
+              <MappingFragment StoreEntitySet="tbMaterial_Institution">
+                <ScalarProperty Name="id_material" ColumnName="id_material" />
+                <ScalarProperty Name="id_institution" ColumnName="id_institution" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbMaterials">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbMaterials">
               <MappingFragment StoreEntitySet="tbMaterials">
@@ -1158,6 +1139,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbTestResult">
+            <EntityTypeMapping TypeName="StudyPlatformModel.tbTestResult">
+              <MappingFragment StoreEntitySet="tbTestResult">
+                <ScalarProperty Name="id_test" ColumnName="id_test" />
+                <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tbUser">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbUser">
               <MappingFragment StoreEntitySet="tbUser">
@@ -1173,38 +1163,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbLesson_Group">
-            <EntityTypeMapping TypeName="StudyPlatformModel.tbLesson_Group">
-              <MappingFragment StoreEntitySet="tbLesson_Group">
-                <ScalarProperty Name="id_lesson" ColumnName="id_lesson" />
-                <ScalarProperty Name="id_group" ColumnName="id_group" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbMaterial_Institution">
-            <EntityTypeMapping TypeName="StudyPlatformModel.tbMaterial_Institution">
-              <MappingFragment StoreEntitySet="tbMaterial_Institution">
-                <ScalarProperty Name="id_material" ColumnName="id_material" />
-                <ScalarProperty Name="id_institution" ColumnName="id_institution" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbTestResult">
-            <EntityTypeMapping TypeName="StudyPlatformModel.tbTestResult">
-              <MappingFragment StoreEntitySet="tbTestResult">
-                <ScalarProperty Name="id_test" ColumnName="id_test" />
-                <ScalarProperty Name="id_user" ColumnName="id_user" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="tbGroup_Institution" TypeName="StudyPlatformModel.tbGroup_Institution" StoreEntitySet="tbGroup_Institution">
             <EndProperty Name="tbGroup">
               <ScalarProperty Name="idGroup" ColumnName="id_group" />
             </EndProperty>
             <EndProperty Name="tbInstitution">
               <ScalarProperty Name="idInstitution" ColumnName="id_institution" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="tbInstitution_User" TypeName="StudyPlatformModel.tbInstitution_User" StoreEntitySet="tbInstitution_User">
+            <EndProperty Name="tbInstitution">
+              <ScalarProperty Name="idInstitution" ColumnName="id_institution" />
+            </EndProperty>
+            <EndProperty Name="tbUser">
+              <ScalarProperty Name="idUser" ColumnName="id_user" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="tbTask_Material" TypeName="StudyPlatformModel.tbTask_Material" StoreEntitySet="tbTask_Material">

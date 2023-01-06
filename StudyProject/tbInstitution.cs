@@ -20,6 +20,7 @@ namespace StudyProject
             this.tbMaterial_Institution = new HashSet<tbMaterial_Institution>();
             this.tbTest = new HashSet<tbTest>();
             this.tbGroup = new HashSet<tbGroup>();
+            this.tbUser = new HashSet<tbUser>();
         }
     
         public System.Guid idInstitution { get; set; }
@@ -29,12 +30,13 @@ namespace StudyProject
         public Nullable<System.DateTime> DateCreate { get; set; }
         public string Adress { get; set; }
     
-        public virtual tbUser tbUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbMaterial_Institution> tbMaterial_Institution { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTest> tbTest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbGroup> tbGroup { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbUser> tbUser { get; set; }
     }
 }

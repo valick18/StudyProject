@@ -1,0 +1,94 @@
+﻿@model List<tbUser>
+@{
+    ViewBag.Title = "InstitutionUsers";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    List<tbUser> teachers = ViewBag.allTeachers;
+}
+
+<h4 class="text-center">Викладачі навчального закладу</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddUser">
+                    <i class="fas fa-plus"></i> Привязати користувача
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Фамілія</th>
+                        <th>Ім'я</th>
+                        <th>По батькові</th>
+                        <th>Відв'язати</th>
+                    </tr>
+                    @foreach (tbUser user in Model)
+                    {
+                        <tr>
+                            <td>@user.LastName</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.MiddleName</td>
+                            <td>
+                                <a href="@Url.Action("RemoveUserFromInstitution","Admin", new { idUser = user.idUser, idInstitution = ViewBag.idInstitution })" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@using (Html.BeginForm("AddUserToInstitution", "Admin", FormMethod.Post))
+{
+    <div class="modal fade" id="AddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Редагування групи</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead class="text-center">
+                            Оберіть викладачів які будуть привязані до Навчального Закладу
+                        </thead>
+                        <tr>
+                            <th></th>
+                            <th>Ім'я</th>
+                            <th>По батькові</th>
+                            <th>Фамілія</th>
+                        </tr>
+                        @foreach (tbUser user in teachers)
+                        {
+                            <tr>
+                                <td><input type="checkbox" name="users" value="@user.idUser" /></td>
+                                <td>@user.FirstName</td>
+                                <td>@user.MiddleName</td>
+                                <td>@user.LastName</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idInst" value="@ViewBag.idInstitution" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Змінити</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

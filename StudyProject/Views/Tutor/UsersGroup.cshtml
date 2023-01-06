@@ -1,7 +1,32 @@
-﻿
+﻿@model List<tbUser>
 @{
     ViewBag.Title = "UsersGroup";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>UsersGroup</h2>
+<h4 class="text-center">Користувачі</h4>
 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Ім'я</th>
+                        <th>По батькові</th>
+                        <th>Фамілія</th>
+                    </tr>
+                    @foreach (tbUser user in Model)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.MiddleName</td>
+                            <td>@user.LastName</td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

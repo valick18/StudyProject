@@ -1,11 +1,10 @@
 ﻿using System.Web.Mvc;
 
-
-namespace StudyProject.Controllers
+namespace StudyProject
 {
     public class MainController : Controller
     {
-        public StudyPlatformEntities db;
+        public StudyProject.StudyPlatformEntities db;
 
         public MainController()
         {

@@ -1,4 +1,5 @@
-﻿using StudyProject.Models.Core;
+﻿using StudyProject.Models;
+using StudyProject.Models.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,22 @@ namespace StudyProject.Controllers.Tutor
     [CustomAuthorize(UserRoles = new UserRole[] { UserRole.Admin, UserRole.Tutor })]
     public class TutorController : MainController
     {
+
         public ActionResult Groups() {
-            List<tbGroup> groups = db.tbGroup.ToList();
-            return View(groups);
+
+            UserInfo uInfo = new UserInfo(db);
+            List<tbInstitution> institutions = db.tbInstitution.ToList();
+            institutions = institutions.Where(w => w.tbUser.Contains(uInfo.fuser)).ToList();
+            return View(institutions);
         }
 
         [HttpPost]
-        public ActionResult AddNewGroup(string Name) {
+        public ActionResult AddNewGroup(string Name, Guid idInstitution) {
            
             if (string.IsNullOrEmpty(Name))
                 return RedirectToAction("Groups");
+
+            tbInstitution inst = db.tbInstitution.Find(idInstitution);
 
             tbGroup newGroup = new tbGroup()
             {
@@ -28,7 +35,9 @@ namespace StudyProject.Controllers.Tutor
                 DateCreate = DateTime.Now,
             };
             db.tbGroup.Add(newGroup);
+            inst.tbGroup.Add(newGroup);
             db.SaveChanges();
+
 
             return RedirectToAction("Groups");
         }
@@ -49,7 +58,9 @@ namespace StudyProject.Controllers.Tutor
 
         public ActionResult UsersGroup(Guid idGroup)
         {
-            return View();
+            tbGroup group = db.tbGroup.Find(idGroup);
+            List<tbUser> users = group.tbUser.ToList();
+            return View(users);
         }
 
     }

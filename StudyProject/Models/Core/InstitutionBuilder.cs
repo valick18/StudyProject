@@ -31,5 +31,27 @@ namespace StudyProject.Models.Core
             //institution.Logo = newInstitution.Logo,
             db.SaveChanges();
         }
+
+        public static void Build(StudyPlatformEntities db, tbInstitution institution, Guid [] users)
+        {
+            UserInfo uInfo = new UserInfo(db);
+            tbInstitution newInstitution = new tbInstitution()
+            {
+                idInstitution = Guid.NewGuid(),
+                id_user = uInfo.idUser,
+                Name = institution.Name,
+                Adress = institution.Adress,
+                DateCreate = DateTime.Now,
+                //Logo = institution.Logo,
+            };
+
+            foreach (Guid id in users) {
+               tbUser user = db.tbUser.Find(id);
+                newInstitution.tbUser.Add(user);
+            }
+
+            db.tbInstitution.Add(newInstitution);
+            db.SaveChanges();
+        }
     }
 }

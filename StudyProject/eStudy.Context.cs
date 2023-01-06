@@ -30,13 +30,13 @@ namespace StudyProject
         public virtual DbSet<tbInstitution> tbInstitution { get; set; }
         public virtual DbSet<tbInvite> tbInvite { get; set; }
         public virtual DbSet<tbLesson> tbLesson { get; set; }
+        public virtual DbSet<tbLesson_Group> tbLesson_Group { get; set; }
+        public virtual DbSet<tbMaterial_Institution> tbMaterial_Institution { get; set; }
         public virtual DbSet<tbMaterials> tbMaterials { get; set; }
         public virtual DbSet<tbTask> tbTask { get; set; }
         public virtual DbSet<tbTaskResult> tbTaskResult { get; set; }
         public virtual DbSet<tbTest> tbTest { get; set; }
-        public virtual DbSet<tbUser> tbUser { get; set; }
-        public virtual DbSet<tbLesson_Group> tbLesson_Group { get; set; }
-        public virtual DbSet<tbMaterial_Institution> tbMaterial_Institution { get; set; }
         public virtual DbSet<tbTestResult> tbTestResult { get; set; }
+        public virtual DbSet<tbUser> tbUser { get; set; }
     }
 }
