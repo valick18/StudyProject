@@ -63,5 +63,131 @@ namespace StudyProject.Controllers.Tutor
             return View(users);
         }
 
+        public ActionResult TutorInstitution() {
+
+            UserInfo uInfo = new UserInfo(db);
+            List<tbInstitution> institutions = uInfo.fuser.tbInstitution.ToList();
+            return View(institutions);
+        }
+
+        public ActionResult TutorMaterials(Guid idInst)
+        {
+            UserInfo uInfo = new UserInfo(db);
+            List<tbMaterials> materials = db.tbMaterials.ToList();
+            materials = materials.Where(w => w.tbMaterial_Institution.id_institution.Equals(idInst)).ToList();
+            ViewBag.idInstitution = idInst;
+            return View(materials);
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult CreateMaterial(tbMaterials material, Guid idInst)
+        {
+          
+            if (string.IsNullOrEmpty(material.Name) || string.IsNullOrEmpty(material.Text)) { 
+               return RedirectToAction("TutorMaterials","Tutor", new { idInst = idInst });
+            }
+
+            tbMaterials newMaterial = new tbMaterials()
+            {
+                idMaterial = Guid.NewGuid(),
+                Name = material.Name,
+                Text = material.Text
+            };
+
+            db.tbMaterials.Add(newMaterial);
+
+            tbMaterial_Institution materialInst = new tbMaterial_Institution() { 
+                id_institution = idInst,
+                id_material = newMaterial.idMaterial
+            };
+
+            db.tbMaterial_Institution.Add(materialInst);
+
+            db.SaveChanges();
+
+            return RedirectToAction("TutorMaterials","Tutor", new { idInst = idInst });
+        }
+
+
+        public ActionResult ViewMateril(Guid idMaterial) {
+            tbMaterials material = db.tbMaterials.Find(idMaterial);
+            return View(material);
+        }
+
+        public ActionResult TutorTests(Guid idInst)
+        {
+            tbInstitution inst = db.tbInstitution.Find(idInst);
+            List<tbTest> tests = inst.tbTest.ToList();
+            ViewBag.idInstitution = idInst;
+            return View(tests);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTest(string Name, Guid idInst) {
+
+            if (!string.IsNullOrEmpty(Name)) {
+                tbTest test = new tbTest() { 
+                    Name = Name,
+                    idTest = Guid.NewGuid(),
+                    id_institution = idInst
+                };
+                tbInstitution institution = db.tbInstitution.Find(idInst);
+                institution.tbTest.Add(test);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("TutorTests", new { idInst = idInst});
+        }
+
+
+        public ActionResult ViewTest(Guid idTest)
+        {
+            tbTest test = db.tbTest.Find(idTest);
+            return View(test);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTask(tbTask task, Guid idTest)
+        {
+            string[] onCheck = { task.Name, task.Answer, task.Description};
+
+            if (!CheckField.checkOnNullOrEmpty(onCheck)) { 
+            
+                tbTask newTask = new tbTask() { 
+                    idTask = Guid.NewGuid(),
+                    id_test = idTest,
+                    Name = task.Name,
+                    Answer = task.Answer,
+                    Audio = task.Audio,
+                    Description = task.Description,
+                    Picture = task.Picture,
+                    Rate = task.Rate ?? 1
+                };
+                db.tbTask.Add(newTask);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ViewTest", new { idTest = idTest });
+        }
+
+        public ActionResult ViewVariant(Guid idTask) {
+            tbTask task = db.tbTask.Find(idTask);
+            return View(task);
+        }
+
+        [HttpPost]
+        public ActionResult CreateVariant(Guid idTask, tbTaskVariant variant) {
+            if (!string.IsNullOrEmpty(variant.Name) && variant.isRight != null)
+            {
+                tbTask task = db.tbTask.Find(idTask);
+                variant.idTaskVariant = Guid.NewGuid();
+                db.tbTaskVariant.Add(variant);
+                task.tbTaskVariant.Add(variant);
+                db.SaveChanges();
+            }
+            return RedirectToAction("ViewVariant", new { idTask = idTask});
+        }
+
     }
 }

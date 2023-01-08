@@ -35,6 +35,7 @@ namespace StudyProject
         public virtual DbSet<tbMaterials> tbMaterials { get; set; }
         public virtual DbSet<tbTask> tbTask { get; set; }
         public virtual DbSet<tbTaskResult> tbTaskResult { get; set; }
+        public virtual DbSet<tbTaskVariant> tbTaskVariant { get; set; }
         public virtual DbSet<tbTest> tbTest { get; set; }
         public virtual DbSet<tbTestResult> tbTestResult { get; set; }
         public virtual DbSet<tbUser> tbUser { get; set; }

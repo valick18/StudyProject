@@ -1,0 +1,20 @@
+﻿@model StudyProject.tbMaterials
+
+@{
+    ViewBag.Title = "ViewMateril";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h4 class="text-center">@Model.Name</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="text">
+                    @Html.Raw(Model.Text)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

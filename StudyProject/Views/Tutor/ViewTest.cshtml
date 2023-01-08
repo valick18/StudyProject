@@ -1,0 +1,98 @@
+﻿@model tbTest
+
+@{
+    ViewBag.Title = "ViewTest";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h4 class="text-center">@Model.Name</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createTest">
+                    <i class="fas fa-plus fa-1x"></i> Створити завдання
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Завдання</h4>
+                <table class="table">
+                    <tr>
+                        <th>Назва</th>
+                        <th>Відповідь</th>
+                        <th>Оцінка за завдання</th>
+                        <th>Варіантів відповідей</th>
+                    </tr>
+                    @foreach (tbTask task in Model.tbTask)
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("ViewVariant","Tutor", new { idTask = task.idTask})">@task.Name</a></td>
+                            <td>@task.Answer</td>
+                            <td>@task.Rate</td>
+                            <td>@task.tbTaskVariant.Count()</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("CreateTask", "Tutor", FormMethod.Post))
+{
+    <div class="modal fade" id="createTest" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="title">Створення завдання</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-12">Назва задачі</label>
+                            <div class="col-12">
+                                <input type="text" name="Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Відповідь на завдання</label>
+                            <div class="col-12">
+                                <input type="text" name="Answer" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Постановка задачі</label>
+                            <div class="col-12">
+                                <input type="text" name="Description" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Оцінка</label>
+                            <div class="col-12">
+                                <input type="number" name="Rate" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idTest"  value="@Model.idTest" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

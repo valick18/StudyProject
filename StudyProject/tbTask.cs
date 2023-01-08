@@ -19,6 +19,7 @@ namespace StudyProject
         {
             this.tbTaskResult = new HashSet<tbTaskResult>();
             this.tbMaterials = new HashSet<tbMaterials>();
+            this.tbTaskVariant = new HashSet<tbTaskVariant>();
             this.tbTest1 = new HashSet<tbTest>();
         }
     
@@ -37,6 +38,8 @@ namespace StudyProject
         public virtual ICollection<tbTaskResult> tbTaskResult { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbMaterials> tbMaterials { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbTaskVariant> tbTaskVariant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTest> tbTest1 { get; set; }
     }

@@ -29,12 +29,13 @@
                 @foreach (var item in Model)
                 {
 
-                <div>
-                    <h4 class="text-center">@item.Name
-                    <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#exampleModal" onclick="setValueInstForGroup('@item.idInstitution')">
-                        <i class="fas fa-plus"></i> Додати нову групу
-                    </button>
+                <div class="text-center">
+                    <h4>
+                        @item.Name
                     </h4>
+                <button type="button" class="btn btn-default btn-xs mt-1 mb-2" data-toggle="modal" data-target="#exampleModal" onclick="setValueInstForGroup('@item.idInstitution')">
+                    <i class="fas fa-plus"></i> Додати нову групу
+                </button>
                 </div>
         
                     <table class="table text-center">
@@ -45,6 +46,7 @@
                             <th>
                                 Додати групу
                             </th>
+                            <th>Редагувати</th>
                         </tr>
                         @foreach (tbGroup group in item.tbGroup)
                         {
