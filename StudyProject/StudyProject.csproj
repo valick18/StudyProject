@@ -2576,6 +2576,7 @@
     <Content Include="Views\Tutor\TutorTests.cshtml" />
     <Content Include="Views\Tutor\ViewTest.cshtml" />
     <Content Include="Views\Tutor\ViewVariant.cshtml" />
+    <Content Include="Views\EnterSystem\Invite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

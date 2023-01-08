@@ -17,14 +17,14 @@ namespace StudingPlatform.Controllers
     public class EnterSystemController : MainController
     {
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(Guid? idInvite)
         {
-
+            ViewBag.idInvite = idInvite;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(string login, string password)
+        public ActionResult Login(string login, string password, Guid? idInvite)
         {
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
             {
@@ -36,20 +36,30 @@ namespace StudingPlatform.Controllers
             if (coder.VerifyPassword(password))
             {
                 UserInfo uInfo = new UserInfo(db, login);
-                HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null); //
+                HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null);
+
+                if (idInvite != null) {
+                    tbInvite invite = db.tbInvite.Find(idInvite);
+                    if (!invite.tbGroup.tbUser.Contains(user)) {
+                        invite.tbGroup.tbUser.Add(user);
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index", "Home");
             }
             return View();
         }
 
 
-        public ActionResult Register()
+        public ActionResult Register(Guid? idInvite)
         {
+            ViewBag.idInvite = idInvite;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Register(RegistrationModel newUser)
+        public ActionResult Register(RegistrationModel newUser, Guid? idInvite)
         {
             //урахувати дублювання емайлів
             bool isValidEmail = RegexUtilities.IsValidEmail(newUser.Login);
@@ -65,6 +75,13 @@ namespace StudingPlatform.Controllers
                 UserInfo uInfo = new UserInfo(db, newUser.Login);
                 HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null);
 
+                if (idInvite != null)
+                {
+                    tbInvite invite = db.tbInvite.Find(idInvite);
+                    invite.tbGroup.tbUser.Add(user);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -78,6 +95,13 @@ namespace StudingPlatform.Controllers
             FormsAuthentication.SignOut();
 
             return RedirectToAction("Login","EnterSystem");
+        }
+
+        public ActionResult Invite(Guid id) {
+
+            ViewBag.idInvite = id;
+
+            return View();
         }
 
     }

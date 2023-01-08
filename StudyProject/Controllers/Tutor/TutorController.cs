@@ -60,6 +60,7 @@ namespace StudyProject.Controllers.Tutor
         {
             tbGroup group = db.tbGroup.Find(idGroup);
             List<tbUser> users = group.tbUser.ToList();
+            ViewBag.Group = group;
             return View(users);
         }
 
@@ -214,6 +215,19 @@ namespace StudyProject.Controllers.Tutor
             db.SaveChanges();
 
             return RedirectToAction("ViewVariant", new { idTask = idTask });
+        }
+
+        public ActionResult CreateInvite(Guid idGroup) {
+          
+            tbInvite invite = new tbInvite() { 
+              idInvite = Guid.NewGuid(),
+              id_group = idGroup
+            };
+
+            db.tbInvite.Add(invite);
+            db.SaveChanges();
+
+            return RedirectToAction("UsersGroup", new { idGroup = idGroup });
         }
 
     }

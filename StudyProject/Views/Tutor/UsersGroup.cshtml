@@ -2,31 +2,80 @@
 @{
     ViewBag.Title = "UsersGroup";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    tbGroup group = ViewBag.Group;
 }
 
-<h4 class="text-center">Користувачі</h4>
+<h4 class="text-center">Користувачі групи</h4>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <table class="table">
-                    <tr>
-                        <th>Ім'я</th>
-                        <th>По батькові</th>
-                        <th>Фамілія</th>
-                    </tr>
-                    @foreach (tbUser user in Model)
-                    {
-                        <tr>
-                            <td>@user.FirstName</td>
-                            <td>@user.MiddleName</td>
-                            <td>@user.LastName</td>
-                        </tr>
-                    }
-                </table>
-
+<div class="card">
+    <div class="card-body">
+        <div class="tab-content" id="tabs-level0-tablistContent">
+            <div class="tab-pane fade active show" id="tabs-level0-quality" role="tabpanel" aria-labelledby="tabs-level0-quality-tab">
+                <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="tabs-level1-quality-tablist" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="tabs-level1-quality-home-tab" data-toggle="pill" href="#tabs-level1-quality-home" role="tab" aria-controls="tabs-level1-quality-home" aria-selected="true">
+                                Головна
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tabs-level1-quality-deep-tab" data-toggle="pill" href="#tabs-level1-quality-deep" role="tab" aria-controls="tabs-level1-quality-deep" aria-selected="false">
+                                Запрошення
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body" style="overflow:scroll">
+                    <div class="tab-content" id="tabs-level1-quality-tablistContent">
+                        <div class="tab-pane fade active show" id="tabs-level1-quality-home" role="tabpanel" aria-labelledby="tabs-level1-quality-home-tab">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>Ім'я</th>
+                                                    <th>По батькові</th>
+                                                    <th>Фамілія</th>
+                                                </tr>
+                                                @foreach (tbUser user in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@user.FirstName</td>
+                                                        <td>@user.MiddleName</td>
+                                                        <td>@user.LastName</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tabs-level1-quality-deep" role="tabpanel" aria-labelledby="tabs-level1-quality-deep-tab">
+                            <a href="@Url.Action("CreateInvite","Tutor", new { idGroup = group.idGroup})" class="btn btn-success btn-xs">
+                                <i class="fas fa-plus fa-1x"></i> Створити запрошення
+                            </a>
+                            <table class="table">
+                                <tr>
+                                    <th>Запрошення</th>
+                                </tr>
+                                @foreach (tbInvite invite in group.tbInvite)
+                                    {
+                                        <tr>
+                                            <td>
+                                                https://localhost:44367/EnterSystem/Invite/@invite.idInvite
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 </div>
+
+

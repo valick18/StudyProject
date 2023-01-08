@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Invite";
+}
+
+
+<div class="container-fluid d-flex h-100 justify-content-center align-items-center p-0">
+
+    <div class="row bg-white shadow-sm">
+        <div class="col border rounded p-4">
+            <h6>Вас запрошено у навчальну групу. <br /> Оберіть як ви хочете приєднатись:</h6>
+            <div class="text-center">
+                <a href="@Url.Action("Login", new { idInvite = ViewBag.idInvite})" style="text-decoration:none">Вхід у існуючий аккаунт</a>
+                <br />
+                <a href="@Url.Action("Register", new { idInvite = ViewBag.idInvite})" style="text-decoration:none">Реєстрація</a>
+            </div>
+        </div>
+    </div>
+</div>
