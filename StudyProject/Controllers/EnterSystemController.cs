@@ -10,6 +10,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using StudyProject;
+using System.Web.Security;
 
 namespace StudingPlatform.Controllers
 {
@@ -36,8 +37,6 @@ namespace StudingPlatform.Controllers
             {
                 UserInfo uInfo = new UserInfo(db, login);
                 HttpContext.User = new GenericPrincipal(new UserIdentity(uInfo), null); //
-                //UserIdentity uIdentity = new UserIdentity(uInfo);
-                //uIdentity.setHttpContextIdentity();
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -69,6 +68,16 @@ namespace StudingPlatform.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View();
+        }
+
+        public ActionResult Logout() {
+           
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Session.Abandon();
+            Session.Clear();
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Login","EnterSystem");
         }
 
     }
