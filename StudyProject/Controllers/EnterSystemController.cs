@@ -55,7 +55,7 @@ namespace StudingPlatform.Controllers
             //урахувати дублювання емайлів
             bool isValidEmail = RegexUtilities.IsValidEmail(newUser.Login);
             bool isNotNullOrEmptyFields = !string.IsNullOrEmpty(newUser.FirstName) && !string.IsNullOrEmpty(newUser.LastName) && !string.IsNullOrEmpty(newUser.MiddleName) && !string.IsNullOrEmpty(newUser.Password);
-            bool isEqualPass = newUser.Password.Equals(newUser.RepeatPassword);
+            bool isEqualPass = newUser.RepeatPassword != null && newUser.Password.Equals(newUser.RepeatPassword);
             if (isValidEmail && isNotNullOrEmptyFields && newUser.Age >= 12 && isEqualPass)
             {
                 UserBuilder uBuilder = new UserBuilder(newUser);

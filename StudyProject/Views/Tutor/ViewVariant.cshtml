@@ -1,4 +1,7 @@
 ﻿@model tbTask
+
+@using StudyProject.Models.Core
+
 @{
     ViewBag.Title = "ViewVariant";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -7,87 +10,254 @@
 
 <h2 class="text-center">Варіанти відповідей</h2>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createVariant">
-                    <i class="fas fa-plus fa-1x"></i> Створити варіант
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <table class="table text-center">
-                    <tr>
-                        <th>Номер</th>
-                        <th>Варіант</th>
-                        <th>Відповідь правильна</th>
-                    </tr>
-                    @foreach (tbTaskVariant variant in Model.tbTaskVariant)
-                    {
-                        <tr>
-                            <td>@counter</td>
-                            <td>@variant.Name</td>
-                            <td>
-                                @if ((bool)variant.isRight)
-                                {
-                                    <label>Так</label>
-                                }
-                                else { 
-                                 <label>Ні</label>
-                                }
-                            </td>
-                        </tr>
-                        counter++;
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-@using (Html.BeginForm("CreateVariant", "Tutor", FormMethod.Post))
+@if (Model.Type == (int)TaskStuff.TaskType.SelectCheckBox)
 {
-    <div class="modal fade" id="createVariant" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="title">Створення варіанта відповідей</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createVariant">
+                        <i class="fas fa-plus fa-1x"></i> Створити варіант
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-12">Варіант</label>
-                            <div class="col-12">
-                                <input type="text" name="Name" class="form-control" />
-                            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table text-center">
+                        <tr>
+                            <th>Номер</th>
+                            <th>Варіант</th>
+                            <th>Відповідь правильна</th>
+                            <th>Редагувати</th>
+                        </tr>
+                        @foreach (tbTaskVariant variant in Model.tbTaskVariant)
+                        {
+                            <tr>
+                                <td>@counter</td>
+                                <td>@variant.Name</td>
+                                <td>
+                                    @if (variant.isRight)
+                                    {
+                                        <label>Так</label>
+                                    }
+                                    else
+                                    {
+                                        <label>Ні</label>
+                                    }
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
+                                        <i class="fas fa-edit fa-1x" style="color:black"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    using (Html.BeginForm("CreateVariant", "Tutor", FormMethod.Post))
+    {
+        <div class="modal fade" id="createVariant" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Створення варіанта відповідей</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
                             <div class="form-group">
+                                <label class="control-label col-12">Варіант</label>
                                 <div class="col-12">
+                                    <input type="text" name="Name" class="form-control" />
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-12">Відповідь правильна:</label>
-                                    <div><input type="radio" name="isRight" value="true"  class="ml-3"/> Так</div>
-                                    <div><input type="radio" name="isRight" value="false" class="ml-3"/> Ні</div>
+                                    <div class="col-12">
+                                        <div><input type="radio" name="isRight" value="true" class="ml-3" /> Так</div>
+                                        <div><input type="radio" name="isRight" value="false" class="ml-3" /> Ні</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
-                    <button type="submit" class="btn btn-primary">Зберегти</button>
+            </div>
+        </div>
+    }
+
+
+    using (Html.BeginForm("EditVariant", "Tutor", FormMethod.Post))
+    {
+        <div class="modal fade" id="editVariant" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Редагування варіанта відповідей</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-12">Варіант</label>
+                                <div class="col-12">
+                                    <input type="text" name="Name" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-12">Відповідь правильна:</label>
+                                    <div class="col-12">
+                                        <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
+                                        <input type="hidden" name="idTaskVariant" id="taskVariant" value="" />
+                                        <div><input type="radio" name="isRight" value="true" class="ml-3" /> Так</div>
+                                        <div><input type="radio" name="isRight" value="false" class="ml-3" /> Ні</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#createVariant">
+                        <i class="fas fa-plus fa-1x"></i> Створити відповідь
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>Правильна відповідь</th>
+                            <th>Редагувати</th>
+                        </tr>
+                        @foreach (tbTaskVariant variant in Model.tbTaskVariant)
+                        {
+                            <tr>
+                                <td>@variant.Name</td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
+                                        <i class="fas fa-edit fa-1x" style="color:black"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    using (Html.BeginForm("CreateVariant", "Tutor", FormMethod.Post))
+    {
+        <div class="modal fade" id="createVariant" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Введіть правильну відповідь</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-12">Варіант</label>
+                                <div class="col-12">
+                                    <input type="text" name="Name" class="form-control" />
+                                    <input type="hidden" name="isRight" value="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    using (Html.BeginForm("EditVariant", "Tutor", FormMethod.Post))
+    {
+        <div class="modal fade" id="editVariant" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="title">Введіть правильну відповідь</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-12">Варіант</label>
+                                <div class="col-12">
+                                    <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
+                                    <input type="hidden" name="idTaskVariant" id="taskVariant" value="" />
+                                    <input type="text" name="Name" class="form-control" />
+                                    <input type="hidden" name="isRight" value="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 
+
+
+@section Scripts{
+    <script>
+        function setValue(id) {
+            $('#taskVariant').val(id);
+        }
+    </script>
+}

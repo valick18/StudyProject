@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -20,8 +20,8 @@
             <PropertyRef Name="idGroup" />
           </Key>
           <Property Name="idGroup" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="255" />
-          <Property Name="DateCreate" Type="datetime" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="DateCreate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="tbGroup_Institution">
           <Key>
@@ -36,7 +36,7 @@
             <PropertyRef Name="idInstitution" />
           </Key>
           <Property Name="idInstitution" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
           <Property Name="Logo" Type="varbinary(max)" />
           <Property Name="id_user" Type="uniqueidentifier" />
           <Property Name="DateCreate" Type="datetime" />
@@ -86,8 +86,8 @@
             <PropertyRef Name="idMaterial" />
           </Key>
           <Property Name="idMaterial" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="255" />
-          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTask">
           <Key>
@@ -96,12 +96,13 @@
           <Property Name="idTask" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nchar" MaxLength="255" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="Answer" Type="nvarchar(max)" />
           <Property Name="Picture" Type="varbinary(max)" />
           <Property Name="Audio" Type="varbinary(max)" />
           <Property Name="Video" Type="varbinary(max)" />
           <Property Name="Rate" Type="int" />
           <Property Name="id_test" Type="uniqueidentifier" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="isManual" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTask_Material">
           <Key>
@@ -125,7 +126,7 @@
             <PropertyRef Name="id_user" />
             <PropertyRef Name="id_test" />
           </Key>
-          <Property Name="UserAnswer" Type="nvarchar(max)" />
+          <Property Name="UserAnswer" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Rate" Type="int" />
           <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
@@ -136,8 +137,8 @@
             <PropertyRef Name="idTaskVariant" />
           </Key>
           <Property Name="idTaskVariant" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="isRight" Type="bit" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="isRight" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -169,13 +170,13 @@
             <PropertyRef Name="idUser" />
           </Key>
           <Property Name="idUser" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="FirstName" Type="nchar" MaxLength="50" />
-          <Property Name="LastName" Type="nchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="MiddleName" Type="nchar" MaxLength="50" />
-          <Property Name="Login" Type="varchar(max)" />
-          <Property Name="Password" Type="varbinary(max)" />
+          <Property Name="Login" Type="varchar(max)" Nullable="false" />
+          <Property Name="Password" Type="varbinary(max)" Nullable="false" />
           <Property Name="Age" Type="int" />
-          <Property Name="Role" Type="int" />
+          <Property Name="Role" Type="int" Nullable="false" />
           <Property Name="DateCreate" Type="datetime" />
         </EntityType>
         <EntityType Name="tbUser_Group">
@@ -626,8 +627,7 @@
             <End Role="tbUser_Group" EntitySet="tbUser_Group" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudyPlatformModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -646,8 +646,8 @@
             <PropertyRef Name="idGroup" />
           </Key>
           <Property Name="idGroup" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
-          <Property Name="DateCreate" Type="DateTime" Precision="3" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DateCreate" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="tbInvite" Relationship="Self.FK_tbInvite_tbGroup" FromRole="tbGroup" ToRole="tbInvite" />
           <NavigationProperty Name="tbLesson_Group" Relationship="Self.FK_tbLesson_Group_tbGroup" FromRole="tbGroup" ToRole="tbLesson_Group" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.tbGroup_Institution" FromRole="tbGroup" ToRole="tbInstitution" />
@@ -658,7 +658,7 @@
             <PropertyRef Name="idInstitution" />
           </Key>
           <Property Name="idInstitution" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="id_user" Type="Guid" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
@@ -712,8 +712,8 @@
             <PropertyRef Name="idMaterial" />
           </Key>
           <Property Name="idMaterial" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbMaterials" FromRole="tbMaterials" ToRole="tbLesson" />
           <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterials" ToRole="tbMaterial_Institution" />
           <NavigationProperty Name="tbTask" Relationship="Self.tbTask_Material" FromRole="tbMaterials" ToRole="tbTask" />
@@ -725,12 +725,13 @@
           <Property Name="idTask" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Audio" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Video" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Rate" Type="Int32" />
           <Property Name="id_test" Type="Guid" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="isManual" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTask_tbTest" FromRole="tbTask" ToRole="tbTest" />
           <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbTask" FromRole="tbTask" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.tbTask_Material" FromRole="tbTask" ToRole="tbMaterials" />
@@ -743,7 +744,7 @@
             <PropertyRef Name="id_user" />
             <PropertyRef Name="id_test" />
           </Key>
-          <Property Name="UserAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Rate" Type="Int32" />
           <Property Name="id_task" Type="Guid" Nullable="false" />
           <Property Name="id_user" Type="Guid" Nullable="false" />
@@ -757,8 +758,8 @@
             <PropertyRef Name="idTaskVariant" />
           </Key>
           <Property Name="idTaskVariant" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="isRight" Type="Boolean" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="isRight" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbTask" Relationship="Self.tbTask_TaskVariant" FromRole="tbTaskVariant" ToRole="tbTask" />
         </EntityType>
         <EntityType Name="tbTest">
@@ -791,13 +792,13 @@
             <PropertyRef Name="idUser" />
           </Key>
           <Property Name="idUser" Type="Guid" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Login" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="Age" Type="Int32" />
-          <Property Name="Role" Type="Int32" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
           <Property Name="DateCreate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbUser" FromRole="tbUser" ToRole="tbTaskResult" />
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbUser" ToRole="tbTestResult" />
@@ -1179,12 +1180,13 @@
                 <ScalarProperty Name="idTask" ColumnName="idTask" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Answer" ColumnName="Answer" />
                 <ScalarProperty Name="Picture" ColumnName="Picture" />
                 <ScalarProperty Name="Audio" ColumnName="Audio" />
                 <ScalarProperty Name="Video" ColumnName="Video" />
                 <ScalarProperty Name="Rate" ColumnName="Rate" />
                 <ScalarProperty Name="id_test" ColumnName="id_test" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="isManual" ColumnName="isManual" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

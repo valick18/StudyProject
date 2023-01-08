@@ -25,7 +25,7 @@ namespace StudyProject
     
         public System.Guid idGroup { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> DateCreate { get; set; }
+        public System.DateTime DateCreate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbInvite> tbInvite { get; set; }

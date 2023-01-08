@@ -144,25 +144,36 @@ namespace StudyProject.Controllers.Tutor
         public ActionResult ViewTest(Guid idTest)
         {
             tbTest test = db.tbTest.Find(idTest);
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = TaskStuff.getNameType(TaskStuff.TaskType.SelectCheckBox), Value = "0", Selected = true });
+            items.Add(new SelectListItem { Text = TaskStuff.getNameType(TaskStuff.TaskType.Input), Value = "1" });
+            ViewBag.Type = items;
+
             return View(test);
         }
 
         [HttpPost]
         public ActionResult CreateTask(tbTask task, Guid idTest)
         {
-            string[] onCheck = { task.Name, task.Answer, task.Description};
+            string[] onCheck = { task.Name, task.Description};
 
-            if (!CheckField.checkOnNullOrEmpty(onCheck)) { 
-            
+            if (!CheckField.checkOnNullOrEmpty(onCheck)) {
+
+                if (task.Type == (int)TaskStuff.TaskType.SelectCheckBox && task.isManual) {
+                    task.isManual = false;
+                }
+
                 tbTask newTask = new tbTask() { 
                     idTask = Guid.NewGuid(),
                     id_test = idTest,
                     Name = task.Name,
-                    Answer = task.Answer,
                     Audio = task.Audio,
                     Description = task.Description,
                     Picture = task.Picture,
-                    Rate = task.Rate ?? 1
+                    Rate = task.Rate ?? 1,
+                    isManual = task.isManual,
+                    Type = task.Type,
                 };
                 db.tbTask.Add(newTask);
                 db.SaveChanges();
@@ -178,7 +189,7 @@ namespace StudyProject.Controllers.Tutor
 
         [HttpPost]
         public ActionResult CreateVariant(Guid idTask, tbTaskVariant variant) {
-            if (!string.IsNullOrEmpty(variant.Name) && variant.isRight != null)
+            if (!string.IsNullOrEmpty(variant.Name))
             {
                 tbTask task = db.tbTask.Find(idTask);
                 variant.idTaskVariant = Guid.NewGuid();
@@ -187,6 +198,22 @@ namespace StudyProject.Controllers.Tutor
                 db.SaveChanges();
             }
             return RedirectToAction("ViewVariant", new { idTask = idTask});
+        }    
+        
+        [HttpPost]
+        public ActionResult EditVariant(tbTaskVariant variant, Guid idTask) {
+         
+            tbTaskVariant oldVariant = db.tbTaskVariant.Find(variant.idTaskVariant);
+       
+            if (!string.IsNullOrEmpty(variant.Name))
+            {
+                oldVariant.Name = variant.Name;
+            }
+            
+            oldVariant.isRight = variant.isRight;
+            db.SaveChanges();
+
+            return RedirectToAction("ViewVariant", new { idTask = idTask });
         }
 
     }

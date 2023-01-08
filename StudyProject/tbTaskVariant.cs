@@ -22,7 +22,7 @@ namespace StudyProject
     
         public System.Guid idTaskVariant { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> isRight { get; set; }
+        public bool isRight { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTask> tbTask { get; set; }

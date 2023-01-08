@@ -1,8 +1,12 @@
 ﻿@model tbTest
 
+@using StudyProject.Models.Core
+
 @{
     ViewBag.Title = "ViewTest";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+ 
+
 }
 
 <h4 class="text-center">@Model.Name</h4>
@@ -27,17 +31,27 @@
                 <table class="table">
                     <tr>
                         <th>Назва</th>
-                        <th>Відповідь</th>
                         <th>Оцінка за завдання</th>
                         <th>Варіантів відповідей</th>
+                        <th>Перевірка задачі</th>
+                        <th>Тип задачі</th>
                     </tr>
                     @foreach (tbTask task in Model.tbTask)
                     {
                         <tr>
                             <td><a href="@Url.Action("ViewVariant","Tutor", new { idTask = task.idTask})">@task.Name</a></td>
-                            <td>@task.Answer</td>
                             <td>@task.Rate</td>
                             <td>@task.tbTaskVariant.Count()</td>
+                            <td>
+                                @if (task.isManual)
+                                {
+                                    <label>Ручна</label>
+                                }
+                                else { 
+                                    <label>Автоматична</label>
+                                }
+                            </td>
+                            <td>@TaskStuff.getNameType((TaskStuff.TaskType)task.Type)</td>
                         </tr>
                     }
                 </table>
@@ -67,12 +81,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-12">Відповідь на завдання</label>
-                            <div class="col-12">
-                                <input type="text" name="Answer" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label col-12">Постановка задачі</label>
                             <div class="col-12">
                                 <input type="text" name="Description" class="form-control" />
@@ -82,6 +90,19 @@
                             <label class="control-label col-12">Оцінка</label>
                             <div class="col-12">
                                 <input type="number" name="Rate" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Тип задачі</label>
+                            <div class="col-12">
+                                @Html.DropDownList("Type", null ,new { @class = "form-control"})
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Ручна перевірка</label>
+                            <div class="col-12">
+                                <div><input type="radio" name="isManual" value="true" class="ml-3" /> Так</div>
+                                <div><input type="radio" name="isManual" value="false" class="ml-3" /> Ні</div>
                             </div>
                         </div>
                     </div>

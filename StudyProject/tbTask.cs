@@ -26,12 +26,13 @@ namespace StudyProject
         public System.Guid idTask { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Answer { get; set; }
         public byte[] Picture { get; set; }
         public byte[] Audio { get; set; }
         public byte[] Video { get; set; }
         public Nullable<int> Rate { get; set; }
         public Nullable<System.Guid> id_test { get; set; }
+        public int Type { get; set; }
+        public bool isManual { get; set; }
     
         public virtual tbTest tbTest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

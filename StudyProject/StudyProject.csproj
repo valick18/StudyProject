@@ -263,6 +263,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Core\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\Core\TaskStuff.cs" />
     <Compile Include="Models\Core\UserBuilder.cs" />
     <Compile Include="Models\Core\UserIdentity.cs" />
     <Compile Include="Models\Core\UserRole.cs" />
@@ -2528,15 +2529,15 @@
     <Content Include="plugins\summernote\summernote.js.map" />
     <Content Include="plugins\summernote\summernote.min.js.map" />
     <Content Include="plugins\toastr\toastr.js.map" />
+    <Content Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </Content>
     <EntityDeploy Include="eStudy.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>eStudy.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="eStudy.edmx.diagram">
       <DependentUpon>eStudy.edmx</DependentUpon>
-    </Content>
-    <Content Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
