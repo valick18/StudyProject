@@ -29,11 +29,28 @@
                 <table class="table">
                     <tr>
                         <th>Назва</th>
+                        <th>Редагувати</th>
+                        <th>Видалити</th>
                     </tr>
                     @foreach (tbTest test in Model)
                     {
                         <tr>
                             <td><a href="@Url.Action("ViewTest","Tutor", new { idTest = test.idTest })">@test.Name</a></td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editTest" onclick="setValueTest('@idInst', '@test.idTest')">
+                                    <i class="fas fa-edit fa-1x"></i>
+                                </button>
+                            </td>
+                            <td>
+                                @if (!test.tbLesson.Any())
+                                {
+                                    <a href="@Url.Action("RemoveTest", new { idTest = test.idTest, idInst = test.id_institution })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                }
+                                else
+                                {
+                                    <p>Використовується у тестуванні</p>
+                                }
+                            </td>
                         </tr>
                     }
                 </table>
@@ -77,10 +94,48 @@
 }
 
 
+
+@using (Html.BeginForm("EditTest", "Tutor", FormMethod.Post))
+{
+    <div class="modal fade" id="editTest" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="title">Створення тесту</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Назва</label>
+                            <div class="col-12">
+                                <input type="text" name="Name" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idTest" id="test" value="" />
+                    <input type="hidden" name="idInst" id="institution" value="" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @section Scripts{
     <script>
         function setValue(id) {
             $('#inst').val(id);
+        }
+
+        function setValueTest(idInst, idTest) {
+            $('#institution').val(idInst);
+            $('#test').val(idTest);
         }
     </script>
 }

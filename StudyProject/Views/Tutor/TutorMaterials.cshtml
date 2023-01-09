@@ -26,11 +26,22 @@
                 <table class="table">
                     <tr>
                         <th>Назва</th>
+                        <th>Редагувати</th>
+                        <th>Видалити</th>
                     </tr>
                     @foreach (tbMaterials material in Model)
                     {
                         <tr>
                             <td><a href="@Url.Action("ViewMateril","Tutor", new { idMaterial = material.idMaterial })">@material.Name</a></td>
+                            <td>
+
+                                <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editMaterial" onclick="setValueMaterial('@ViewBag.idInstitution', '@material.idMaterial')">
+                                    <i class="fas fa-edit fa-1x"></i>
+                                </button>
+                            </td>
+                            <td>
+                              <a href="@Url.Action("RemoveMaterial", new { id = material.idMaterial })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                            </td>
                         </tr>
                     }
                 </table>
@@ -78,6 +89,43 @@
 }
 
 
+@using (Html.BeginForm("EditMaterial", "Tutor", FormMethod.Post))
+{
+    <div class="modal fade" id="editMaterial" tabindex="-1" role="dialog" aria-labelledby="title" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="title">Редагувати матеріал</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Назва</label>
+                            <div class="col-12">
+                                <input type="text" name="Name" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Текст</label>
+                            <textarea class="form-control" id="text2" name="Text" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idInst" id="institution" value="" />
+                    <input type="hidden" name="idMaterial" id="material" value="" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @section Scripts{
     <script>
         function setValue(id) {
@@ -88,7 +136,15 @@
     <script>
         $(function () {
             $('#text').summernote()
+            $('#text2').summernote()
         })
+    </script>
+
+    <script>
+        function setValueMaterial(idInst, idMaterial, name, text) {
+            $('#institution').val(idInst);
+            $('#material').val(idMaterial);
+        }
     </script>
 
 }

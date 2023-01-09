@@ -34,6 +34,7 @@
                             <th>Варіант</th>
                             <th>Відповідь правильна</th>
                             <th>Редагувати</th>
+                            <th>Видалити</th>
                         </tr>
                         @foreach (tbTaskVariant variant in Model.tbTaskVariant)
                         {
@@ -54,6 +55,9 @@
                                     <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
                                         <i class="fas fa-edit fa-1x" style="color:black"></i>
                                     </button>
+                                </td>
+                                <td>
+                                   <a href="@Url.Action("RemoveVariant","Tutor", new { idVariant = variant.idTaskVariant, idTask = Model.idTask })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                             counter++;

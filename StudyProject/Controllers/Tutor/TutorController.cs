@@ -160,15 +160,70 @@ namespace StudyProject.Controllers.Tutor
         }
 
         [HttpPost]
+        public ActionResult EditTask(tbTask task, Guid idTest)
+        {
+            tbTask oldTask = db.tbTask.Find(task.idTask);
+            if (!string.IsNullOrEmpty(task.Name)) {
+                oldTask.Name = task.Name;
+            }
+
+            if (!string.IsNullOrEmpty(task.Description))
+            {
+                oldTask.Description = task.Description;
+            }
+
+            if (oldTask.Rate != null && oldTask.Rate != task.Rate) { 
+                oldTask.Rate = task.Rate;
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("ViewTest", new { idTest = idTest });
+        }
+
+        public ActionResult RemoveTask(Guid idTask)
+        {
+            tbTask task = db.tbTask.Find(idTask);
+            tbTest test = task.tbTest;
+            if (!task.tbTaskResult.Any())
+            {
+                test.tbTask.Remove(task);
+
+                List<tbTaskVariant> taskVariants = task.tbTaskVariant.ToList();
+                List<tbMaterials> taskMaterials = task.tbMaterials.ToList();
+
+                foreach (tbTaskVariant variant in taskVariants)
+                {
+                    task.tbTaskVariant.Remove(variant);
+                }
+
+                foreach (tbMaterials material in taskMaterials)
+                {
+                    material.tbTask.Remove(task);
+                }
+
+                db.SaveChanges();
+            }
+            return RedirectToAction("ViewTest", new { idTest = test.idTest });
+
+        }
+
+        public ActionResult RemoveVariant(Guid idVariant, Guid idTask)
+        {
+            tbTaskVariant variant = db.tbTaskVariant.Find(idVariant);
+            tbTask task = db.tbTask.Find(idTask);
+            task.tbTaskVariant.Remove(variant);
+            db.SaveChanges();
+            return RedirectToAction("ViewVariant", new { idTask = task.idTask });
+        }
+
+        [HttpPost]
         public ActionResult CreateTask(tbTask task, Guid idTest)
         {
             string[] onCheck = { task.Name, task.Description};
 
             if (!CheckField.checkOnNullOrEmpty(onCheck)) {
 
-                if (task.Type == (int)TaskStuff.TaskType.SelectCheckBox && task.isManual) {
-                    task.isManual = false;
-                }
 
                 tbTask newTask = new tbTask() { 
                     idTask = Guid.NewGuid(),
@@ -283,6 +338,76 @@ namespace StudyProject.Controllers.Tutor
                 db.SaveChanges();
             }
             return RedirectToAction("Lessons", new { idGroup = idGroup });
+        }
+
+        [ValidateInput(false)]
+        [HttpPost]
+        public ActionResult EditMaterial(tbMaterials material, Guid idInst)
+        {
+            tbMaterials editMaterial = db.tbMaterials.Find(material.idMaterial);
+            if (!string.IsNullOrEmpty(material.Name)) { 
+                 editMaterial.Name = material.Name;
+            }
+            if (!string.IsNullOrEmpty(material.Text))
+            {
+                editMaterial.Text = material.Text;
+            }
+                
+            db.SaveChanges();
+
+            return RedirectToAction("TutorMaterials", "Tutor", new { idInst = idInst });
+        }
+
+        public ActionResult RemoveMaterial(Guid id) {
+            UserInfo uInfo = new UserInfo(db);
+            List<Guid> userInst = uInfo.fuser.tbInstitution.Select(s=>s.idInstitution).ToList();
+
+            tbMaterials material = db.tbMaterials.Find(id);
+            Guid idInst_Material = material.tbMaterial_Institution.tbInstitution.idInstitution;
+            if (userInst.Contains(idInst_Material)) {
+                db.tbMaterial_Institution.Remove(material.tbMaterial_Institution);
+                List<tbLesson> lessons = db.tbLesson.Where(w => w.id_material == material.idMaterial).ToList();
+                if (lessons != null && lessons.Any()) {
+                    foreach (tbLesson lesson in lessons) {
+                        lesson.id_material = null;
+                    }
+                }
+                db.tbMaterials.Remove(material);
+                db.SaveChanges();
+            }
+            return RedirectToAction("TutorMaterials", "Tutor", new { idInst = idInst_Material });
+        }
+
+        public ActionResult RemoveTest(Guid idTest, Guid idInst)
+        {
+            tbTest test = db.tbTest.Find(idTest);
+            if (!test.tbLesson.Any()) {
+                List<tbTask> tasks = test.tbTask.ToList();
+                foreach (tbTask task in tasks) {
+                    List<tbTaskVariant> variants = task.tbTaskVariant.ToList();
+                    foreach (tbTaskVariant variant in variants) {
+                        db.tbTaskVariant.Remove(variant);
+                    }
+                    db.tbTask.Remove(task);
+                }
+            }
+
+            db.tbTest.Remove(test);
+            db.SaveChanges();
+
+            return RedirectToAction("TutorTests", "Tutor", new { idInst = idInst });
+        }
+
+        [HttpPost]
+        public ActionResult EditTest(tbTest test, Guid idInst) {
+           
+            if (!string.IsNullOrEmpty(test.Name)) {
+                tbTest oldTest = db.tbTest.Find(test.idTest);
+                oldTest.Name = test.Name;
+                db.SaveChanges();
+            }
+ 
+            return RedirectToAction("TutorTests", new { idInst = idInst });
         }
 
     }
