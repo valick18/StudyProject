@@ -17,7 +17,9 @@ namespace StudyProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbUser()
         {
+            this.tbMaterials = new HashSet<tbMaterials>();
             this.tbTaskResult = new HashSet<tbTaskResult>();
+            this.tbTest = new HashSet<tbTest>();
             this.tbTestResult = new HashSet<tbTestResult>();
             this.tbInstitution = new HashSet<tbInstitution>();
             this.tbGroup = new HashSet<tbGroup>();
@@ -34,7 +36,11 @@ namespace StudyProject
         public Nullable<System.DateTime> DateCreate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbMaterials> tbMaterials { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTaskResult> tbTaskResult { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbTest> tbTest { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTestResult> tbTestResult { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

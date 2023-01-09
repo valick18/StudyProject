@@ -1,0 +1,102 @@
+﻿@model List<tbLesson>
+@{
+    ViewBag.Title = "Lessons";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    List<SelectListItem> tests = ViewBag.id_test;
+    List<SelectListItem> materials = ViewBag.id_material;
+}
+
+
+
+<h4 class="text-center">Заняття</h4>
+
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @if (tests != null && tests.Any())
+                {
+                    <button type="button" class="btn btn-default btn-xs mt-1 mb-2" data-toggle="modal" data-target="#createLesson">
+                        <i class="fas fa-plus"></i> Додати нове заняття
+                    </button>
+                }
+                else { 
+                    <p class="text-center" style="color:red"><i class="fa fa-info-circle"></i>У вас немає доступних тестів. <a href="@Url.Action("TutorInstitution","Tutor")"> Перейти до створення</a></p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+                        <table class="table text-center">
+                            <tr>
+                                <th>
+                                    Назва
+                                </th>
+                                <th>
+                                    Дата створення
+                                </th>
+                            </tr>
+                            @foreach (tbLesson lesson in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @lesson.Name
+                                    </td>
+                                    <td>
+                                        <label>
+                                            @lesson.DateCreate
+                                        </label>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("CreateLesson", "Tutor", FormMethod.Post))
+{
+    <div class="modal fade" id="createLesson" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Створення заняття</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-12">Назва</label>
+                            <input type="text" name="Name" class="form-control" />
+                            <input type="hidden" name="idGroup" value="@ViewBag.idGroup" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-12">Оберіть тест для привязки</label>
+                            @Html.DropDownList("id_test", null, new { @class = "form-control" })
+                            @if (materials != null && materials.Any())
+                            {
+                                <label class="control-label col-12">Оберіть навчальний матеріал для привязки (Не обовязково)</label>
+                                @Html.DropDownList("id_material", null, new { @class = "form-control" })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
+                    <button type="submit" class="btn btn-primary">Створити</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

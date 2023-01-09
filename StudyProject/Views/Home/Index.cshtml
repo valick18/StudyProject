@@ -1,11 +1,11 @@
 ﻿@using StudyProject;
 
-@model tbUser
+@model List<tbTest>
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<div class="row">
-    @Model.FirstName
-</div>
+@foreach (tbTest test in Model) { 
+    <p>@test.tbInstitution.Name @test.Name</p>
+}

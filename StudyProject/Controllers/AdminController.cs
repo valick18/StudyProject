@@ -83,22 +83,7 @@ namespace StudyProject.Controllers
             db.SaveChanges();
             return RedirectToAction("UserManagement");
         }
-
-        //[HttpPost] 
-        //public ActionResult RemoveInstitution(Guid idInst)
-        //{
-        //    tbInstitution inst = db.tbInstitution.Find(idInst);
-
-        //    foreach (tbUser user in inst.tbUser) {
-        //        inst.tbUser.Remove(user);
-        //    }
-
-        //    db.tbInstitution.Remove(inst);
-        //    db.SaveChanges();
-        //    return RedirectToAction("InstitutionManagement");
-        //}
-
-      
+     
         public ActionResult RemoveUserFromInstitution(Guid idUser, Guid idInstitution)
         {
             tbInstitution inst = db.tbInstitution.Find(idInstitution);

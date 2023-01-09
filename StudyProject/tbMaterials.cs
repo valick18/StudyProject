@@ -24,10 +24,12 @@ namespace StudyProject
         public System.Guid idMaterial { get; set; }
         public string Name { get; set; }
         public string Text { get; set; }
+        public System.Guid id_user { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbLesson> tbLesson { get; set; }
         public virtual tbMaterial_Institution tbMaterial_Institution { get; set; }
+        public virtual tbUser tbUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTask> tbTask { get; set; }
     }

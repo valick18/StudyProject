@@ -18,8 +18,8 @@ namespace StudyProject
         public tbGroup()
         {
             this.tbInvite = new HashSet<tbInvite>();
-            this.tbLesson_Group = new HashSet<tbLesson_Group>();
             this.tbInstitution = new HashSet<tbInstitution>();
+            this.tbLesson = new HashSet<tbLesson>();
             this.tbUser = new HashSet<tbUser>();
         }
     
@@ -30,9 +30,9 @@ namespace StudyProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbInvite> tbInvite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbLesson_Group> tbLesson_Group { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbInstitution> tbInstitution { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbLesson> tbLesson { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbUser> tbUser { get; set; }
     }

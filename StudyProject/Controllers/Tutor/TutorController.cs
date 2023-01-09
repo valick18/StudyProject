@@ -88,12 +88,14 @@ namespace StudyProject.Controllers.Tutor
             if (string.IsNullOrEmpty(material.Name) || string.IsNullOrEmpty(material.Text)) { 
                return RedirectToAction("TutorMaterials","Tutor", new { idInst = idInst });
             }
+            UserInfo uInfo = new UserInfo(db);
 
             tbMaterials newMaterial = new tbMaterials()
             {
                 idMaterial = Guid.NewGuid(),
                 Name = material.Name,
-                Text = material.Text
+                Text = material.Text,
+                id_user = uInfo.idUser,
             };
 
             db.tbMaterials.Add(newMaterial);
@@ -128,10 +130,13 @@ namespace StudyProject.Controllers.Tutor
         public ActionResult CreateTest(string Name, Guid idInst) {
 
             if (!string.IsNullOrEmpty(Name)) {
+                UserInfo uInfo = new UserInfo(db);
+
                 tbTest test = new tbTest() { 
                     Name = Name,
                     idTest = Guid.NewGuid(),
-                    id_institution = idInst
+                    id_institution = idInst,
+                    id_user = uInfo.fuser.idUser,
                 };
                 tbInstitution institution = db.tbInstitution.Find(idInst);
                 institution.tbTest.Add(test);
@@ -228,6 +233,56 @@ namespace StudyProject.Controllers.Tutor
             db.SaveChanges();
 
             return RedirectToAction("UsersGroup", new { idGroup = idGroup });
+        }
+
+
+        public ActionResult Lessons(Guid idGroup)
+        {
+            UserInfo uInfo = new UserInfo(db);
+            tbGroup group = db.tbGroup.Find(idGroup);
+            List<tbLesson> lessons = group.tbLesson.ToList();
+           
+            List<SelectListItem> itemsTest = new List<SelectListItem>();
+           
+            foreach (tbTest test in uInfo.fuser.tbTest) {
+              if(!lessons.Where(w => w.tbTest.idTest == test.idTest).Any()){ 
+                      itemsTest.Add(new SelectListItem { Text = test.Name, Value = test.idTest.ToString()});
+                }
+            }
+            ViewBag.id_test = itemsTest;
+
+            List<tbMaterials> materials = db.tbMaterials.Where(w => w.id_user == uInfo.idUser).ToList();
+
+            List<SelectListItem> itemsMaterial = new List<SelectListItem>();
+            foreach (tbMaterials material in materials)
+            {
+                itemsMaterial.Add(new SelectListItem { Text = material.Name, Value = material.idMaterial.ToString()});
+            }
+
+            ViewBag.id_material = itemsMaterial;
+            ViewBag.idGroup = idGroup;
+
+            return View(lessons);
+        }
+
+        [HttpPost]
+        public ActionResult CreateLesson(tbLesson lesson, Guid idGroup) {
+          if(!string.IsNullOrEmpty(lesson.Name))
+            {
+                tbLesson newLesson = new tbLesson()
+                {
+                    idLesson = Guid.NewGuid(),
+                    Name = lesson.Name,
+                    DateCreate = DateTime.Now,
+                    id_material = lesson.id_material,
+                    id_test = lesson.id_test
+                };
+
+                tbGroup group = db.tbGroup.Find(idGroup);
+                group.tbLesson.Add(newLesson);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Lessons", new { idGroup = idGroup });
         }
 
     }

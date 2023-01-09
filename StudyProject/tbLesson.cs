@@ -17,16 +17,18 @@ namespace StudyProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbLesson()
         {
-            this.tbLesson_Group = new HashSet<tbLesson_Group>();
+            this.tbGroup = new HashSet<tbGroup>();
         }
     
         public System.Guid idLesson { get; set; }
         public Nullable<System.Guid> id_material { get; set; }
-        public Nullable<System.Guid> id_test { get; set; }
+        public System.Guid id_test { get; set; }
+        public System.DateTime DateCreate { get; set; }
+        public string Name { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbLesson_Group> tbLesson_Group { get; set; }
         public virtual tbMaterials tbMaterials { get; set; }
         public virtual tbTest tbTest { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbGroup> tbGroup { get; set; }
     }
 }

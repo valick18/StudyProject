@@ -61,11 +61,12 @@ namespace StudingPlatform.Controllers
         [HttpPost]
         public ActionResult Register(RegistrationModel newUser, Guid? idInvite)
         {
-            //урахувати дублювання емайлів
             bool isValidEmail = RegexUtilities.IsValidEmail(newUser.Login);
+            List<string> Logins = db.tbUser.Select(s => s.Login).ToList();
+            bool isNotEqualEmails = !string.IsNullOrEmpty(newUser.Login) && !Logins.Contains(newUser.Login);
             bool isNotNullOrEmptyFields = !string.IsNullOrEmpty(newUser.FirstName) && !string.IsNullOrEmpty(newUser.LastName) && !string.IsNullOrEmpty(newUser.MiddleName) && !string.IsNullOrEmpty(newUser.Password);
             bool isEqualPass = newUser.RepeatPassword != null && newUser.Password.Equals(newUser.RepeatPassword);
-            if (isValidEmail && isNotNullOrEmptyFields && newUser.Age >= 12 && isEqualPass)
+            if (isValidEmail && isNotEqualEmails && isNotNullOrEmptyFields && newUser.Age >= 12 && isEqualPass)
             {
                 UserBuilder uBuilder = new UserBuilder(newUser);
                 tbUser user = uBuilder.Build();

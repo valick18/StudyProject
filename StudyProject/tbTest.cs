@@ -27,6 +27,7 @@ namespace StudyProject
         public System.Guid idTest { get; set; }
         public string Name { get; set; }
         public Nullable<System.Guid> id_institution { get; set; }
+        public Nullable<System.Guid> id_user { get; set; }
     
         public virtual tbInstitution tbInstitution { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -35,6 +36,7 @@ namespace StudyProject
         public virtual ICollection<tbTask> tbTask { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTaskResult> tbTaskResult { get; set; }
+        public virtual tbUser tbUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbTestResult> tbTestResult { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

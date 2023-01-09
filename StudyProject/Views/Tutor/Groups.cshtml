@@ -29,15 +29,15 @@
                 @foreach (var item in Model)
                 {
 
-                <div class="text-center">
-                    <h4>
-                        @item.Name
-                    </h4>
-                <button type="button" class="btn btn-default btn-xs mt-1 mb-2" data-toggle="modal" data-target="#exampleModal" onclick="setValueInstForGroup('@item.idInstitution')">
-                    <i class="fas fa-plus"></i> Додати нову групу
-                </button>
-                </div>
-        
+                    <div class="text-center">
+                        <h4>
+                            @item.Name
+                        </h4>
+                        <button type="button" class="btn btn-default btn-xs mt-1 mb-2" data-toggle="modal" data-target="#exampleModal" onclick="setValueInstForGroup('@item.idInstitution')">
+                            <i class="fas fa-plus"></i> Додати нову групу
+                        </button>
+                    </div>
+
                     <table class="table text-center">
                         <tr>
                             <th>
@@ -47,13 +47,14 @@
                                 Додати групу
                             </th>
                             <th>Редагувати</th>
+                            <th>Заняття</th>
                         </tr>
                         @foreach (tbGroup group in item.tbGroup)
                         {
                             <tr>
                                 <td>
                                     <a href="@Url.Action("UsersGroup", "Tutor", new { idGroup = group.idGroup })">
-                                            @group.Name
+                                        @group.Name
                                     </a>
 
                                 </td>
@@ -66,6 +67,11 @@
                                     <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editGroup" onclick="setValue('@group.idGroup')">
                                         <i class="fas fa-edit fa-1x"></i>
                                     </button>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Lessons","Tutor", new { idGroup = group.idGroup})" class="btn btn-primary btn-xs">
+                                        <i class="fas fa-edit fa-1x"></i>
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -93,7 +99,7 @@
                         <div class="form-group">
                             <label class="control-label col-12">Назва</label>
                             <input type="text" name="Name" class="form-control" />
-                            <input type="hidden" id="grInst" name="idInstitution" value=""/>
+                            <input type="hidden" id="grInst" name="idInstitution" value="" />
                         </div>
                     </div>
                 </div>
@@ -127,7 +133,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="idGroup" value="" id="group"/>
+                    <input type="hidden" name="idGroup" value="" id="group" />
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
                     <button type="submit" class="btn btn-primary">Змінити</button>
                 </div>
@@ -135,7 +141,6 @@
         </div>
     </div>
 }
-
 
 @section Scripts{
     <script>
@@ -146,5 +151,5 @@
         function setValueInstForGroup(id) {
             $('#grInst').val(id);
         }
-    </script>    
+    </script>
 }

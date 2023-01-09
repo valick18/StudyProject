@@ -6,32 +6,45 @@
 }
 
 <h4 class="text-center">Навчальні заклади</h4>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <table class="table">
-                    <tr>
-                        <th>Назва</th>
-                        <th>Адреса</th>
-                        <th>Матеріали</th>
-                        <th>Тести</th>
-                        <th>Дата створення</th>
-                    </tr>
-                    @foreach (tbInstitution inst in Model)
-                    {
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
                         <tr>
-                            <td>@inst.Name</td>
-                            <td>@inst.Adress</td>
-                            <td><a href="@Url.Action("TutorMaterials","Tutor", new { idInst = inst.idInstitution})"><i class="fas fa-edit fa-1x" style="color:green"></i></a></td>
-                            <td><a href="@Url.Action("TutorTests","Tutor", new { idInst = inst.idInstitution})"><i class="fas fa-edit fa-1x" style="color: orangered"></i></a></td>
-                            <td>@inst.DateCreate</td>
+                            <th>Назва</th>
+                            <th>Адреса</th>
+                            <th>Матеріали</th>
+                            <th>Тести</th>
+                            <th>Дата створення</th>
                         </tr>
-                    }
-                </table>
-
+                        @foreach (tbInstitution inst in Model)
+                        {
+                            <tr>
+                                <td>@inst.Name</td>
+                                <td>@inst.Adress</td>
+                                <td><a href="@Url.Action("TutorMaterials", "Tutor", new { idInst = inst.idInstitution })"><i class="fas fa-edit fa-1x" style="color:green"></i></a></td>
+                                <td><a href="@Url.Action("TutorTests", "Tutor", new { idInst = inst.idInstitution })"><i class="fas fa-edit fa-1x" style="color: orangered"></i></a></td>
+                                <td>@inst.DateCreate</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                        <p class="text-center" style="color:red"><i class="fa fa-info-circle"></i> У вас немає жодного навчального закладу</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
