@@ -15,7 +15,11 @@ namespace StudyProject.Controllers
         {
             UserInfo uInfo = new UserInfo(db);
             tbUser user = uInfo.fuser;
+
             List<tbTest> tests = user.tbGroup.SelectMany(w => w.tbLesson).Select(s=>s.tbTest).ToList();
+            List<tbInstitution> institutions = tests.Select(s => s.tbInstitution).Distinct().ToList();
+            ViewBag.institutions = institutions;
+
             return View(tests);
         }
     }

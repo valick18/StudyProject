@@ -4,8 +4,59 @@
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    List<tbInstitution> institutions = ViewBag.institutions;
 }
 
-@foreach (tbTest test in Model) { 
-    <p>@test.tbInstitution.Name @test.Name</p>
+@foreach (tbInstitution inst in institutions)
+{
+    <h4 class="text-center">
+        @inst.Name
+    </h4>
+
+    <div class="row">
+        @foreach (tbTest test in Model)
+        {
+            //і кількість спроб = 0
+            if (inst.tbTest.Where(w => w.idTest == test.idTest).Any())
+            {
+                <div class="col-md-4">
+                    <div class="card card-widget widget-user-2">
+                        <div class="widget-user-header" style="border-top: 3px solid #0094ff; background-color: #F0F0F0">
+                            <p class="text-center">Тест: @test.Name</p>
+                        </div>
+                        <div class="card-footer p-0">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Час: <span class="float-right badge bg-gradient-info">0</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Кількість завдань: <span class="float-right badge bg-gradient-info">@test.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Кількість спроб: <span class="float-right badge bg-gradient-info">0</span>
+                                    </a>
+                                </li>
+                                @*Прис/Отс/ПісляПроходж   <i class="fa-solid fa-xmark"></i>*@
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-up-right-from-square"></i></span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="btn btn-block btn-outline-primary btn-sm">
+                                        Перейти
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+    </div>
 }
