@@ -1,6 +1,6 @@
 ﻿@using StudyProject;
-
-@model List<tbTest>
+@using StudyProject.Models
+@model List<tbLesson>
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -13,42 +13,47 @@
         @inst.Name
     </h4>
 
-    <div class="row">
-        @foreach (tbTest test in Model)
+    <div class="row mt-2">
+        @foreach (tbLesson lesson in Model)
         {
             //і кількість спроб = 0
-            if (inst.tbTest.Where(w => w.idTest == test.idTest).Any())
+            if (inst.tbTest.Where(w => w.idTest == lesson.tbTest.idTest).Any())
             {
                 <div class="col-md-4">
                     <div class="card card-widget widget-user-2">
                         <div class="widget-user-header" style="border-top: 3px solid #0094ff; background-color: #F0F0F0">
-                            <p class="text-center">Тест: @test.Name</p>
+                            <p class="text-center">Тест: @lesson.tbTest.Name</p>
                         </div>
                         <div class="card-footer p-0">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Час: <span class="float-right badge bg-gradient-info">0</span>
+                                        Час: <span class="float-right badge bg-gradient-info">@TimeConverter.getTime(lesson.tbTest.TimeOnTest)</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Кількість завдань: <span class="float-right badge bg-gradient-info">@test.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
+                                        Кількість завдань: <span class="float-right badge bg-gradient-info">@lesson.tbTest.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        Кількість спроб: <span class="float-right badge bg-gradient-info">0</span>
+                                        Кількість спроб: <span class="float-right badge bg-gradient-info">@lesson.tbTest.Attempt</span>
                                     </a>
                                 </li>
-                                @*Прис/Отс/ПісляПроходж   <i class="fa-solid fa-xmark"></i>*@
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    @if (lesson.ShowMaterial && lesson.tbMaterials != null) {
+                                    <a href="@Url.Action("Material", "Home", new { id = lesson.tbMaterials.idMaterial })" class="nav-link">
                                         Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-up-right-from-square"></i></span>
                                     </a>
+                                    } else { 
+                                    <a href="#" class="nav-link">
+                                          Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-xmark"></i></span>
+                                    </a>
+                                    }
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="btn btn-block btn-outline-primary btn-sm">
+                                    <a href="@Url.Action("Test","Home", new { id = lesson.tbTest.idTest})" class="btn btn-block btn-outline-primary btn-sm">
                                         Перейти
                                     </a>
                                 </li>
@@ -56,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                }
             }
+        }
     </div>
 }

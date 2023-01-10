@@ -87,7 +87,14 @@
                             @if (materials != null && materials.Any())
                             {
                                 <label class="control-label col-12">Оберіть навчальний матеріал для привязки (Не обовязково)</label>
-                                @Html.DropDownList("id_material", null, new { @class = "form-control" })
+                                @Html.DropDownList("id_material", null, "", new { @class = "form-control" })
+                                <div class="form-group">
+                                    <label class="control-label col-12">Показувати матеріал до проходження теста:</label>
+                                    <div class="col-12">
+                                        <div><input type="radio" name="ShowMaterial" value="true" class="ml-3" /> Так</div>
+                                        <div><input type="radio" name="ShowMaterial" value="false" class="ml-3" /> Ні</div>
+                                    </div>
+                                </div>
                             }
                         </div>
                     </div>

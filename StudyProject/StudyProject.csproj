@@ -272,6 +272,7 @@
     <Compile Include="Models\RegexUtilities.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Models\SelectImage.cs" />
+    <Compile Include="Models\TimeConverter.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sysdiagrams.cs">

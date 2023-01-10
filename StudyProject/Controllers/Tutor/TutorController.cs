@@ -127,19 +127,21 @@ namespace StudyProject.Controllers.Tutor
         }
 
         [HttpPost]
-        public ActionResult CreateTest(string Name, Guid idInst) {
+        public ActionResult CreateTest(tbTest test, Guid idInst) {
 
-            if (!string.IsNullOrEmpty(Name)) {
+            if (!string.IsNullOrEmpty(test.Name)) {
                 UserInfo uInfo = new UserInfo(db);
 
-                tbTest test = new tbTest() { 
-                    Name = Name,
+                tbTest newTest = new tbTest() { 
+                    Name = test.Name,
                     idTest = Guid.NewGuid(),
                     id_institution = idInst,
                     id_user = uInfo.fuser.idUser,
+                    TimeOnTest = test.TimeOnTest,
+                    Attempt = test.Attempt
                 };
                 tbInstitution institution = db.tbInstitution.Find(idInst);
-                institution.tbTest.Add(test);
+                institution.tbTest.Add(newTest);
                 db.SaveChanges();
             }
 
@@ -330,7 +332,8 @@ namespace StudyProject.Controllers.Tutor
                     Name = lesson.Name,
                     DateCreate = DateTime.Now,
                     id_material = lesson.id_material,
-                    id_test = lesson.id_test
+                    id_test = lesson.id_test,
+                    ShowMaterial = lesson.id_material != null ? lesson.ShowMaterial : false,
                 };
 
                 tbGroup group = db.tbGroup.Find(idGroup);
@@ -400,13 +403,22 @@ namespace StudyProject.Controllers.Tutor
 
         [HttpPost]
         public ActionResult EditTest(tbTest test, Guid idInst) {
-           
+
+            tbTest oldTest = db.tbTest.Find(test.idTest);
+
             if (!string.IsNullOrEmpty(test.Name)) {
-                tbTest oldTest = db.tbTest.Find(test.idTest);
                 oldTest.Name = test.Name;
-                db.SaveChanges();
             }
- 
+            if (test.Attempt != oldTest.Attempt && test.Attempt > 0) {
+                oldTest.Attempt = test.Attempt;
+            }
+
+            if (test.TimeOnTest != oldTest.TimeOnTest && test.TimeOnTest >= 0) {
+                oldTest.TimeOnTest = test.TimeOnTest;
+            }
+
+            db.SaveChanges();
+
             return RedirectToAction("TutorTests", new { idInst = idInst });
         }
 

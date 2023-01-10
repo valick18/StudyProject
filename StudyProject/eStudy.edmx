@@ -66,6 +66,7 @@
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DateCreate" Type="datetime" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ShowMaterial" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbLesson_Group">
           <Key>
@@ -147,9 +148,11 @@
             <PropertyRef Name="idTest" />
           </Key>
           <Property Name="idTest" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nchar" MaxLength="255" />
+          <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
           <Property Name="id_institution" Type="uniqueidentifier" />
           <Property Name="id_user" Type="uniqueidentifier" />
+          <Property Name="Attempt" Type="int" Nullable="false" />
+          <Property Name="TimeOnTest" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest_Task">
           <Key>
@@ -721,6 +724,7 @@
           <Property Name="id_test" Type="Guid" Nullable="false" />
           <Property Name="DateCreate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShowMaterial" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.FK_tbLesson_tbMaterials" FromRole="tbLesson" ToRole="tbMaterials" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbLesson_tbTest" FromRole="tbLesson" ToRole="tbTest" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbLesson_Group" FromRole="tbLesson" ToRole="tbGroup" />
@@ -796,9 +800,11 @@
             <PropertyRef Name="idTest" />
           </Key>
           <Property Name="idTest" Type="Guid" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="id_institution" Type="Guid" />
           <Property Name="id_user" Type="Guid" />
+          <Property Name="Attempt" Type="Int32" Nullable="false" />
+          <Property Name="TimeOnTest" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.FK_tbTest_tbInstitution" FromRole="tbTest" ToRole="tbInstitution" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbTest" FromRole="tbTest" ToRole="tbLesson" />
           <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTask_tbTest" FromRole="tbTest" ToRole="tbTask" />
@@ -1187,6 +1193,7 @@
                 <ScalarProperty Name="id_test" ColumnName="id_test" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShowMaterial" ColumnName="ShowMaterial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1251,6 +1258,8 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id_institution" ColumnName="id_institution" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="Attempt" ColumnName="Attempt" />
+                <ScalarProperty Name="TimeOnTest" ColumnName="TimeOnTest" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

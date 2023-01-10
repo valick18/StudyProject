@@ -28,6 +28,8 @@ namespace StudyProject
         public string Name { get; set; }
         public Nullable<System.Guid> id_institution { get; set; }
         public Nullable<System.Guid> id_user { get; set; }
+        public int Attempt { get; set; }
+        public int TimeOnTest { get; set; }
     
         public virtual tbInstitution tbInstitution { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

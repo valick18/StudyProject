@@ -25,6 +25,7 @@ namespace StudyProject
         public System.Guid id_test { get; set; }
         public System.DateTime DateCreate { get; set; }
         public string Name { get; set; }
+        public bool ShowMaterial { get; set; }
     
         public virtual tbMaterials tbMaterials { get; set; }
         public virtual tbTest tbTest { get; set; }
