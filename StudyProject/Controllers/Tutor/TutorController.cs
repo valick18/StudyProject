@@ -210,13 +210,13 @@ namespace StudyProject.Controllers.Tutor
 
         }
 
-        public ActionResult RemoveVariant(Guid idVariant, Guid idTask)
+        public ActionResult RemoveVariant(Guid idTaskVariant, Guid idTask)
         {
-            tbTaskVariant variant = db.tbTaskVariant.Find(idVariant);
+            tbTaskVariant variant = db.tbTaskVariant.Find(idTaskVariant);
             tbTask task = db.tbTask.Find(idTask);
-            task.tbTaskVariant.Remove(variant);
+            db.tbTaskVariant.Remove(variant);
             db.SaveChanges();
-            return RedirectToAction("ViewVariant", new { idTask = task.idTask });
+            return RedirectToAction("ViewVariant", new { idTask = idTask });
         }
 
         [HttpPost]
@@ -235,7 +235,7 @@ namespace StudyProject.Controllers.Tutor
                     Description = task.Description,
                     Picture = task.Picture,
                     Rate = task.Rate ?? 1,
-                    isManual = task.isManual,
+                    isManual = task.Type == (int)TaskStuff.TaskType.Input ? task.isManual : false,
                     Type = task.Type,
                 };
                 db.tbTask.Add(newTask);
@@ -251,20 +251,21 @@ namespace StudyProject.Controllers.Tutor
         }
 
         [HttpPost]
-        public ActionResult CreateVariant(Guid idTask, tbTaskVariant variant) {
+        public ActionResult CreateVariant(Guid idTask, tbTaskVariant variant)
+        {
             if (!string.IsNullOrEmpty(variant.Name))
             {
                 tbTask task = db.tbTask.Find(idTask);
                 variant.idTaskVariant = Guid.NewGuid();
+                variant.id_task = idTask;
                 db.tbTaskVariant.Add(variant);
-                task.tbTaskVariant.Add(variant);
                 db.SaveChanges();
             }
-            return RedirectToAction("ViewVariant", new { idTask = idTask});
-        }    
-        
+            return RedirectToAction("ViewVariant", new { idTask = idTask });
+        }
+
         [HttpPost]
-        public ActionResult EditVariant(tbTaskVariant variant, Guid idTask) {
+        public ActionResult EditVariant(Guid idTask, tbTaskVariant variant) {
          
             tbTaskVariant oldVariant = db.tbTaskVariant.Find(variant.idTaskVariant);
        

@@ -264,6 +264,7 @@
     </Compile>
     <Compile Include="Models\Core\CustomAuthorizeAttribute.cs" />
     <Compile Include="Models\Core\TaskStuff.cs" />
+    <Compile Include="Models\Core\UserAnswer.cs" />
     <Compile Include="Models\Core\UserBuilder.cs" />
     <Compile Include="Models\Core\UserIdentity.cs" />
     <Compile Include="Models\Core\UserRole.cs" />
@@ -2576,6 +2577,8 @@
     <Content Include="Views\Tutor\ViewVariant.cshtml" />
     <Content Include="Views\EnterSystem\Invite.cshtml" />
     <Content Include="Views\Tutor\Lessons.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Home\TestResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

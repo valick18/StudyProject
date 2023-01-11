@@ -64,7 +64,7 @@
                                 @Html.DisplayFor(modelItem => item.Age)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Role)
+                                @UserInfo.getTextByRole((UserRole)item.Role)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DateCreate)
@@ -82,12 +82,12 @@
                                 }
                             </td>
                             <td>
-                                @if (!item.idUser.Equals(uInfo.fuser.idUser))
+                                @if (!item.idUser.Equals(uInfo.fuser.idUser) && (item.Role != (int)UserRole.Admin && !item.tbInstitution.Any()))
                                 {
-                                    using (Html.BeginForm("RemoveUser", "Admin", new { idUser = item.idUser }, FormMethod.Post))
-                                    {
-                                        <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-trash"></i></button>
-                                    }
+                                            using (Html.BeginForm("RemoveUser", "Admin", new { idUser = item.idUser }, FormMethod.Post))
+                                            {
+                                                    <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-trash"></i></button>
+                                            }
                                 }
                             </td>
                         </tr>

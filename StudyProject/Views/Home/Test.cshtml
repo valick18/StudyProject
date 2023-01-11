@@ -1,0 +1,57 @@
+﻿@model tbTest
+
+@using StudyProject.Models.Core;
+
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int count = -1;
+}
+
+<h2 class="text-center">Тест</h2>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm())
+                {
+                    foreach (tbTask task in Model.tbTask.Where(w => w.tbTaskVariant.Any()).ToList())
+                    {
+                        count++;
+                        @*<h4 class="text-center">@task.Name</h4>*@
+                        <h5>Завдання: @task.Description</h5>
+                        if (task.Type == (int)TaskStuff.TaskType.SelectCheckBox)
+                        {
+
+                            string type = "radio";
+
+                            if (task.tbTaskVariant.Where(W => W.isRight).Count() > 1)
+                            {
+                                type = "checkbox";
+                            }
+
+                            foreach (tbTaskVariant variant in task.tbTaskVariant)
+                            {
+                                <div class="ml-2">
+                                    <div class="form-group">
+                                        <input type=@type name="answersId" value="@variant.idTaskVariant" />  <label>@variant.Name</label>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        if (task.Type == (int)TaskStuff.TaskType.Input)
+                        {
+                            <div class="form-group">
+                                <textarea name="inputAnswers" class="form-control col-6"></textarea>
+                                <input type="hidden" name="idTaskVariants" value="@task.tbTaskVariant.FirstOrDefault().idTaskVariant" />
+                            </div>
+                        }
+                    }
+                    <input type="hidden" name = "idTest" value="@Model.idTest" />
+                    <input type="submit" class="btn btn-success mt-2" value="Завершити" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

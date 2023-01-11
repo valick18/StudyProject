@@ -57,7 +57,7 @@
                                     </button>
                                 </td>
                                 <td>
-                                   <a href="@Url.Action("RemoveVariant","Tutor", new { idVariant = variant.idTaskVariant, idTask = Model.idTask })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                    <a href="@Url.Action("RemoveVariant","Tutor", new { idTaskVariant =variant.idTaskVariant, idTask = variant.id_task})" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>
                             counter++;
@@ -130,7 +130,7 @@
                                     <label class="control-label col-12">Відповідь правильна:</label>
                                     <div class="col-12">
                                         <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
-                                        <input type="hidden" name="idTaskVariant" id="taskVariant" value="" />
+                                        <input type="hidden" name="idTaskVariant" id="taskVariant" class="form-control" value="" />
                                         <div><input type="radio" name="isRight" value="true" class="ml-3" /> Так</div>
                                         <div><input type="radio" name="isRight" value="false" class="ml-3" /> Ні</div>
                                     </div>
@@ -239,7 +239,7 @@ else
                                 <label class="control-label col-12">Варіант</label>
                                 <div class="col-12">
                                     <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
-                                    <input type="hidden" name="idTaskVariant" id="taskVariant" value="" />
+                                    <input type="hidden" name="idTaskVariant" id="taskVariant" class="form-control" value="" />
                                     <input type="text" name="Name" class="form-control" />
                                     <input type="hidden" name="isRight" value="true" />
                                 </div>
@@ -255,7 +255,6 @@ else
         </div>
     }
 }
-
 
 
 @section Scripts{

@@ -115,33 +115,26 @@
           <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_material" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
-        <EntityType Name="tbTask_TaskVariant">
-          <Key>
-            <PropertyRef Name="id_task" />
-            <PropertyRef Name="id_taskVariant" />
-          </Key>
-          <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="id_taskVariant" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="tbTaskResult">
           <Key>
-            <PropertyRef Name="id_task" />
-            <PropertyRef Name="id_user" />
-            <PropertyRef Name="id_test" />
+            <PropertyRef Name="idTaskResult" />
           </Key>
           <Property Name="UserAnswer" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Rate" Type="int" />
           <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
           <Property Name="id_test" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TimeCreate" Type="datetime" Nullable="false" />
+          <Property Name="idTaskResult" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTaskVariant">
           <Key>
             <PropertyRef Name="idTaskVariant" />
           </Key>
-          <Property Name="idTaskVariant" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="id_task" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="isRight" Type="bit" Nullable="false" />
+          <Property Name="idTaskVariant" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -363,30 +356,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tbTask_TaskVariant_tbTask">
-          <End Role="tbTask" Type="Self.tbTask" Multiplicity="1" />
-          <End Role="tbTask_TaskVariant" Type="Self.tbTask_TaskVariant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbTask">
-              <PropertyRef Name="idTask" />
-            </Principal>
-            <Dependent Role="tbTask_TaskVariant">
-              <PropertyRef Name="id_task" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tbTask_TaskVariant_tbTaskVariant">
-          <End Role="tbTaskVariant" Type="Self.tbTaskVariant" Multiplicity="1" />
-          <End Role="tbTask_TaskVariant" Type="Self.tbTask_TaskVariant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbTaskVariant">
-              <PropertyRef Name="idTaskVariant" />
-            </Principal>
-            <Dependent Role="tbTask_TaskVariant">
-              <PropertyRef Name="id_taskVariant" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_tbTask_tbTest">
           <End Role="tbTest" Type="Self.tbTest" Multiplicity="0..1" />
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
@@ -432,6 +401,18 @@
             </Principal>
             <Dependent Role="tbTaskResult">
               <PropertyRef Name="id_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbTaskVariant_tbTask">
+          <End Role="tbTask" Type="Self.tbTask" Multiplicity="1" />
+          <End Role="tbTaskVariant" Type="Self.tbTaskVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTask">
+              <PropertyRef Name="idTask" />
+            </Principal>
+            <Dependent Role="tbTaskVariant">
+              <PropertyRef Name="id_task" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -544,7 +525,6 @@
           <EntitySet Name="tbMaterials" EntityType="Self.tbMaterials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTask" EntityType="Self.tbTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTask_Material" EntityType="Self.tbTask_Material" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbTask_TaskVariant" EntityType="Self.tbTask_TaskVariant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTaskResult" EntityType="Self.tbTaskResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTaskVariant" EntityType="Self.tbTaskVariant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbTest" EntityType="Self.tbTest" Schema="dbo" store:Type="Tables" />
@@ -608,14 +588,6 @@
             <End Role="tbTask" EntitySet="tbTask" />
             <End Role="tbTask_Material" EntitySet="tbTask_Material" />
           </AssociationSet>
-          <AssociationSet Name="FK_tbTask_TaskVariant_tbTask" Association="Self.FK_tbTask_TaskVariant_tbTask">
-            <End Role="tbTask" EntitySet="tbTask" />
-            <End Role="tbTask_TaskVariant" EntitySet="tbTask_TaskVariant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbTask_TaskVariant_tbTaskVariant" Association="Self.FK_tbTask_TaskVariant_tbTaskVariant">
-            <End Role="tbTaskVariant" EntitySet="tbTaskVariant" />
-            <End Role="tbTask_TaskVariant" EntitySet="tbTask_TaskVariant" />
-          </AssociationSet>
           <AssociationSet Name="FK_tbTask_tbTest" Association="Self.FK_tbTask_tbTest">
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTask" EntitySet="tbTask" />
@@ -631,6 +603,10 @@
           <AssociationSet Name="FK_tbTaskResult_tbUser" Association="Self.FK_tbTaskResult_tbUser">
             <End Role="tbUser" EntitySet="tbUser" />
             <End Role="tbTaskResult" EntitySet="tbTaskResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbTaskVariant_tbTask" Association="Self.FK_tbTaskVariant_tbTask">
+            <End Role="tbTask" EntitySet="tbTask" />
+            <End Role="tbTaskVariant" EntitySet="tbTaskVariant" />
           </AssociationSet>
           <AssociationSet Name="FK_tbTest_Task_tbTask" Association="Self.FK_tbTest_Task_tbTask">
             <End Role="tbTask" EntitySet="tbTask" />
@@ -767,21 +743,21 @@
           <Property Name="isManual" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTask_tbTest" FromRole="tbTask" ToRole="tbTest" />
           <NavigationProperty Name="tbTaskResult" Relationship="Self.FK_tbTaskResult_tbTask" FromRole="tbTask" ToRole="tbTaskResult" />
+          <NavigationProperty Name="tbTaskVariant" Relationship="Self.FK_tbTaskVariant_tbTask" FromRole="tbTask" ToRole="tbTaskVariant" />
           <NavigationProperty Name="tbMaterials" Relationship="Self.tbTask_Material" FromRole="tbTask" ToRole="tbMaterials" />
-          <NavigationProperty Name="tbTaskVariant" Relationship="Self.tbTask_TaskVariant" FromRole="tbTask" ToRole="tbTaskVariant" />
           <NavigationProperty Name="tbTest1" Relationship="Self.tbTest_Task" FromRole="tbTask" ToRole="tbTest" />
         </EntityType>
         <EntityType Name="tbTaskResult">
           <Key>
-            <PropertyRef Name="id_task" />
-            <PropertyRef Name="id_user" />
-            <PropertyRef Name="id_test" />
+            <PropertyRef Name="idTaskResult" />
           </Key>
           <Property Name="UserAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Rate" Type="Int32" />
           <Property Name="id_task" Type="Guid" Nullable="false" />
           <Property Name="id_user" Type="Guid" Nullable="false" />
           <Property Name="id_test" Type="Guid" Nullable="false" />
+          <Property Name="TimeCreate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idTaskResult" Type="Guid" Nullable="false" />
           <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTaskResult_tbTask" FromRole="tbTaskResult" ToRole="tbTask" />
           <NavigationProperty Name="tbTest" Relationship="Self.FK_tbTaskResult_tbTest" FromRole="tbTaskResult" ToRole="tbTest" />
           <NavigationProperty Name="tbUser" Relationship="Self.FK_tbTaskResult_tbUser" FromRole="tbTaskResult" ToRole="tbUser" />
@@ -790,10 +766,11 @@
           <Key>
             <PropertyRef Name="idTaskVariant" />
           </Key>
-          <Property Name="idTaskVariant" Type="Guid" Nullable="false" />
+          <Property Name="id_task" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isRight" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tbTask" Relationship="Self.tbTask_TaskVariant" FromRole="tbTaskVariant" ToRole="tbTask" />
+          <Property Name="idTaskVariant" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTaskVariant_tbTask" FromRole="tbTaskVariant" ToRole="tbTask" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -952,6 +929,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbTaskVariant_tbTask">
+          <End Role="tbTask" Type="Self.tbTask" Multiplicity="1" />
+          <End Role="tbTaskVariant" Type="Self.tbTaskVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbTask">
+              <PropertyRef Name="idTask" />
+            </Principal>
+            <Dependent Role="tbTaskVariant">
+              <PropertyRef Name="id_task" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbTaskResult_tbTest">
           <End Role="tbTest" Type="Self.tbTest" Multiplicity="1" />
           <End Role="tbTaskResult" Type="Self.tbTaskResult" Multiplicity="*" />
@@ -1028,10 +1017,6 @@
           <End Role="tbMaterials" Type="Self.tbMaterials" Multiplicity="*" />
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
         </Association>
-        <Association Name="tbTask_TaskVariant">
-          <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
-          <End Role="tbTaskVariant" Type="Self.tbTaskVariant" Multiplicity="*" />
-        </Association>
         <Association Name="tbTest_Task">
           <End Role="tbTask" Type="Self.tbTask" Multiplicity="*" />
           <End Role="tbTest" Type="Self.tbTest" Multiplicity="*" />
@@ -1090,6 +1075,10 @@
             <End Role="tbTask" EntitySet="tbTask" />
             <End Role="tbTaskResult" EntitySet="tbTaskResult" />
           </AssociationSet>
+          <AssociationSet Name="FK_tbTaskVariant_tbTask" Association="Self.FK_tbTaskVariant_tbTask">
+            <End Role="tbTask" EntitySet="tbTask" />
+            <End Role="tbTaskVariant" EntitySet="tbTaskVariant" />
+          </AssociationSet>
           <AssociationSet Name="FK_tbTaskResult_tbTest" Association="Self.FK_tbTaskResult_tbTest">
             <End Role="tbTest" EntitySet="tbTest" />
             <End Role="tbTaskResult" EntitySet="tbTaskResult" />
@@ -1125,10 +1114,6 @@
           <AssociationSet Name="tbTask_Material" Association="Self.tbTask_Material">
             <End Role="tbMaterials" EntitySet="tbMaterials" />
             <End Role="tbTask" EntitySet="tbTask" />
-          </AssociationSet>
-          <AssociationSet Name="tbTask_TaskVariant" Association="Self.tbTask_TaskVariant">
-            <End Role="tbTask" EntitySet="tbTask" />
-            <End Role="tbTaskVariant" EntitySet="tbTaskVariant" />
           </AssociationSet>
           <AssociationSet Name="tbTest_Task" Association="Self.tbTest_Task">
             <End Role="tbTask" EntitySet="tbTask" />
@@ -1239,15 +1224,18 @@
                 <ScalarProperty Name="id_task" ColumnName="id_task" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
                 <ScalarProperty Name="id_test" ColumnName="id_test" />
+                <ScalarProperty Name="TimeCreate" ColumnName="TimeCreate" />
+                <ScalarProperty Name="idTaskResult" ColumnName="idTaskResult" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbTaskVariant">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbTaskVariant">
               <MappingFragment StoreEntitySet="tbTaskVariant">
-                <ScalarProperty Name="idTaskVariant" ColumnName="idTaskVariant" />
+                <ScalarProperty Name="id_task" ColumnName="id_task" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="isRight" ColumnName="isRight" />
+                <ScalarProperty Name="idTaskVariant" ColumnName="idTaskVariant" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1317,14 +1305,6 @@
             </EndProperty>
             <EndProperty Name="tbTask">
               <ScalarProperty Name="idTask" ColumnName="id_task" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="tbTask_TaskVariant" TypeName="StudyPlatformModel.tbTask_TaskVariant" StoreEntitySet="tbTask_TaskVariant">
-            <EndProperty Name="tbTask">
-              <ScalarProperty Name="idTask" ColumnName="id_task" />
-            </EndProperty>
-            <EndProperty Name="tbTaskVariant">
-              <ScalarProperty Name="idTaskVariant" ColumnName="id_taskVariant" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="tbTest_Task" TypeName="StudyPlatformModel.tbTest_Task" StoreEntitySet="tbTest_Task">

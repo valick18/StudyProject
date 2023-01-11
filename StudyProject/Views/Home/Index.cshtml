@@ -17,7 +17,7 @@
         @foreach (tbLesson lesson in Model)
         {
             //і кількість спроб = 0
-            if (inst.tbTest.Where(w => w.idTest == lesson.tbTest.idTest).Any())
+            if (inst.tbTest.Where(w => w.idTest == lesson.tbTest.idTest && w.Attempt > 0).Any())
             {
                 <div class="col-md-4">
                     <div class="card card-widget widget-user-2">

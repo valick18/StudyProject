@@ -19,6 +19,8 @@ namespace StudyProject
         public System.Guid id_task { get; set; }
         public System.Guid id_user { get; set; }
         public System.Guid id_test { get; set; }
+        public System.DateTime TimeCreate { get; set; }
+        public System.Guid idTaskResult { get; set; }
     
         public virtual tbTask tbTask { get; set; }
         public virtual tbTest tbTest { get; set; }

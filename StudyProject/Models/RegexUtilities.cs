@@ -29,11 +29,7 @@ namespace Regexs
                     return match.Groups[1].Value + domainName;
                 }
             }
-            catch (RegexMatchTimeoutException e)
-            {
-                return false;
-            }
-            catch (ArgumentException e)
+            catch 
             {
                 return false;
             }

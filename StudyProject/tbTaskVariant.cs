@@ -14,17 +14,11 @@ namespace StudyProject
     
     public partial class tbTaskVariant
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tbTaskVariant()
-        {
-            this.tbTask = new HashSet<tbTask>();
-        }
-    
-        public System.Guid idTaskVariant { get; set; }
+        public System.Guid id_task { get; set; }
         public string Name { get; set; }
         public bool isRight { get; set; }
+        public System.Guid idTaskVariant { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbTask> tbTask { get; set; }
+        public virtual tbTask tbTask { get; set; }
     }
 }

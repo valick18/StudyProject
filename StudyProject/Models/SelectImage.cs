@@ -20,7 +20,7 @@ namespace StudyProject.Models
             const int WINTER = 3;
             const int SPRING = 6;
             const int SUMMER = 9;
-            const int AUTUMN = 12;
+            //const int AUTUMN = 12;
 
             if (month <= WINTER)
             {

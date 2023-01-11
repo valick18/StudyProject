@@ -76,11 +76,15 @@ namespace StudyProject.Controllers
             return RedirectToAction("UserManagement");
         }
 
+        //Потрібно буде ще додати видаленя користувачів з груп і з повязаних таблиць (проходження тестів)
         public ActionResult RemoveUser(Guid idUser)
         {
             tbUser user = db.tbUser.Find(idUser);
-            db.tbUser.Remove(user);
-            db.SaveChanges();
+            if ((user.Role != (int)UserRole.Admin) && !user.tbInstitution.Any()) {
+                db.tbUser.Remove(user);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("UserManagement");
         }
      
