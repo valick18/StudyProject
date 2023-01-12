@@ -6,6 +6,7 @@
     ViewBag.Title = "Test";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     int count = -1;
+    int timer = Model.TimeOnTest * 60;
 }
 
 <h2 class="text-center">Тест</h2>
@@ -14,9 +15,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                @using (Html.BeginForm())
+                @if (timer != 0)
                 {
-                    foreach (tbTask task in Model.tbTask.Where(w => w.tbTaskVariant.Any()).ToList())
+                    <h4 id="timer" class="text-center">Часу залишилось: </h4>
+                }
+                @using (Html.BeginForm("Test","Home",FormMethod.Post,new { @id="fform"}))
+                {
+                    foreach (tbTask task in Model.tbTask.Where(w => w.tbTaskVariant.Any()).OrderByDescending(o => o.Type == (int)TaskStuff.TaskType.SelectCheckBox).ToList())
                     {
                         count++;
                         @*<h4 class="text-center">@task.Name</h4>*@
@@ -33,7 +38,7 @@
 
                             foreach (tbTaskVariant variant in task.tbTaskVariant)
                             {
-                                <div class="ml-2">
+                                <div class="ml-2 mt-1">
                                     <div class="form-group">
                                         <input type=@type name="answersId" value="@variant.idTaskVariant" />  <label>@variant.Name</label>
                                     </div>
@@ -42,16 +47,71 @@
                         }
                         if (task.Type == (int)TaskStuff.TaskType.Input)
                         {
-                            <div class="form-group">
+                            <div class="form-group mt-1">
                                 <textarea name="inputAnswers" class="form-control col-6"></textarea>
                                 <input type="hidden" name="idTaskVariants" value="@task.tbTaskVariant.FirstOrDefault().idTaskVariant" />
                             </div>
                         }
                     }
-                    <input type="hidden" name = "idTest" value="@Model.idTest" />
-                    <input type="submit" class="btn btn-success mt-2" value="Завершити" />
+                    <input type="hidden" name="idTest" value="@Model.idTest" />
+                    <input type="submit" onclick="clear()" class="btn btn-success mt-2" value="Завершити" />
                 }
             </div>
         </div>
     </div>
 </div>
+
+@if (timer != 0)
+{
+    @section Scripts{ 
+        <script>
+            startday = new Date();
+            clockStart = startday.getTime();
+
+            var timerKey = 'timer' + '@Model.idTest'
+
+            if (localStorage.getItem(timerKey) !== null) {
+                clockStart = localStorage.getItem(timerKey)
+            } else {
+                localStorage.setItem(timerKey, clockStart)
+            }
+
+            document.addEventListener("DOMContentLoaded", function (event) {
+             var idInterval = setInterval(timer, 1000);
+
+                function timer() {
+                    var date = new Date()
+                    var timeNow = date.getTime()
+                    var timeDiff = timeNow - clockStart
+                    var diffSecs = timeDiff / 1000;
+                    var timeOnTest = @timer
+
+                    var availableTime = timeOnTest - diffSecs
+
+                    var hours = Math.floor(availableTime / 60 / 60);
+
+                    var minutes = Math.floor(availableTime / 60) - (hours * 60);
+
+                    var seconds = availableTime % 60;
+
+                    if (diffSecs >= timeOnTest) {
+                        clearInterval(idInterval)
+                        localStorage.removeItem(timerKey);
+                        submit()
+                    } else {
+                        var formatted = 'Часу залишилось: ' + hours + ' год. ' + minutes + ' мин. ' + Math.floor(seconds) + ' сек.'
+                        $('#timer').text(formatted)
+                    }
+                }
+            });
+
+            function clear() {
+                localStorage.removeItem(timerKey);
+            }
+
+            function submit() {
+                $('#fform').submit()
+            }
+        </script>
+    }
+}

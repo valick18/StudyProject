@@ -263,8 +263,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Core\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\Core\TaskResultBuilder.cs" />
     <Compile Include="Models\Core\TaskStuff.cs" />
-    <Compile Include="Models\Core\UserAnswer.cs" />
     <Compile Include="Models\Core\UserBuilder.cs" />
     <Compile Include="Models\Core\UserIdentity.cs" />
     <Compile Include="Models\Core\UserRole.cs" />

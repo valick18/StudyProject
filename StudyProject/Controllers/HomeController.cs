@@ -29,8 +29,17 @@ namespace StudyProject.Controllers
         [HttpPost]
         public ActionResult Test(Guid [] idTaskVariants, string [] inputAnswers, Guid [] answersId, Guid idTest)
         {
+            tbTest test = db.tbTest.Find(idTest);
+            TaskResultBuilder resBuilder = new TaskResultBuilder(db);
+
+
+            if (test.Attempt <= 0) { 
+                return RedirectToAction("TestResult", new { idTest = idTest});
+            }
+
             UserInfo uInfo = new UserInfo(db);
             DateTime timeNow = DateTime.Now;
+
             for (int i = 0; i < idTaskVariants.Count(); i++) {
                 Guid id = idTaskVariants.ElementAt(i);
                 string answer = inputAnswers.ElementAt(i);
@@ -38,82 +47,60 @@ namespace StudyProject.Controllers
              
                 if (variant.tbTask.isManual)
                 {
-                    tbTaskResult result = new tbTaskResult() {
-                        idTaskResult = Guid.NewGuid(),
-                        id_task = variant.id_task,
-                        id_user = uInfo.idUser,
-                        id_test = (Guid)variant.tbTask.id_test,
-                        Rate = null,
-                        UserAnswer = answer,
-                        TimeCreate = timeNow
-                    };
-                    db.tbTaskResult.Add(result);
+                    resBuilder.Build(variant.id_task, (Guid)variant.tbTask.id_test, answer, timeNow, null);
                 }
                 else {
-                    tbTaskResult result = new tbTaskResult()
-                    {
-                        idTaskResult = Guid.NewGuid(),
-                        id_task = variant.id_task,
-                        id_user = uInfo.idUser,
-                        id_test = (Guid)variant.tbTask.id_test,
-                        UserAnswer = answer,
-                        TimeCreate = timeNow
-                    };
 
-                    if (answer.ToLower().Equals(variant.Name.ToLower()))
-                    {
-                        result.Rate = variant.tbTask.Rate;
+                    int? Rate = 0;
+                    foreach (string variantAnswer in variant.tbTask.tbTaskVariant.Select(s => s.Name)) {
+                        if (answer.ToLower().Equals(variantAnswer.ToLower()))
+                        {
+                            Rate = variant.tbTask.Rate;
+                        }
                     }
-                    else { 
-                        result.Rate = 0;
+
+                    if (Rate == null) {
+                        Rate = 0;
                     }
-                    db.tbTaskResult.Add(result);
+                    resBuilder.Build(variant.id_task, (Guid)variant.tbTask.id_test, answer, timeNow, Rate);
                 }
             }
 
-            List<tbTaskVariant> variants = new List<tbTaskVariant>();
-            List<Guid> idTasks = new List<Guid>();
+            if (answersId != null)
+            {
+                List<tbTaskVariant> variants = new List<tbTaskVariant>();
 
-            foreach (Guid id in answersId) {
-                tbTaskVariant variant = db.tbTaskVariant.Find(id);
-                if (!idTasks.Contains(variant.id_task)) { 
-                      variants.Add(variant);
-                      idTasks.Add(variant.id_task);
+                foreach (Guid id in answersId) {
+                    tbTaskVariant variant = db.tbTaskVariant.Find(id);
+                    variants.Add(variant);
                 }
-            }
 
-            //Додаю результат задачі по чекбоксам
-            foreach (tbTaskVariant variant in variants) {
-                if (variant.isRight)
+                var groupedVariantsByTask = variants.GroupBy(g => g.id_task).ToList();
+
+                foreach (var group in groupedVariantsByTask)
                 {
-                    tbTaskResult result = new tbTaskResult()
+                    tbTask task = db.tbTask.Find(group.Key);
+                    int mustBeRightAnswer = task.tbTaskVariant.Where(w => w.isRight).Count();
+                    int countRightAnswer = 0;
+                    string userAnswer = "";
+                    foreach (tbTaskVariant variant in group) {
+                        if (variant.isRight) {
+                            countRightAnswer++;
+                        }
+                        userAnswer += variant.Name + ", ";
+                    }
+
+                    if (mustBeRightAnswer == countRightAnswer)
                     {
-                        idTaskResult = Guid.NewGuid(),
-                        id_task = variant.id_task,
-                        id_user = uInfo.idUser,
-                        id_test = (Guid)variant.tbTask.id_test,
-                        UserAnswer = variant.Name,
-                        Rate = variant.tbTask.Rate,
-                        TimeCreate = timeNow
-                    };
-                    db.tbTaskResult.Add(result);
-                }
-                else {
-                    tbTaskResult result = new tbTaskResult()
-                    {
-                        idTaskResult = Guid.NewGuid(),
-                        id_task = variant.id_task,
-                        id_user = uInfo.idUser,
-                        id_test = (Guid)variant.tbTask.id_test,
-                        UserAnswer = variant.Name,
-                        Rate = 0,
-                        TimeCreate = timeNow
-                    };
-                    db.tbTaskResult.Add(result);
+                        resBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, task.Rate);
+                    }
+                    else {
+                        resBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, 0);
+                    }
+
                 }
             }
 
-            tbTest test = db.tbTest.Find(idTest);
             test.Attempt = test.Attempt - 1;
             db.SaveChanges();
             return RedirectToAction("TestResult", new { idTest = idTest});
@@ -121,6 +108,7 @@ namespace StudyProject.Controllers
 
         public ActionResult TestResult(Guid idTest)
         {
+            //Ще відобразити кінцеву оцінку/ без ручного ввода(Написати що ше є завдання на перевірці й кінцевий бал може змінитись) 
             UserInfo uInfo = new UserInfo(db);
             tbTest test = db.tbTest.Find(idTest);
             List<tbTaskResult> userResult = test.tbTaskResult.Where(w => w.id_user == uInfo.idUser).ToList();
