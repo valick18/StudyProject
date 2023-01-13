@@ -1,12 +1,14 @@
-﻿@model tbTest
+﻿@model List<TaskAnswer>
 
 @using StudyProject.Models.Core;
 
 @{
     ViewBag.Title = "Test";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    int count = -1;
-    int timer = Model.TimeOnTest * 60;
+    tbTest test = ViewBag.test;
+    int timer = test.TimeOnTest * 60;
+    List<tbTask> tasks = ViewBag.tasks;
+
 }
 
 <h2 class="text-center">Тест</h2>
@@ -19,12 +21,12 @@
                 {
                     <h4 id="timer" class="text-center">Часу залишилось: </h4>
                 }
-                @using (Html.BeginForm("Test","Home",FormMethod.Post,new { @id="fform"}))
+                @using (Html.BeginForm("Test", "Home", FormMethod.Post, new { @id = "fform" }))
                 {
-                    foreach (tbTask task in Model.tbTask.Where(w => w.tbTaskVariant.Any()).OrderByDescending(o => o.Type == (int)TaskStuff.TaskType.SelectCheckBox).ToList())
+                    for (int i = 0; i < tasks.Count(); i++)
                     {
-                        count++;
-                        @*<h4 class="text-center">@task.Name</h4>*@
+                        tbTask task = tasks.ElementAt(i);
+
                         <h5>Завдання: @task.Description</h5>
                         if (task.Type == (int)TaskStuff.TaskType.SelectCheckBox)
                         {
@@ -36,25 +38,39 @@
                                 type = "checkbox";
                             }
 
-                            foreach (tbTaskVariant variant in task.tbTaskVariant)
+                            for (int j = 0; j < task.tbTaskVariant.Count(); j++)
                             {
+                                tbTaskVariant variant = task.tbTaskVariant.ElementAt(j);
                                 <div class="ml-2 mt-1">
                                     <div class="form-group">
-                                        <input type=@type name="answersId" value="@variant.idTaskVariant" />  <label>@variant.Name</label>
+                                        @if (type.Equals("checkbox"))
+                                        {
+                                            @Html.CheckBoxFor(m => m[i].SelectedIds[j].isSelected) <label>@variant.Name</label>
+                                        }
+                                        else
+                                        {
+                                            @Html.RadioButtonFor(m => m[i].SelectedIds[j].isSelected, true) <label>@variant.Name</label>
+                                        }
+                                        @Html.HiddenFor(m => m[i].SelectedIds[j].idTaskVariant, htmlAttributes: new { @Value = variant.idTaskVariant })
+                                        @Html.HiddenFor(m => m[i].idTask, htmlAttributes: new { @Value = variant.id_task })
                                     </div>
                                 </div>
                             }
                         }
                         if (task.Type == (int)TaskStuff.TaskType.Input)
                         {
+
                             <div class="form-group mt-1">
-                                <textarea name="inputAnswers" class="form-control col-6"></textarea>
-                                <input type="hidden" name="idTaskVariants" value="@task.tbTaskVariant.FirstOrDefault().idTaskVariant" />
+                                @Html.TextAreaFor(m => m[i].answer, new { @class="form-control col-6"})
+                                @Html.HiddenFor(m => m[i].idTask, htmlAttributes: new { @Value = task.idTask })
                             </div>
                         }
+                        @Html.HiddenFor(m => m[i].idTest, htmlAttributes: new { @Value = test.idTest })
+
+
                     }
-                    <input type="hidden" name="idTest" value="@Model.idTest" />
-                    <input type="submit" onclick="clear()" class="btn btn-success mt-2" value="Завершити" />
+                    <input type="hidden" value="@test.idTest" name="idTest" />
+                    <input onclick="submitForm()" class="btn btn-success mt-2" value="Завершити" />
                 }
             </div>
         </div>
@@ -63,12 +79,12 @@
 
 @if (timer != 0)
 {
-    @section Scripts{ 
+    @section Scripts{
         <script>
             startday = new Date();
             clockStart = startday.getTime();
 
-            var timerKey = 'timer' + '@Model.idTest'
+            var timerKey = 'timer' + '@test.idTest'
 
             if (localStorage.getItem(timerKey) !== null) {
                 clockStart = localStorage.getItem(timerKey)
@@ -96,8 +112,7 @@
 
                     if (diffSecs >= timeOnTest) {
                         clearInterval(idInterval)
-                        localStorage.removeItem(timerKey);
-                        submit()
+                        submitForm()
                     } else {
                         var formatted = 'Часу залишилось: ' + hours + ' год. ' + minutes + ' мин. ' + Math.floor(seconds) + ' сек.'
                         $('#timer').text(formatted)
@@ -105,13 +120,12 @@
                 }
             });
 
-            function clear() {
-                localStorage.removeItem(timerKey);
-            }
 
-            function submit() {
+            function submitForm() {
+                localStorage.clear()
                 $('#fform').submit()
             }
+
         </script>
     }
 }

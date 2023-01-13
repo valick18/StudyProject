@@ -1,0 +1,70 @@
+﻿@using StudyProject
+
+@model List<tbInstitution>
+
+@{
+    ViewBag.Title = "Select Group";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+
+
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Навчальні заклади та їх групи</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+
+
+                @foreach (var item in Model)
+                {
+
+                    <div class="text-center">
+                        <h4>
+                            @item.Name
+                        </h4>
+                    </div>
+
+                    <table class="table text-center">
+                        <tr>
+                            <th>
+                                Назва
+                            </th>
+                            <th>
+                                Оцінювання
+                            </th>
+                        </tr>
+                        @foreach (tbGroup group in item.tbGroup)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("UsersGroup", "Tutor", new { idGroup = group.idGroup })">
+                                        @group.Name
+                                    </a>
+
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("SelectUserForCheck", "Tutor", new { idGroup = group.idGroup })">
+                                       <i class="fas fa-pen"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

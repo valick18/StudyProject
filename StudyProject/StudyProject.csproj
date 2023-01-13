@@ -263,6 +263,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Core\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Models\Core\SelectedId.cs" />
+    <Compile Include="Models\Core\TaskAnswer.cs" />
     <Compile Include="Models\Core\TaskResultBuilder.cs" />
     <Compile Include="Models\Core\TaskStuff.cs" />
     <Compile Include="Models\Core\UserBuilder.cs" />
@@ -2579,6 +2581,11 @@
     <Content Include="Views\Tutor\Lessons.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\TestResult.cshtml" />
+    <Content Include="Views\Home\TestRate.cshtml" />
+    <Content Include="Views\Tutor\SelectGroupForTesting.cshtml" />
+    <Content Include="Views\Tutor\CheckUserTesting.cshtml" />
+    <Content Include="Views\Tutor\SelectUserForCheck.cshtml" />
+    <Content Include="Views\Tutor\SelectTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

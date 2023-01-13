@@ -1,0 +1,39 @@
+﻿@model List<tbUser>
+@{
+    ViewBag.Title = "Select User";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h4 class="text-center">Оберіть користувача</h4>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Ім'я</th>
+                                <th>По батькові</th>
+                                <th>Фамілія</th>
+                                <th>Переглянути</th>
+                            </tr>
+                            @foreach (tbUser user in Model)
+                            {
+                                <tr>
+                                    <td>@user.FirstName</td>
+                                    <td>@user.MiddleName</td>
+                                    <td>@user.LastName</td>
+                                    <td><a href="@Url.Action("SelectTest","Tutor", new { idUser = user.idUser})"><i class="fas fa-eye"></i></a></td>
+                                </tr>
+                               
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

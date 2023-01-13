@@ -1,0 +1,73 @@
+﻿@model List<IGrouping<DateTime, tbTaskResult>>
+
+@{
+    ViewBag.Title = "TestResult";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    int sum = 0;
+    int count = 0;
+    //count = Model.FirstOrDefault().FirstOrDefault().tbTest.tbTask.Count();
+    int? maxRate = Model.FirstOrDefault().FirstOrDefault().tbTest.tbTask.Sum(s => s.Rate);
+}
+
+<h2 class="text-center">Результати тесту</h2>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @foreach (var group in Model.OrderByDescending(O => O.Key))
+                {
+                    <h4 class="text-center">Дата проходження: @group.Key</h4>
+                    foreach (tbTaskResult result in group.Select(s => s).OrderByDescending(o => o.tbTask.isManual))
+                    {
+                        if (result.Rate == null)
+                        {
+                            sum += 0;
+                        }
+                        else
+                        {
+                            sum += (int)result.Rate;
+                        }
+
+
+                        <h5 class="mt-1">@result.tbTask.Description</h5>
+                        if (result.Rate != null && result.Rate > 0)
+                        {
+                            <b style="color: green">Відповідь вірна</b>
+                        }
+                        else if (result.Rate == null)
+                        {
+                            using (Html.BeginForm("ConfirmAnswer", "Tutor", FormMethod.Post, new { id="fform"}))
+                            {
+                                <label>Відповідь вірна?</label>
+                                <input type="radio" name="isRight" value="true" onclick="checkAndSubmit()"/> <label>Так</label>
+                                <input type="radio" name="isRight" value="false" onclick="checkAndSubmit()"/> <label>Ні</label>
+                                <input type="hidden" name="idTaskResult" value="@result.idTaskResult" />
+                                <input type="hidden" name="idUser" value="@ViewBag.idUser" />
+                            }
+                            <b style="color:#b200ff">Очікується перевірки</b>
+                        }
+                        else
+                        {
+                            <b style="color: orangered">Відповідь не вірна</b>
+                        }
+                        <input type="text" value="Ваша Відповідь: @result.UserAnswer" class="form-control" disabled />
+                        <input type="text" value="Оцінка: @result.Rate" class="form-control" disabled />
+                    }
+                    <p class="text-center">Оцінка: @(sum)/@maxRate</p>
+                    sum = 0;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script>
+        function checkAndSubmit() {
+            var isConfirmed = confirm("Ви впевнені, що хочете зберегти?")
+            if (isConfirmed) {
+                $('#fform').submit()
+            }
+        }
+    </script>
+}

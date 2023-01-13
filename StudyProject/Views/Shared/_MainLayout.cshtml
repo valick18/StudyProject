@@ -100,7 +100,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="pages/UI/general.html" class="nav-link">
+                                        <a href="@Url.Action("Index","Home")" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Тести</p>
                                         </a>
@@ -109,6 +109,12 @@
                                         <a href="pages/UI/ribbons.html" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Матеріали</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("TestRate","Home")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Оцінки</p>
                                         </a>
                                     </li>
                                 </ul>
@@ -134,6 +140,12 @@
                                     <a href="@Url.Action("Groups", "Tutor")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Групи</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("SelectGroupForTesting", "Tutor")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Оцінювання</p>
                                     </a>
                                 </li>
                             </ul>

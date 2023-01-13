@@ -1,0 +1,48 @@
+﻿@model List<tbTest>
+
+@using StudyProject;
+@using StudyProject.Models
+
+@{
+    ViewBag.Title = "Select Test";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h4 class="text-center">Оберіть тест, для перегляду оцінок</h4>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mt-2">
+                    @foreach (tbTest test in Model)
+                    {
+
+                        <div class="col-md-4">
+                            <div class="card card-widget widget-user-2">
+                                <div class="widget-user-header" style="border-top: 3px solid #0094ff; background-color: #F0F0F0">
+                                    <p class="text-center">Тест: @test.Name</p>
+                                </div>
+                                <div class="card-footer p-0">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Кількість завдань: <span class="float-right badge bg-gradient-info">@test.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("CheckUserTesting","Tutor", new { idTest = test.idTest, idUser = ViewBag.idUser})" class="btn btn-block btn-outline-primary btn-sm">
+                                                Переглянути
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

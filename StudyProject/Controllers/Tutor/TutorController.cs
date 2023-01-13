@@ -242,6 +242,7 @@ namespace StudyProject.Controllers.Tutor
                 db.SaveChanges();
             }
 
+
             return RedirectToAction("ViewTest", new { idTest = idTest });
         }
 
@@ -421,6 +422,53 @@ namespace StudyProject.Controllers.Tutor
             db.SaveChanges();
 
             return RedirectToAction("TutorTests", new { idInst = idInst });
+        }
+
+        public ActionResult CheckUserTesting(Guid idTest, Guid idUser) {
+            tbUser user = db.tbUser.Find(idUser);
+            tbTest test = db.tbTest.Find(idTest);
+            List<tbTaskResult> userResult = test.tbTaskResult.Where(w => w.id_user == user.idUser).ToList();
+            var userResultsByDate = userResult.GroupBy(g => g.TimeCreate).ToList();
+            ViewBag.idUser = user.idUser;
+            return View(userResultsByDate);
+        }
+
+        public ActionResult SelectTest(Guid idUser)
+        {
+            UserInfo uInfo = new UserInfo(db);
+            tbUser user = db.tbUser.Find(idUser);
+            List<tbTest> tests = db.tbTest.Where(w => w.id_user == uInfo.idUser).ToList();
+            IEnumerable<tbTaskResult> taskResults = db.tbTaskResult.Where(w => w.id_user == user.idUser);
+            taskResults = taskResults.Where(w=>tests.Contains(w.tbTest));
+            List<tbTest> availableTests = taskResults.Select(s => s.tbTest).Distinct().ToList();
+            ViewBag.idUser = idUser;
+            return View(availableTests);
+        }
+
+        public ActionResult SelectUserForCheck(Guid idGroup) {
+            tbGroup group = db.tbGroup.Find(idGroup);
+            List<tbUser> users = group.tbUser.ToList();
+            return View(users);
+        }
+
+        public ActionResult SelectGroupForTesting() {
+            UserInfo uInfo = new UserInfo(db);
+            List<tbInstitution> institutions = db.tbInstitution.ToList();
+            institutions = institutions.Where(w => w.tbUser.Contains(uInfo.fuser)).ToList();
+            return View(institutions);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmAnswer(Guid idTaskResult, Guid idUser, bool isRight) {
+            tbTaskResult taskResult = db.tbTaskResult.Find(idTaskResult);
+            if (isRight) {
+                taskResult.Rate = taskResult.tbTask.Rate;
+            }
+            else {
+                taskResult.Rate = 0;
+            }
+            db.SaveChanges();
+            return RedirectToAction("CheckUserTesting", new { idTest = taskResult.id_test, idUser = idUser});
         }
 
     }

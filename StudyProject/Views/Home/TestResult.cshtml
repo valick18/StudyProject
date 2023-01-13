@@ -3,9 +3,7 @@
     ViewBag.Title = "TestResult";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     int sum = 0;
-    int count = 0;
-    count = Model.FirstOrDefault().FirstOrDefault().tbTest.tbTask.Count();
-    int? maxRate = Model.FirstOrDefault().FirstOrDefault().tbTest.tbTask.Sum(s => s.Rate)/count;
+    int? maxRate = ViewBag.maxRate;
 }
 
 <h2 class="text-center">Результати тесту</h2>
@@ -43,7 +41,7 @@
                         <input type="text" value="Ваша Відповідь: @result.UserAnswer" class="form-control" disabled/>
                         <input type="text" value="Оцінка: @result.Rate" class="form-control" disabled/>
                     }
-                    <p class="text-center">Оцінка: @(sum/count)/@maxRate</p>
+                    <p class="text-center">Оцінка: @sum/@maxRate</p>
                     sum = 0;
                 }
             </div>

@@ -24,96 +24,103 @@ namespace StudyProject.Controllers
         public ActionResult Test(Guid id)
         {
             tbTest test = db.tbTest.Find(id);
-            return View(test);
+            List<tbTask> tasks = test.tbTask.Where(w => w.tbTaskVariant.Any() || (w.Type == (int)TaskStuff.TaskType.Input && w.isManual)).ToList();
+            ViewBag.test = test;
+            ViewBag.tasks = tasks;
+            return View();
         }
-        [HttpPost]
-        public ActionResult Test(Guid [] idTaskVariants, string [] inputAnswers, Guid [] answersId, Guid idTest)
-        {
-            tbTest test = db.tbTest.Find(idTest);
-            TaskResultBuilder resBuilder = new TaskResultBuilder(db);
-
-
-            if (test.Attempt <= 0) { 
-                return RedirectToAction("TestResult", new { idTest = idTest});
-            }
-
-            UserInfo uInfo = new UserInfo(db);
-            DateTime timeNow = DateTime.Now;
-
-            for (int i = 0; i < idTaskVariants.Count(); i++) {
-                Guid id = idTaskVariants.ElementAt(i);
-                string answer = inputAnswers.ElementAt(i);
-                tbTaskVariant variant = db.tbTaskVariant.Find(id);
-             
-                if (variant.tbTask.isManual)
-                {
-                    resBuilder.Build(variant.id_task, (Guid)variant.tbTask.id_test, answer, timeNow, null);
-                }
-                else {
-
-                    int? Rate = 0;
-                    foreach (string variantAnswer in variant.tbTask.tbTaskVariant.Select(s => s.Name)) {
-                        if (answer.ToLower().Equals(variantAnswer.ToLower()))
-                        {
-                            Rate = variant.tbTask.Rate;
-                        }
-                    }
-
-                    if (Rate == null) {
-                        Rate = 0;
-                    }
-                    resBuilder.Build(variant.id_task, (Guid)variant.tbTask.id_test, answer, timeNow, Rate);
-                }
-            }
-
-            if (answersId != null)
-            {
-                List<tbTaskVariant> variants = new List<tbTaskVariant>();
-
-                foreach (Guid id in answersId) {
-                    tbTaskVariant variant = db.tbTaskVariant.Find(id);
-                    variants.Add(variant);
-                }
-
-                var groupedVariantsByTask = variants.GroupBy(g => g.id_task).ToList();
-
-                foreach (var group in groupedVariantsByTask)
-                {
-                    tbTask task = db.tbTask.Find(group.Key);
-                    int mustBeRightAnswer = task.tbTaskVariant.Where(w => w.isRight).Count();
-                    int countRightAnswer = 0;
-                    string userAnswer = "";
-                    foreach (tbTaskVariant variant in group) {
-                        if (variant.isRight) {
-                            countRightAnswer++;
-                        }
-                        userAnswer += variant.Name + ", ";
-                    }
-
-                    if (mustBeRightAnswer == countRightAnswer)
-                    {
-                        resBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, task.Rate);
-                    }
-                    else {
-                        resBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, 0);
-                    }
-
-                }
-            }
-
-            test.Attempt = test.Attempt - 1;
-            db.SaveChanges();
-            return RedirectToAction("TestResult", new { idTest = idTest});
-        }
-
         public ActionResult TestResult(Guid idTest)
         {
-            //Ще відобразити кінцеву оцінку/ без ручного ввода(Написати що ше є завдання на перевірці й кінцевий бал може змінитись) 
             UserInfo uInfo = new UserInfo(db);
             tbTest test = db.tbTest.Find(idTest);
             List<tbTaskResult> userResult = test.tbTaskResult.Where(w => w.id_user == uInfo.idUser).ToList();
             var userResultsByDate = userResult.GroupBy(g => g.TimeCreate).ToList();
+            int maxRate = (int)test.tbTask.Where(w => w.tbTaskVariant.Any() || (w.Type == (int)TaskStuff.TaskType.Input && w.isManual)).Sum(s => s.Rate);
+            ViewBag.maxRate = maxRate;
             return View(userResultsByDate);
         }
+
+        public ActionResult TestRate() {
+            UserInfo uInfo = new UserInfo(db);
+            IEnumerable<tbTaskResult> taskResults = db.tbTaskResult.Where(w => w.id_user == uInfo.idUser);
+            List<tbTest> tests = taskResults.Select(s => s.tbTest).Distinct().ToList();
+            return View(tests);
+        }
+
+
+        [HttpPost]
+        public ActionResult Test(List<TaskAnswer> userAnswers, Guid idTest) {
+            DateTime timeNow = DateTime.Now;
+            TaskResultBuilder resultBuilder = new TaskResultBuilder(db);
+            List<tbTaskVariant> variants = new List<tbTaskVariant>();
+            tbTest test = db.tbTest.Find(idTest);
+            foreach (TaskAnswer uAnswer in userAnswers)
+            {
+                tbTask task = db.tbTask.Find(uAnswer.idTask);
+                if (task.Type == (int)TaskStuff.TaskType.Input && task.isManual)
+                {
+                    if (string.IsNullOrEmpty(uAnswer.answer)) {
+                        uAnswer.answer = "";
+                    }
+                    resultBuilder.Build(task.idTask, uAnswer.idTest, uAnswer.answer, timeNow, null);
+                }
+                else if (task.Type == (int)TaskStuff.TaskType.Input)
+                {
+                    int? Rate = 0;
+
+                    if (string.IsNullOrEmpty(uAnswer.answer)) {
+                        uAnswer.answer = "";
+                    }
+
+                    foreach (string variantAnswer in task.tbTaskVariant.Select(s => s.Name))
+                    {
+                        if (uAnswer.answer.ToLower().Equals(variantAnswer.ToLower()))
+                        {
+                            Rate = task.Rate;
+                        }
+                    }
+
+                    if (Rate == null)
+                    {
+                        Rate = 0;
+                    }
+
+                    resultBuilder.Build(task.idTask, (Guid)task.id_test, uAnswer.answer, timeNow, Rate);
+                }
+                else {
+                    int count = 0;
+                    string userAnswer = "";
+                    foreach (SelectedId sId in uAnswer.SelectedIds) {
+                        tbTaskVariant variant = db.tbTaskVariant.Find(sId.idTaskVariant);
+                        if (variant.isRight && sId.isSelected)
+                        {
+                            userAnswer += variant.Name + " ";
+                            count++;
+                        }
+                        if (!variant.isRight  && sId.isSelected) {
+                            count = 0;
+                            break;
+                        }
+
+                    }
+                    int maxRightAnswer = task.tbTaskVariant.Where(w => w.isRight).Count();
+
+                    if (maxRightAnswer == count)
+                    {
+                        resultBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, task.Rate);
+                    }
+                    else
+                    {
+                        resultBuilder.Build(task.idTask, (Guid)task.id_test, userAnswer, timeNow, 0);
+                    }
+
+                }
+              
+            }
+            test.Attempt = test.Attempt - 1;
+            db.SaveChanges();
+            return RedirectToAction("TestResult", new { idTest = idTest });
+        }
+
     }
 }
