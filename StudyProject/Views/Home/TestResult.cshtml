@@ -4,7 +4,9 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     int sum = 0;
     int? maxRate = ViewBag.maxRate;
+    tbTest test = ViewBag.test;
 }
+
 
 <h2 class="text-center">Результати тесту</h2>
 <div class="row">
@@ -20,7 +22,8 @@
                         {
                             sum += 0;
                         }
-                        else {
+                        else
+                        {
                             sum += (int)result.Rate;
                         }
 
@@ -38,8 +41,8 @@
                         {
                             <b style="color: orangered">Відповідь не вірна</b>
                         }
-                        <input type="text" value="Ваша Відповідь: @result.UserAnswer" class="form-control" disabled/>
-                        <input type="text" value="Оцінка: @result.Rate" class="form-control" disabled/>
+                        <input type="text" value="Ваша Відповідь: @result.UserAnswer" class="form-control" disabled />
+                        <input type="text" value="Оцінка: @result.Rate" class="form-control" disabled />
                     }
                     <p class="text-center">Оцінка: @sum/@maxRate</p>
                     sum = 0;

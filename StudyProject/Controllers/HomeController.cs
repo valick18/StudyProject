@@ -37,6 +37,7 @@ namespace StudyProject.Controllers
             var userResultsByDate = userResult.GroupBy(g => g.TimeCreate).ToList();
             int maxRate = (int)test.tbTask.Where(w => w.tbTaskVariant.Any() || (w.Type == (int)TaskStuff.TaskType.Input && w.isManual)).Sum(s => s.Rate);
             ViewBag.maxRate = maxRate;
+            ViewBag.test = test;
             return View(userResultsByDate);
         }
 
@@ -120,6 +121,19 @@ namespace StudyProject.Controllers
             test.Attempt = test.Attempt - 1;
             db.SaveChanges();
             return RedirectToAction("TestResult", new { idTest = idTest });
+        }
+
+        public ActionResult Material(Guid id) {
+            tbMaterials material = db.tbMaterials.Find(id);
+            return View(material);
+        }
+
+        public ActionResult Materials()
+        {
+            UserInfo uInfo = new UserInfo(db);
+            List<tbGroup> groups = uInfo.fuser.tbGroup.ToList();
+            List<tbInstitution> institutions = groups.SelectMany(s => s.tbInstitution).ToList();
+            return View(institutions);
         }
 
     }

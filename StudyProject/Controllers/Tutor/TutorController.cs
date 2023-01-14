@@ -96,6 +96,7 @@ namespace StudyProject.Controllers.Tutor
                 Name = material.Name,
                 Text = material.Text,
                 id_user = uInfo.idUser,
+                ShowMaterial = material.ShowMaterial
             };
 
             db.tbMaterials.Add(newMaterial);
@@ -356,6 +357,10 @@ namespace StudyProject.Controllers.Tutor
             if (!string.IsNullOrEmpty(material.Text))
             {
                 editMaterial.Text = material.Text;
+            }
+
+            if (material.ShowMaterial != editMaterial.ShowMaterial) {
+                editMaterial.ShowMaterial = material.ShowMaterial;
             }
                 
             db.SaveChanges();

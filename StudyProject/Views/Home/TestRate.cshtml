@@ -2,6 +2,8 @@
 
 @using StudyProject;
 @using StudyProject.Models
+@using StudyProject.Models.Core
+
 
 @{
     ViewBag.Title = "TestRate";
@@ -27,7 +29,7 @@
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
-                                                Кількість завдань: <span class="float-right badge bg-gradient-info">@test.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
+                                                Кількість завдань: <span class="float-right badge bg-gradient-info">@test.tbTask.Where(w => w.tbTaskVariant.Any() || (w.Type == (int)TaskStuff.TaskType.Input && w.isManual)).Count()</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">

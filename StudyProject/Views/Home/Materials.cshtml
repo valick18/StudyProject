@@ -1,0 +1,47 @@
+﻿@model List<tbInstitution>
+@{
+    ViewBag.Title = "Materials";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2 class="text-center">Матеріали</h2>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                @foreach (tbInstitution institution in Model) {
+
+
+                    <h4 class="center">@institution.Name</h4>
+                    <table class="table">
+                        <tr>
+                            <th>Матеріали</th>
+                        </tr>
+                        @if (institution.tbMaterial_Institution.Select(s => s.tbMaterials).Where(w => w.ShowMaterial).Any())
+                        {
+                            foreach (tbMaterial_Institution instMaterial in institution.tbMaterial_Institution)
+                            {
+                                tbMaterials material = instMaterial.tbMaterials;
+                                if (material.ShowMaterial)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Material", "Home", new { id = material.idMaterial })">@material.Name</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else { 
+                            <tr>
+                                <td style="color:red"><i class="fas fa-info-circle"></i> Відсутні або немає доступу</td>
+                            </tr>
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

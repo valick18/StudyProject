@@ -91,6 +91,7 @@
           <Property Name="Name" Type="nchar" MaxLength="255" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
           <Property Name="id_user" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ShowMaterial" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTask">
           <Key>
@@ -722,6 +723,7 @@
           <Property Name="Name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="id_user" Type="Guid" Nullable="false" />
+          <Property Name="ShowMaterial" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="tbLesson" Relationship="Self.FK_tbLesson_tbMaterials" FromRole="tbMaterials" ToRole="tbLesson" />
           <NavigationProperty Name="tbMaterial_Institution" Relationship="Self.FK_tbMaterial_Institution_tbMaterials" FromRole="tbMaterials" ToRole="tbMaterial_Institution" />
           <NavigationProperty Name="tbUser" Relationship="Self.FK_tbMaterials_tbUser1" FromRole="tbMaterials" ToRole="tbUser" />
@@ -1197,6 +1199,7 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="id_user" ColumnName="id_user" />
+                <ScalarProperty Name="ShowMaterial" ColumnName="ShowMaterial" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -28,7 +28,7 @@ namespace StudyProject.Controllers
         [HttpPost]
         public ActionResult AddNewInstitution(tbInstitution newInstitution, Guid[] users)
         {
-            if (string.IsNullOrEmpty(newInstitution.Name)) { 
+            if (!string.IsNullOrEmpty(newInstitution.Name)) { 
                   InstitutionBuilder.Build(db, newInstitution, users);
             }
             return RedirectToAction("InstitutionManagement");

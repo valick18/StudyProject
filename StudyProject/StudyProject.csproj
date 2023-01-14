@@ -391,6 +391,7 @@
     <Content Include="dist\img\user6-128x128.jpg" />
     <Content Include="dist\img\user7-128x128.jpg" />
     <Content Include="dist\img\user8-128x128.jpg" />
+    <Content Include="dist\img\user_anonim.png" />
     <Content Include="dist\img\winter.jpg" />
     <Content Include="dist\img\winter1.jpg" />
     <Content Include="dist\img\winter2.jpg" />
@@ -2586,6 +2587,8 @@
     <Content Include="Views\Tutor\CheckUserTesting.cshtml" />
     <Content Include="Views\Tutor\SelectUserForCheck.cshtml" />
     <Content Include="Views\Tutor\SelectTest.cshtml" />
+    <Content Include="Views\Home\Material.cshtml" />
+    <Content Include="Views\Home\Materials.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,8 +14,8 @@ namespace StudyProject.Models.Core
             {
                 idInstitution = Guid.NewGuid(),
                 id_user = uInfo.idUser,
-                Name = institution.Name,
-                Adress = institution.Adress,
+                Name = institution.Name.TrimEnd(),
+                Adress = institution.Adress.TrimEnd(),
                 DateCreate = DateTime.Now,
                 //Logo = institution.Logo,
             };
@@ -39,8 +39,8 @@ namespace StudyProject.Models.Core
             {
                 idInstitution = Guid.NewGuid(),
                 id_user = uInfo.idUser,
-                Name = institution.Name,
-                Adress = institution.Adress,
+                Name = institution.Name.TrimEnd(),
+                Adress = institution.Adress.TrimEnd(),
                 DateCreate = DateTime.Now,
                 //Logo = institution.Logo,
             };

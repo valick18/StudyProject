@@ -1,5 +1,7 @@
 ﻿@using StudyProject;
 @using StudyProject.Models
+@using StudyProject.Models.Core
+
 @model List<tbLesson>
 @{
     ViewBag.Title = "Home Page";
@@ -10,72 +12,90 @@
     Тести
 </h4>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                @foreach (tbInstitution inst in institutions)
-                {
-                    <h4 class="text-center">
-                        @inst.Name
-                    </h4>
+@if (institutions != null && institutions.Any())
+{
 
-                    <div class="row mt-2">
-                        @foreach (tbLesson lesson in Model)
-                        {
-                            //і кількість спроб = 0
-                            if (inst.tbTest.Where(w => w.idTest == lesson.tbTest.idTest && w.Attempt > 0).Any())
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @foreach (tbInstitution inst in institutions)
+                    {
+                        <h4 class="text-center">
+                            @inst.Name
+                        </h4>
+
+                        <div class="row mt-2">
+                            @foreach (tbLesson lesson in Model)
                             {
-                                <div class="col-md-4">
-                                    <div class="card card-widget widget-user-2">
-                                        <div class="widget-user-header" style="border-top: 3px solid #0094ff; background-color: #F0F0F0">
-                                            <p class="text-center">Тест: @lesson.tbTest.Name</p>
-                                        </div>
-                                        <div class="card-footer p-0">
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link">
-                                                        Час: <span class="float-right badge bg-gradient-info">@TimeConverter.getTime(lesson.tbTest.TimeOnTest)</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link">
-                                                        Кількість завдань: <span class="float-right badge bg-gradient-info">@lesson.tbTest.tbTask.Where(w => w.tbTaskVariant.Any()).Count()</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link">
-                                                        Кількість спроб: <span class="float-right badge bg-gradient-info">@lesson.tbTest.Attempt</span>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    @if (lesson.ShowMaterial && lesson.tbMaterials != null)
-                                                    {
-                                                        <a href="@Url.Action("Material", "Home", new { id = lesson.tbMaterials.idMaterial })" class="nav-link">
-                                                            Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-up-right-from-square"></i></span>
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
+                                //і кількість спроб = 0
+                                if (inst.tbTest.Where(w => w.idTest == lesson.tbTest.idTest && w.Attempt > 0).Any())
+                                {
+                                    <div class="col-md-4">
+                                        <div class="card card-widget widget-user-2">
+                                            <div class="widget-user-header" style="border-top: 3px solid #0094ff; background-color: #F0F0F0">
+                                                <p class="text-center">Тест: @lesson.tbTest.Name</p>
+                                            </div>
+                                            <div class="card-footer p-0">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
                                                         <a href="#" class="nav-link">
-                                                            Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-xmark"></i></span>
+                                                            Час: <span class="float-right badge bg-gradient-info">@TimeConverter.getTime(lesson.tbTest.TimeOnTest)</span>
                                                         </a>
-                                                    }
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a href="@Url.Action("Test","Home", new { id = lesson.tbTest.idTest})" class="btn btn-block btn-outline-primary btn-sm">
-                                                        Перейти
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">
+                                                            Кількість завдань: <span class="float-right badge bg-gradient-info">@lesson.tbTest.tbTask.Where(w => w.tbTaskVariant.Any() || (w.Type == (int)TaskStuff.TaskType.Input && w.isManual)).Count()</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="#" class="nav-link">
+                                                            Кількість спроб: <span class="float-right badge bg-gradient-info">@lesson.tbTest.Attempt</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        @if (lesson.ShowMaterial && lesson.tbMaterials != null)
+                                                        {
+                                                            <a href="@Url.Action("Material", "Home", new { id = lesson.tbMaterials.idMaterial })" class="nav-link">
+                                                                Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-up-right-from-square"></i></span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a href="#" class="nav-link">
+                                                                Навчальний матеріал: <span class="float-right badge bg-gradient-info"><i class="fa-solid fa-xmark"></i></span>
+                                                            </a>
+                                                        }
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="@Url.Action("Test", "Home", new { id = lesson.tbTest.idTest })" class="btn btn-block btn-outline-primary btn-sm">
+                                                            Перейти
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
-                        }
-                    </div>
-                }
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center" style="color:red">
+                        <i class="fas fa-info-circle"></i> Тести на даний момент відсутні
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
