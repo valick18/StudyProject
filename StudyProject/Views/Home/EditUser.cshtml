@@ -1,0 +1,77 @@
+﻿@model tbUser
+
+@{
+    ViewBag.Title = "Select Test";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Photo == null)
+                {
+                    using (Html.BeginForm("EditPhoto", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                    {
+                        <input name="LoadUserPic" accept="image/*" data-show-upload="false" type="file" class="file" data-preview-file-type="text" style='max-height:100%; max-width:100%'>
+                        <div class="text-center" style="margin:10px">
+                            <input id="submitdiv" type="submit" class="btn btn-primary" value="Зберегти">
+                        </div>
+                    }
+                }
+                @if (Model.Photo != null)
+                {
+                    <img src="data:image/jpeg;charset=utf-8;base64, @Convert.ToBase64String(Model.Photo)" style="max-height:100%; max-width:100%" />
+                    using (Html.BeginForm("RemovePhoto", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+                    {
+                        <div class="text-center" style="margin:10px">
+                            <input id="submitdiv" type="submit" class="btn btn-danger" value="Видалити">
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("EditUser", "Home", FormMethod.Post))
+                {
+                    <label class="col-sm-3 control-label" for="Login">Логін</label>
+                    <div class="col-sm-9">
+                        <input name="Login" class="form-control" value="@Model.Login" readonly="">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="FirstName">Ім'я:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" data-val="true" data-val-required="Задайте имя" name="FirstName" required="required" type="text" value="@Model.FirstName.TrimEnd()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="LastName">Прізвище</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" data-val="true" data-val-required="Задайте фамилию" name="LastName" required="required" type="text" value="@Model.LastName.TrimEnd()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="MiddleName">По батькові</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="MiddleName" type="text" value="@Model.MiddleName.TrimEnd()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="Birthday" required="required">Вік</label>
+                        <div class="col-sm-9">
+                            <input name="Age" type="number" value="@Model.Age" class="form-control" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="submit" name="submit" type="submit" class="btn btn-primary" value="submit">Зберегти</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

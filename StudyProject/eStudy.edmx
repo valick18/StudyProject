@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище StudyPlatformModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -178,6 +178,7 @@
           <Property Name="Age" Type="int" />
           <Property Name="Role" Type="int" Nullable="false" />
           <Property Name="DateCreate" Type="datetime" />
+          <Property Name="Photo" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="tbUser_Group">
           <Key>
@@ -642,8 +643,7 @@
             <End Role="tbUser_Group" EntitySet="tbUser_Group" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="StudyPlatformModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -822,6 +822,7 @@
           <NavigationProperty Name="tbTestResult" Relationship="Self.FK_tbTestResult_tbUser" FromRole="tbUser" ToRole="tbTestResult" />
           <NavigationProperty Name="tbInstitution" Relationship="Self.tbInstitution_User" FromRole="tbUser" ToRole="tbInstitution" />
           <NavigationProperty Name="tbGroup" Relationship="Self.tbUser_Group" FromRole="tbUser" ToRole="tbGroup" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_tbInvite_tbGroup">
           <End Role="tbGroup" Type="Self.tbGroup" Multiplicity="1" />
@@ -1266,6 +1267,7 @@
           <EntitySetMapping Name="tbUser">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbUser">
               <MappingFragment StoreEntitySet="tbUser">
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
                 <ScalarProperty Name="idUser" ColumnName="idUser" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

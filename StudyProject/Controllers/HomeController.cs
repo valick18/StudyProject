@@ -136,5 +136,53 @@ namespace StudyProject.Controllers
             return View(institutions);
         }
 
+        public ActionResult EditUser() {
+            UserInfo uInfo = new UserInfo(db);
+            tbUser user = uInfo.fuser;
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult EditUser(tbUser user) {
+            UserInfo uInfo = new UserInfo(db);
+            tbUser oldUser = uInfo.fuser;
+            if (!string.IsNullOrEmpty(user.FirstName)) {
+                oldUser.FirstName = user.FirstName;
+            }
+            if (!string.IsNullOrEmpty(user.LastName)) {
+                oldUser.LastName = user.LastName;
+            }
+            if (!string.IsNullOrEmpty(user.MiddleName)) {
+                oldUser.MiddleName = user.MiddleName;
+            }
+
+            if (user.Age != null && user.Age != 0) {
+                oldUser.Age = user.Age;
+            }
+            db.SaveChanges();
+            return View(oldUser);
+        }
+
+        [HttpPost]
+        public ActionResult EditPhoto(HttpPostedFileBase LoadUserPic) {
+            if (LoadUserPic != null) {
+                UserInfo uInfo = new UserInfo(db);
+                var binaryData = new byte[LoadUserPic.ContentLength];
+                LoadUserPic.InputStream.Read(binaryData, 0, LoadUserPic.ContentLength);
+                uInfo.fuser.Photo = binaryData;
+                db.SaveChanges();
+            }
+            return RedirectToAction("EditUser", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult RemovePhoto()
+        {
+            UserInfo uInfo = new UserInfo(db);
+            uInfo.fuser.Photo = null;
+            db.SaveChanges();
+            return RedirectToAction("EditUser");
+        }
+
     }
 }

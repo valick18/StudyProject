@@ -34,6 +34,7 @@ namespace StudyProject
         public Nullable<int> Age { get; set; }
         public int Role { get; set; }
         public Nullable<System.DateTime> DateCreate { get; set; }
+        public byte[] Photo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbMaterials> tbMaterials { get; set; }

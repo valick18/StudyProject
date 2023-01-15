@@ -56,10 +56,17 @@
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="~/dist/img/user_anonim.png" class="img-circle elevation-2" alt="User Image">
+                        @if (uInfo.fuser.Photo == null)
+                        {
+                            <img src="~/dist/img/user_anonim.png" class="img-circle elevation-2" alt="User Image">
+                        }
+                        else
+                        {
+                            <img src="data:image/jpeg;charset=utf-8;base64, @Convert.ToBase64String(uInfo.fuser.Photo)" class="img-circle elevation-2" alt="User Image">
+                        }
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">@uInfo.fuser.LastName @uInfo.fuser.FirstName</a>
+                        <a href="@Url.Action("EditUser","Home")" class="d-block">@uInfo.fuser.LastName @uInfo.fuser.FirstName</a>
                     </div>
                 </div>
                 <nav class="mt-2">

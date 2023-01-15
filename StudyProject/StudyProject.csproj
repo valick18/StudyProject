@@ -235,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\Tutor\TutorController.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -2589,9 +2590,11 @@
     <Content Include="Views\Tutor\SelectTest.cshtml" />
     <Content Include="Views\Home\Material.cshtml" />
     <Content Include="Views\Home\Materials.cshtml" />
+    <Content Include="Views\Home\EditUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Image\" />
     <Folder Include="Views\Main\" />
   </ItemGroup>
   <ItemGroup>
