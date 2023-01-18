@@ -235,7 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\Tutor\TutorController.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -271,11 +270,13 @@
     <Compile Include="Models\Core\UserBuilder.cs" />
     <Compile Include="Models\Core\UserIdentity.cs" />
     <Compile Include="Models\Core\UserRole.cs" />
+    <Compile Include="Models\Core\VariantPosition.cs" />
     <Compile Include="Models\HashGenerator.cs" />
     <Compile Include="Models\PassCoder.cs" />
     <Compile Include="Models\RegexUtilities.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Models\SelectImage.cs" />
+    <Compile Include="Models\TaskOrdering.cs" />
     <Compile Include="Models\TimeConverter.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

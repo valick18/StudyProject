@@ -9,7 +9,7 @@ namespace StudyProject.Models.Core
     {
 
         public enum TaskType { 
-             SelectCheckBox, Input
+             SelectCheckBox, Input, Dragable
         }
 
         public static string getNameType(TaskType type) {
@@ -18,6 +18,8 @@ namespace StudyProject.Models.Core
                     return "Вибір правильної відповіді";
                 case TaskType.Input:
                     return "Ручний ввод";
+                case TaskType.Dragable:
+                    return "Переміщення у правильному порядку";
             }
             return "";
         }

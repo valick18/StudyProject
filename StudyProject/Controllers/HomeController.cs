@@ -60,7 +60,8 @@ namespace StudyProject.Controllers
                 tbTask task = db.tbTask.Find(uAnswer.idTask);
                 if (task.Type == (int)TaskStuff.TaskType.Input && task.isManual)
                 {
-                    if (string.IsNullOrEmpty(uAnswer.answer)) {
+                    if (string.IsNullOrEmpty(uAnswer.answer))
+                    {
                         uAnswer.answer = "";
                     }
                     resultBuilder.Build(task.idTask, uAnswer.idTest, uAnswer.answer, timeNow, null);
@@ -69,7 +70,8 @@ namespace StudyProject.Controllers
                 {
                     int? Rate = 0;
 
-                    if (string.IsNullOrEmpty(uAnswer.answer)) {
+                    if (string.IsNullOrEmpty(uAnswer.answer))
+                    {
                         uAnswer.answer = "";
                     }
 
@@ -88,17 +90,40 @@ namespace StudyProject.Controllers
 
                     resultBuilder.Build(task.idTask, (Guid)task.id_test, uAnswer.answer, timeNow, Rate);
                 }
-                else {
+                else if (task.Type == (int)TaskStuff.TaskType.Dragable) {
+                    int countRightPosition = 0;
+                    int mustBeRightPosition = task.tbTaskVariant.Count();
+                    string answer = "";
+                        foreach (VariantPosition vPosition in uAnswer.variantPosition) {
+                            tbTaskVariant variant = task.tbTaskVariant.FirstOrDefault(w => w.idTaskVariant == vPosition.idTaskVariant);
+                            if (variant.PositionNumber == vPosition.PositionNumber) {
+                                countRightPosition++;
+                            }
+                            answer += vPosition.Variant + " ";
+                        }
+
+                    if (mustBeRightPosition == countRightPosition)
+                    {
+                        resultBuilder.Build(task.idTask, (Guid)task.id_test, answer, timeNow, task.Rate);
+                    }
+                    else { 
+                        resultBuilder.Build(task.idTask, (Guid)task.id_test, answer, timeNow, 0);
+                    }
+                }
+                else
+                {
                     int count = 0;
                     string userAnswer = "";
-                    foreach (SelectedId sId in uAnswer.SelectedIds) {
+                    foreach (SelectedId sId in uAnswer.SelectedIds)
+                    {
                         tbTaskVariant variant = db.tbTaskVariant.Find(sId.idTaskVariant);
                         if (variant.isRight && sId.isSelected)
                         {
                             userAnswer += variant.Name + " ";
                             count++;
                         }
-                        if (!variant.isRight  && sId.isSelected) {
+                        if (!variant.isRight && sId.isSelected)
+                        {
                             count = 0;
                             break;
                         }

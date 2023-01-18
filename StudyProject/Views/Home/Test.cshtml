@@ -8,7 +8,9 @@
     tbTest test = ViewBag.test;
     int timer = test.TimeOnTest * 60;
     List<tbTask> tasks = ViewBag.tasks;
-
+    int ordering = 0;
+    Random random = new Random();
+    int counter = 1;
 }
 
 <h2 class="text-center">Тест</h2>
@@ -61,13 +63,42 @@
                         {
 
                             <div class="form-group mt-1">
-                                @Html.TextAreaFor(m => m[i].answer, new { @class="form-control col-6"})
+                                @Html.TextAreaFor(m => m[i].answer, new { @class = "form-control col-6" })
                                 @Html.HiddenFor(m => m[i].idTask, htmlAttributes: new { @Value = task.idTask })
                             </div>
                         }
                         @Html.HiddenFor(m => m[i].idTest, htmlAttributes: new { @Value = test.idTest })
 
 
+                        if (task.Type == (int)TaskStuff.TaskType.Dragable)
+                        {
+                            <table class="table" id="daragTable">
+                                <tr>
+                                    <th>№</th>
+                                    <th></th>
+                                </tr>
+                                @foreach (tbTaskVariant variant in task.tbTaskVariant.OrderBy(O => random.Next()))
+                                {
+                                    <tr style="cursor:move">
+                                        <td>
+                                            <span class="index">@counter</span>
+                                            @Html.HiddenFor(m => m[i].variantPosition[ordering].idTaskVariant, htmlAttributes: new { @Value = variant.idTaskVariant })
+                                            @Html.HiddenFor(m => m[i].variantPosition[ordering].Variant, htmlAttributes: new { @Value = variant.Name })
+                                            @Html.HiddenFor(m => m[i].variantPosition[ordering].PositionNumber, htmlAttributes: new { @id = "index", @Value = counter })
+                                            @Html.HiddenFor(m => m[i].idTask, htmlAttributes: new { @Value = task.idTask })
+                                            @Html.HiddenFor(m => m[i].idTest, htmlAttributes: new { @Value = task.id_test })
+                                        </td> 
+                                        <td>
+                                            @variant.Name
+                                        </td>
+                                    </tr>
+                                    counter++;
+                                    ordering++;
+                                }
+                            </table>
+                        }
+                        ordering = 0;
+                        counter = 1;
                     }
                     <input type="hidden" value="@test.idTest" name="idTest" />
                     <input onclick="submitForm()" class="btn btn-success mt-2" value="Завершити" />
@@ -127,5 +158,38 @@
             }
 
         </script>
+        <script>
+            var fixHelperModified = function (e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function (index) {
+                    $(this).width($originals.eq(index).width())
+                });
+                return $helper;
+            },
+
+                updateIndex = function (e, ui) {
+                    $('span.index', ui.item.parent()).each(function (i) {
+                        $(this).html(i + 1);
+                    });
+                    $('input#index', ui.item.parent()).each(function (i) {
+                        $(this).val(i + 1);
+                    });
+                };
+
+            $("#daragTable tbody").sortable({
+                helper: fixHelperModified,
+                stop: updateIndex
+            }).disableSelection();
+
+            $("#daragTable tbody").sortable({
+                distance: 5,
+                delay: 100,
+                opacity: 0.6,
+                cursor: 'move',
+                update: function () { }
+            });
+        </script>
+
     }
 }

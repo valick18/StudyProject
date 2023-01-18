@@ -136,6 +136,7 @@
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="isRight" Type="bit" Nullable="false" />
           <Property Name="idTaskVariant" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PositionNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -773,6 +774,7 @@
           <Property Name="isRight" Type="Boolean" Nullable="false" />
           <Property Name="idTaskVariant" Type="Guid" Nullable="false" />
           <NavigationProperty Name="tbTask" Relationship="Self.FK_tbTaskVariant_tbTask" FromRole="tbTaskVariant" ToRole="tbTask" />
+          <Property Name="PositionNumber" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tbTest">
           <Key>
@@ -1236,6 +1238,7 @@
           <EntitySetMapping Name="tbTaskVariant">
             <EntityTypeMapping TypeName="StudyPlatformModel.tbTaskVariant">
               <MappingFragment StoreEntitySet="tbTaskVariant">
+                <ScalarProperty Name="PositionNumber" ColumnName="PositionNumber" />
                 <ScalarProperty Name="id_task" ColumnName="id_task" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="isRight" ColumnName="isRight" />

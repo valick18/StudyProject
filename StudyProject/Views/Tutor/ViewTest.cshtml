@@ -61,7 +61,10 @@
                                 </button>
                             </td>
                             <td>
-                                <a href="@Url.Action("RemoveTask","Tutor", new { idTask = task.idTask })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                @if (!Model.tbTaskResult.Any())
+                                {
+                                    <a href="@Url.Action("RemoveTask","Tutor", new { idTask = task.idTask })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                }
                             </td>
                         </tr>
                     }

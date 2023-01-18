@@ -157,6 +157,7 @@ namespace StudyProject.Controllers.Tutor
             List<SelectListItem> items = new List<SelectListItem>();
             items.Add(new SelectListItem { Text = TaskStuff.getNameType(TaskStuff.TaskType.SelectCheckBox), Value = "0", Selected = true });
             items.Add(new SelectListItem { Text = TaskStuff.getNameType(TaskStuff.TaskType.Input), Value = "1" });
+            items.Add(new SelectListItem { Text = TaskStuff.getNameType(TaskStuff.TaskType.Dragable), Value = "2" });
             ViewBag.Type = items;
 
             return View(test);
@@ -190,14 +191,17 @@ namespace StudyProject.Controllers.Tutor
             tbTest test = task.tbTest;
             if (!task.tbTaskResult.Any())
             {
+                db.tbTask.Remove(task);
                 test.tbTask.Remove(task);
 
-                List<tbTaskVariant> taskVariants = task.tbTaskVariant.ToList();
-                List<tbMaterials> taskMaterials = task.tbMaterials.ToList();
+                List<tbTaskVariant> taskVariants = db.tbTaskVariant.Where(w => w.id_task == task.idTask).ToList();
+                List<tbMaterials> taskMaterials = db.tbMaterials.ToList();
+                taskMaterials = taskMaterials.Where(w => task.tbMaterials.Contains(w)).ToList();
 
                 foreach (tbTaskVariant variant in taskVariants)
                 {
                     task.tbTaskVariant.Remove(variant);
+                    db.tbTaskVariant.Remove(variant);
                 }
 
                 foreach (tbMaterials material in taskMaterials)
@@ -227,8 +231,7 @@ namespace StudyProject.Controllers.Tutor
 
             if (!CheckField.checkOnNullOrEmpty(onCheck)) {
 
-
-                tbTask newTask = new tbTask() { 
+                    tbTask newTask = new tbTask() { 
                     idTask = Guid.NewGuid(),
                     id_test = idTest,
                     Name = task.Name,
@@ -475,6 +478,19 @@ namespace StudyProject.Controllers.Tutor
             db.SaveChanges();
             return RedirectToAction("CheckUserTesting", new { idTest = taskResult.id_test, idUser = idUser});
         }
+
+        public ActionResult VariantOrderEdit(TaskOrdering [] variants, Guid idTask)
+        {
+            foreach (TaskOrdering taskOrder in variants)
+            {
+                tbTaskVariant variant = db.tbTaskVariant.Find(taskOrder.id);
+                variant.PositionNumber = taskOrder.order;
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("ViewVariant", new { idTask = idTask });
+        }
+
 
     }
 }

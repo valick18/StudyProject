@@ -18,6 +18,7 @@ namespace StudyProject
         public string Name { get; set; }
         public bool isRight { get; set; }
         public System.Guid idTaskVariant { get; set; }
+        public int PositionNumber { get; set; }
     
         public virtual tbTask tbTask { get; set; }
     }

@@ -13,7 +13,10 @@ namespace StudyProject.Models.Core
 
         public Guid? idTaskVariant { get; set; }
 
+        public int PositionNumber { get; set; }
         public List<SelectedId> SelectedIds {get; set;}
+
+        public List<VariantPosition> variantPosition { get; set; }
 
     }
 }

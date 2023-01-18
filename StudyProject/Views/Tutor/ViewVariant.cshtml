@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "ViewVariant";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    int counter = 1;
+    int ordering = 0;
 }
 
 <h2 class="text-center">Варіанти відповідей</h2>
@@ -28,41 +28,48 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table text-center">
-                        <tr>
-                            <th>Номер</th>
-                            <th>Варіант</th>
-                            <th>Відповідь правильна</th>
-                            <th>Редагувати</th>
-                            <th>Видалити</th>
-                        </tr>
-                        @foreach (tbTaskVariant variant in Model.tbTaskVariant)
-                        {
+                    @using (Html.BeginForm("VariantOrderEdit", "Tutor"))
+                    {
+                        <table class="table text-center" id="daragTable">
                             <tr>
-                                <td>@counter</td>
-                                <td>@variant.Name</td>
-                                <td>
-                                    @if (variant.isRight)
-                                    {
-                                        <label>Так</label>
-                                    }
-                                    else
-                                    {
-                                        <label>Ні</label>
-                                    }
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
-                                        <i class="fas fa-edit fa-1x" style="color:black"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <a href="@Url.Action("RemoveVariant","Tutor", new { idTaskVariant =variant.idTaskVariant, idTask = variant.id_task})" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
-                                </td>
+                                <th>Номер</th>
+                                <th>Варіант</th>
+                                <th>Відповідь правильна</th>
+                                <th>Редагувати</th>
+                                <th>Видалити</th>
                             </tr>
-                            counter++;
-                        }
-                    </table>
+                            @foreach (tbTaskVariant variant in Model.tbTaskVariant.OrderBy(o => o.PositionNumber))
+                            {
+                                <tr style="cursor:move">
+                                    <td>
+                                        <span class="index">@variant.PositionNumber</span>
+                                        <input name="[@ordering].id" value="@variant.idTaskVariant" hidden />
+                                        <input name="[@ordering].order" value="@variant.PositionNumber" id="index" hidden />
+                                    </td>
+                                    <td>@variant.Name</td>
+                                    <td>
+                                        @if (variant.isRight)
+                                        {
+                                            <label>Так</label>
+                                        }
+                                        else
+                                        {
+                                            <label>Ні</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
+                                            <i class="fas fa-edit fa-1x" style="color:black"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("RemoveVariant", "Tutor", new { idTaskVariant = variant.idTaskVariant, idTask = variant.id_task })" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        <button type="submit" class="btn btn-success">Зберегти</button>
+                    }
                 </div>
             </div>
         </div>
@@ -98,6 +105,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="PositionNumber" value="@(Model.tbTaskVariant.Count()+1)" />
                         <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
                         <button type="submit" class="btn btn-primary">Зберегти</button>
@@ -150,7 +158,9 @@
 }
 else
 {
-    <div class="row">
+
+
+<div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -160,29 +170,39 @@ else
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="row">
+    </div><div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <th>Правильна відповідь</th>
-                            <th>Редагувати</th>
-                        </tr>
-                        @foreach (tbTaskVariant variant in Model.tbTaskVariant)
-                        {
+                    @using (Html.BeginForm("VariantOrderEdit", "Tutor"))
+                    {
+                        <table class="table" id="daragTable">
                             <tr>
-                                <td>@variant.Name</td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
-                                        <i class="fas fa-edit fa-1x" style="color:black"></i>
-                                    </button>
-                                </td>
+                                <th>Позиція</th>
+                                <th>Правильна відповідь</th>
+                                <th>Редагувати</th>
                             </tr>
-                        }
-                    </table>
+                            @foreach (tbTaskVariant variant in Model.tbTaskVariant.OrderBy(o => o.PositionNumber))
+                            {
+                                <tr style="cursor:move">
+                                    <td>
+                                        <span class="index">@variant.PositionNumber</span>
+                                        <input name="[@ordering].id" value="@variant.idTaskVariant" hidden />
+                                        <input name="[@ordering].order" value="@variant.PositionNumber" id="index" hidden />
+                                    </td>
+                                    <td>@variant.Name</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#editVariant" onclick="setValue('@variant.idTaskVariant')">
+                                            <i class="fas fa-edit fa-1x" style="color:black"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                ordering++;
+                            }
+                        </table>
+                        <input name="idTask" value="@Model.idTask" type="hidden" />
+                        <button type="submit" class="btn btn-success">Зберегти</button>
+                    }
                 </div>
             </div>
         </div>
@@ -212,6 +232,7 @@ else
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" name="PositionNumber" value="@(Model.tbTaskVariant.Count()+1)" />
                         <input type="hidden" name="idTask" class="form-control" value="@Model.idTask" />
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрити</button>
                         <button type="submit" class="btn btn-primary">Зберегти</button>
@@ -263,4 +284,37 @@ else
             $('#taskVariant').val(id);
         }
     </script>
+    <script>
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+            return $helper;
+        },
+
+            updateIndex = function (e, ui) {
+                $('span.index', ui.item.parent()).each(function (i) {
+                    $(this).html(i + 1);
+                });
+                $('input#index', ui.item.parent()).each(function (i) {
+                    $(this).val(i + 1);
+                });
+            };
+
+        $("#daragTable tbody").sortable({
+            helper: fixHelperModified,
+            stop: updateIndex
+        }).disableSelection();
+
+        $("#daragTable tbody").sortable({
+            distance: 5,
+            delay: 100,
+            opacity: 0.6,
+            cursor: 'move',
+            update: function () { }
+        });
+    </script>
+
 }
