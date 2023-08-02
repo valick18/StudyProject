@@ -26,21 +26,21 @@ Students do not have access to teacher or admin functionalities.
 
 <b>Вхід у навчальну систему</b>
 
-![1](https://github.com/valick18/StudyProject/assets/58089417/3d500f18-91e1-4157-b4f0-7201b88841f3)
+![1](https://github.com/valick18/StudyProject/assets/58089417/49eef4df-0cf8-414e-9ccb-9d15ecef3915)
 
 <b>Редагування профіля користувача</b>
 
-![2](https://github.com/valick18/StudyProject/assets/58089417/b58037f1-26af-4d1e-a313-8c4c61dd4fc9)
+![2](https://github.com/valick18/StudyProject/assets/58089417/a642ca7a-76da-4a98-b1a6-42a5d1650ee9)
 
 <b>Адмінка, управління користувачами</b>
 
-![3](https://github.com/valick18/StudyProject/assets/58089417/99a0b275-7fa3-4e43-8c2f-bb901c6921ba)
+![3](https://github.com/valick18/StudyProject/assets/58089417/c15ccb6b-3252-4ffd-81dc-8bd361f4d57d)
 
 <b>Керування навчальними закладами</b>
 
-![4](https://github.com/valick18/StudyProject/assets/58089417/31c64d48-b260-4d22-88a5-e7ad333885bb)
+![4](https://github.com/valick18/StudyProject/assets/58089417/4c5035da-26cd-4541-8e7e-d20f461a756e)
 
 <b>Доступні тести для учня/студента</b>
 
-![6](https://github.com/valick18/StudyProject/assets/58089417/82068241-0ad1-4148-9b75-bb7cc3a91336)
+![6](https://github.com/valick18/StudyProject/assets/58089417/6fc43a8e-9b92-44cc-a08f-24b909c41325)
 
